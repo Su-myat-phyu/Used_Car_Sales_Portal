@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from '@inertiajs/react';
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa"; // Import icons
 import logo from "../../../assets/logo.png";
 

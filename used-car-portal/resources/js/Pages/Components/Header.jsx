@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Assuming React Router is used for navigation
+import { Link } from '@inertiajs/react'; // Assuming React Router is used for navigation
 import logo from "../../../assets/logo.png";
 
 const Header = () => {

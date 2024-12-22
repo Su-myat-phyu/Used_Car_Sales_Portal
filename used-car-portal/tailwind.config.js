@@ -3,55 +3,55 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './storage/framework/views/*.php',
-        './resources/**/*.blade.php',
-        './resources/**/*.js',
-        './resources/**/*.vue',
+        "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
+        "./storage/framework/views/*.php",
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./resources/**/*.jsx",
+        "./resources/**/*.vue",
     ],
     theme: {
         extend: {
+            fontFamily: {
+                sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+            },
             colors: {
                 primary: {
-                    50: "#eef5f1",
-                    100: "#dcebe4",
-                    200: "#bad7c8",
-                    300: "#8cbda4",
-                    400: "#6f937f", // Base primary color
-                    500: "#5d7a6b",
-                    600: "#4a6157",
-                    700: "#384743",
-                    800: "#252d2f",
-                    900: "#12161a",
+                    50: '#eef0fc', // Lighter shades based on #372fd4
+                    100: '#dadbf9',
+                    200: '#b2b3f1',
+                    300: '#8a8ae8',
+                    400: '#635fe0',
+                    500: '#372fd4', // Base color
+                    600: '#2d26b2',
+                    700: '#211c84',
+                    800: '#161256',
+                    900: '#0c0830',
                 },
                 secondary: {
-                    50: "#f5f7f8",
-                    100: "#e5eaed",
-                    200: "#c9d2d8",
-                    300: "#a8b6c0",
-                    400: "#8a9aa8",
-                    500: "#71818f", // Base secondary color
-                    600: "#5b6775",
-                    700: "#454e5b",
-                    800: "#303441",
-                    900: "#1a1c27",
+                    50: '#fdeef1', // Lighter shades based on #e78c9f
+                    100: '#f9d6dc',
+                    200: '#f3adb9',
+                    300: '#ec8596',
+                    400: '#e35d73',
+                    500: '#e78c9f', // Base color
+                    600: '#c5778a',
+                    700: '#945b69',
+                    800: '#633d46',
+                    900: '#311e24',
                 },
                 accent: {
-                    50: "#f3f4f7",
-                    100: "#e1e4eb",
-                    200: "#c3c6d6",
-                    300: "#a1a5bc",
-                    400: "#8c90a9", // Base accent color
-                    500: "#757790",
-                    600: "#5e5e73",
-                    700: "#484855",
-                    800: "#313138",
-                    900: "#1a1a1d",
+                    50: '#fef1eb', // Lighter shades based on #dc8956
+                    100: '#fcdcca',
+                    200: '#f8b98d',
+                    300: '#f09560',
+                    400: '#ea713a',
+                    500: '#dc8956', // Base color
+                    600: '#b86e47',
+                    700: '#8b5236',
+                    800: '#5d3524',
+                    900: '#2f1a12',
                 },
-            },
-            fontFamily: {
-                sans: ['sans-serif', 'Roboto'],
-                roboto: ['Roboto', 'sans-serif'],
             },
         },
     },

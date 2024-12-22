@@ -6,9 +6,9 @@ const IntroductionSection = () => {
         <section className="bg-primary-50 py-16">
             <div className="container mx-auto flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0">
                 {/* Image Section */}
-                <div className="w-full md:w-1/2">
+                <div className="w-full md:w-1/3">
                     <img
-                        src="/path-to-your-image/introduction-image.jpg" // Replace with actual image path
+                        src="https://images.pexels.com/photos/120049/pexels-photo-120049.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" // Replace with actual image path
                         alt="Introduction to Cardiana"
                         className="w-full rounded-lg shadow-lg"
                     />
@@ -26,11 +26,12 @@ const IntroductionSection = () => {
                     </p>
                     <Link
                         to="/research"
-                        className="bg-accent-500 text-white py-3 px-6 rounded-lg text-lg hover:bg-accent-400 transition"
+                        className="bg-accent-500 text-white py-3 px-6 rounded-lg text-lg mt-6 hover:bg-accent-400 transition inline-block"
                     >
                         Explore Cars
                     </Link>
                 </div>
+
             </div>
         </section>
     );

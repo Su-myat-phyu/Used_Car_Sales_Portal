@@ -1,19 +1,19 @@
 import React from "react";
-import { Link } from '@inertiajs/react';
+import { Link } from "@inertiajs/react";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa"; // Import icons
 import logo from "../../../assets/logo.png";
 
 const Footer = () => {
     return (
-        <footer className="bg-primary-400 text-secondary-100 font-roboto">
+        <footer className="bg-primary-200 text-secondary-100 font-roboto">
             <div className="container mx-auto py-8 px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Left Section: Logo and Social Media Icons */}
                 <div className="flex flex-col items-start space-y-4">
                     {/* Logo */}
                     <img
-                        src={logo}// Replace with your actual logo path
+                        src={logo} // Replace with your actual logo path
                         alt="Cardiana Logo"
-                        className="h-10 w-auto"
+                        className="h-20 w-auto"
                     />
                     {/* Social Media Icons */}
                     <div className="flex space-x-4">
@@ -21,7 +21,7 @@ const Footer = () => {
                             href="https://facebook.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-secondary-900 hover:text-secondary-600"
+                            className="text-secondary-900 hover:text-secondary-600 transition"
                         >
                             <FaFacebookF size={24} />
                         </a>
@@ -29,7 +29,7 @@ const Footer = () => {
                             href="https://twitter.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-secondary-900 hover:text-secondary-600"
+                            className="text-secondary-900 hover:text-secondary-600 transition"
                         >
                             <FaTwitter size={24} />
                         </a>
@@ -37,7 +37,7 @@ const Footer = () => {
                             href="https://instagram.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-secondary-900 hover:text-secondary-600"
+                            className="text-secondary-900 hover:text-secondary-600 transition"
                         >
                             <FaInstagram size={24} />
                         </a>
@@ -45,26 +45,26 @@ const Footer = () => {
                 </div>
 
                 {/* Center Section: Quick Links */}
-                <div className="flex flex-col items-center space-y-2">
+                <div className="flex flex-col items-center md:items-start space-y-2">
                     <h3 className="text-lg font-bold text-secondary-900">Quick Links</h3>
-                    <ul className="space-y-2">
+                    <ul className="space-y-2 text-secondary-900">
                         <li>
-                            <Link to="/" className="hover:text-secondary-600">
+                            <Link href="/" className="hover:text-secondary-600 transition">
                                 Home
                             </Link>
                         </li>
                         <li>
-                            <Link to="/research" className="hover:text-secondary-600">
+                            <Link href="/research" className="hover:text-secondary-600 transition">
                                 Research
                             </Link>
                         </li>
                         <li>
-                            <Link to="/about" className="hover:text-secondary-600">
+                            <Link href="/about" className="hover:text-secondary-600 transition">
                                 About Us
                             </Link>
                         </li>
                         <li>
-                            <Link to="/contact" className="hover:text-secondary-600">
+                            <Link href="/contact" className="hover:text-secondary-600 transition">
                                 Contact Us
                             </Link>
                         </li>
@@ -72,8 +72,8 @@ const Footer = () => {
                 </div>
 
                 {/* Right Section: All Rights Reserved */}
-                <div className="flex flex-col items-end">
-                    <p className="text-sm text-secondary-900">
+                <div className="flex flex-col items-center md:items-end">
+                    <p className="text-sm text-secondary-900 text-center md:text-right">
                         © {new Date().getFullYear()} Cardiana. All rights reserved.
                     </p>
                 </div>

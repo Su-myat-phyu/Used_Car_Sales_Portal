@@ -10,21 +10,21 @@ const HowItWorks = () => {
             title: "Choose anywhere",
             description:
                 "No more compromises! With us, you have an unrivaled selection of cars in one place.",
-            image: {howitworks1}, // Replace with the actual image path
+            image: "https://carvago.com/images/how-it-works-mobile-1-2x.webp", // Replace with the actual image path
         },
         {
             id: 2,
             title: "We’ll inspect the car closely",
             description:
                 "A certified mechanic will thoroughly inspect your car. You will decide according to the result after.",
-            image: {howitworks2}, // Replace with the actual image path
+            image: "https://carvago.com/images/how-it-works-mobile-2-2x.webp", // Replace with the actual image path
         },
         {
             id: 3,
             title: "We’ll deliver it to your home",
             description:
                 "We arrange all the paperwork, registration, and delivery. All you need to do is enjoy your new car.",
-            image: {howitworks3}, // Replace with the actual image path
+            image: "https://carvago.com/images/how-it-works-mobile-3-2x.webp", // Replace with the actual image path
         },
     ];
 
@@ -44,7 +44,7 @@ const HowItWorks = () => {
                             <img
                                 src={step.image}
                                 alt={step.title}
-                                className="mx-auto mb-6 w-40 h-auto"
+                                className="mx-auto mb-6 w-100 h-auto"
                             />
                             {/* Step Number */}
                             <span className="block text-primary-500 text-xl font-bold mb-2">
@@ -64,7 +64,7 @@ const HowItWorks = () => {
 
                 {/* CTA Button */}
                 <div className="text-center mt-12">
-                    <button className="bg-primary-500 text-white py-3 px-6 rounded-lg text-lg hover:bg-primary-400 transition">
+                    <button className="bg-accent-500 text-white py-3 px-6 rounded-lg text-lg hover:bg-primary-400 transition">
                         Want to know more?
                     </button>
                 </div>

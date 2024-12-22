@@ -26,7 +26,7 @@ const IntroductionSection = () => {
                     </p>
                     <Link
                         to="/research"
-                        className="bg-accent-500 text-white py-3 px-6 rounded-lg text-lg mt-6 hover:bg-accent-400 transition inline-block"
+                        className="bg-accent-500 text-white py-3 px-6 rounded-lg text-lg mt-6 hover:bg-primary-400 transition inline-block"
                     >
                         Explore Cars
                     </Link>

@@ -3,6 +3,8 @@ import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import IntroductionSection from "./Components/IntroductionSection";
 import HowItWorks from "./Components/HowItWorksSection";
+import FeaturedCars from "./Components/FeaturedCarsSection";
+import Testimonials from "./Components/Testimonials";
 
 const Home = () => {
     return (
@@ -10,6 +12,8 @@ const Home = () => {
             <Header />
             <IntroductionSection />
             <HowItWorks />
+            <FeaturedCars />
+            <Testimonials />
             <Footer />
         </main>
         );

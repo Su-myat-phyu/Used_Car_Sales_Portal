@@ -10,3 +10,7 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return inertia('Home');
 });
+
+Route::get('/about', function () {
+    return Inertia('features/AboutUs/Pages/AboutUsPage');
+});

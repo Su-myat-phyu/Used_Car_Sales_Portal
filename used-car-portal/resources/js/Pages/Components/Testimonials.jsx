@@ -22,10 +22,16 @@ const Testimonials = () => {
             feedback: "Very user-friendly and reliable. I would definitely use Cardiana again in the future.",
             rating: 5,
         },
+        {
+            id: 4,
+            name: "Kelly Brown",
+            feedback: "Buying a car on Carvago was simply a pleasure. Everything went smoothly, I always knew what stage the car was in and what would happen next.",
+            rating: 4.5,
+        },
     ];
 
     return (
-        <section className="bg-primary-50 py-16">
+        <section className="bg-gray-50 py-16">
             <div className="container mx-auto px-6">
                 {/* Section Title */}
                 <h2 className="text-4xl font-bold text-center text-primary-700 mb-12">
@@ -33,7 +39,7 @@ const Testimonials = () => {
                 </h2>
 
                 {/* Testimonials Carousel */}
-                <div className="flex space-x-4 overflow-x-auto snap-x">
+                <div className="flex space-x-16 overflow-x-auto snap-x">
                     {testimonials.map((testimonial) => (
                         <div
                             key={testimonial.id}
@@ -51,9 +57,13 @@ const Testimonials = () => {
 
                             {/* Star Rating */}
                             <div className="flex">
-                                {Array.from({ length: testimonial.rating }, (_, i) => (
+                                {Array.from({ length: Math.floor(testimonial.rating) }, (_, i) => (
                                     <FaStar key={i} className="text-accent-500" />
                                 ))}
+                                {/* Handle half-star for ratings like 4.5 */}
+                                {testimonial.rating % 1 !== 0 && (
+                                    <FaStar className="text-accent-500 opacity-50" />
+                                )}
                             </div>
                         </div>
                     ))}

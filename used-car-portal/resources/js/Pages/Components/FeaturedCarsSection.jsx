@@ -34,7 +34,7 @@ const FeaturedCars = () => {
     ];
 
     return (
-        <section className="bg-gray-50 py-16">
+        <section className="bg-primary-50 py-16">
             <div className="container mx-auto px-6">
                 {/* Section Title */}
                 <h2 className="text-4xl font-bold text-center text-primary-700 mb-12">

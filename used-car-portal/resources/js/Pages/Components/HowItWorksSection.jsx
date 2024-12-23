@@ -1,7 +1,6 @@
 import React from "react";
-import howitworks1 from "../../../assets/howitworks1.webp";
-import howitworks2 from "../../../assets/howitworks2.webp";
-import howitworks3 from "../../../assets/howitworks3.webp";
+import { Link } from '@inertiajs/react';
+
 
 const HowItWorks = () => {
     const steps = [
@@ -64,9 +63,12 @@ const HowItWorks = () => {
 
                 {/* CTA Button */}
                 <div className="text-center mt-12">
-                    <button className="bg-accent-500 text-white py-3 px-6 rounded-lg text-lg hover:bg-primary-400 transition">
+                <Link
+                        to="/about"
+                        className="bg-accent-500 text-white py-3 px-6 rounded-lg text-lg hover:bg-primary-400 transition"
+                    >
                         Want to know more?
-                    </button>
+                    </Link>
                 </div>
             </div>
         </section>

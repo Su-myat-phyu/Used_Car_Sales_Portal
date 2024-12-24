@@ -6,28 +6,28 @@ const FeaturedCars = () => {
         {
             id: 1,
             thumbnail: "https://media.gettyimages.com/id/56545963/photo/detroit-united-states-the-hybrid-version-of-the-toyota-camry-is-introduced-09-january-during.jpg?s=612x612&w=0&k=20&c=GP4Suekr83BJ6YTv-3Fmc2BAfaM_S1IbiwnbLyil5wg=", // Replace with actual image path
-            price: "$25,000",
+            price: "$20,000",
             make: "Toyota",
             model: "Camry",
         },
         {
             id: 2,
             thumbnail: "https://automobiles.honda.com/-/media/Honda-Automobiles/Vehicles/2025/civic-si-sedan/non-VLP/Family-Page/2025/MY25_Civic-Si_Family_Card_Jelly_1x.jpg?sc_lang=en", // Replace with actual image path
-            price: "$30,000",
+            price: "$18,000",
             make: "Honda",
             model: "Civic",
         },
         {
             id: 3,
             thumbnail: "https://media.gettyimages.com/id/1175887431/photo/2011-bmw-3-series-coupe.jpg?s=612x612&w=0&k=20&c=jaILtzVAFpYbUjusU7Iblmb0y-CFPgPgtkyGmmHrFUk=", // Replace with actual image path
-            price: "$45,000",
+            price: "$35,000",
             make: "BMW",
             model: "3 Series",
         },
         {
             id: 4,
             thumbnail: "https://imgd.aeplcdn.com/664x374/n/cw/ec/178535/c-class-exterior-right-front-three-quarter.jpeg?isig=0&q=80", // Replace with actual image path
-            price: "$60,000",
+            price: "$40,000",
             make: "Mercedes",
             model: "C-Class",
         },

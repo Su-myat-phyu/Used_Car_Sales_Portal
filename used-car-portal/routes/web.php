@@ -18,3 +18,7 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return Inertia('features/ContactUs/Pages/ContactUsPage');
 });
+
+Route::get('/research', function () {
+    return Inertia('features/CarListing/Pages/CarListingPage');
+});

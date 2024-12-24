@@ -1,22 +1,28 @@
 import React from "react";
+import toyotaCar from "../../../../../assets/toyotaCar.png";
+import hondaCar from "../../../../../assets/hondaCar.webp";
 import fordCar from "../../../../../assets/fordCar.jpg";
+import bmw3Car from "../../../../../assets/bmw3Car.png";
 import teslaCar from "../../../../../assets/teslaCar.jpg";
 import mercedesCar from "../../../../../assets/mercedes.webp";
 import audiCar from "../../../../../assets/audiCar.jpg";
 import chevroletCar from "../../../../../assets/chevroletCar.webp";
+import jeepCar from "../../../../../assets/jeepCar.webp";
+import hyundaiCar from "../../../../../assets/hyundaiCar.png";
+import volvoCar from "../../../../../assets/volvoCar.jpg";
+import lexusCar from "../../../../../assets/lexusCar.jpeg";
 
 const cars = [
     {
         id: 1,
-        thumbnail: "https://media.gettyimages.com/id/56545963/photo/detroit-united-states-the-hybrid-version-of-the-toyota-camry-is-introduced-09-january-during.jpg?s=612x612&w=0&k=20&c=GP4Suekr83BJ6YTv-3Fmc2BAfaM_S1IbiwnbLyil5wg=",
-        make: "Toyota",
+        thumbnail: toyotaCar,
         model: "Camry",
         year: 2021,
         price: "$20,000",
     },
     {
         id: 2,
-        thumbnail: "https://automobiles.honda.com/-/media/Honda-Automobiles/Vehicles/2025/civic-si-sedan/non-VLP/Family-Page/2025/MY25_Civic-Si_Family_Card_Jelly_1x.jpg?sc_lang=en",
+        thumbnail: hondaCar,
         make: "Honda",
         model: "Civic",
         year: 2020,
@@ -32,7 +38,7 @@ const cars = [
     },
     {
         id: 4,
-        thumbnail: "https://media.gettyimages.com/id/1175887431/photo/2011-bmw-3-series-coupe.jpg?s=612x612&w=0&k=20&c=jaILtzVAFpYbUjusU7Iblmb0y-CFPgPgtkyGmmHrFUk=",
+        thumbnail: bmw3Car,
         make: "BMW",
         model: "3 Series",
         year: 2022,
@@ -72,7 +78,7 @@ const cars = [
     },
     {
         id: 9,
-        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/0/07/2018_Jeep_Wrangler_Unlimited_Rubicon_2.0_Front.jpg",
+        thumbnail: jeepCar,
         make: "Jeep",
         model: "Wrangler",
         year: 2018,
@@ -80,7 +86,7 @@ const cars = [
     },
     {
         id: 10,
-        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/e/e7/2020_Hyundai_Santa_Fe.jpg",
+        thumbnail: hyundaiCar,
         make: "Hyundai",
         model: "Santa Fe",
         year: 2020,
@@ -88,7 +94,7 @@ const cars = [
     },
     {
         id: 11,
-        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/4/4a/2021_Volvo_XC90.jpg",
+        thumbnail: volvoCar,
         make: "Volvo",
         model: "XC90",
         year: 2021,
@@ -96,7 +102,7 @@ const cars = [
     },
     {
         id: 12,
-        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/f/f5/2019_Lexus_RX_350.jpg",
+        thumbnail: lexusCar,
         make: "Lexus",
         model: "RX 350",
         year: 2019,

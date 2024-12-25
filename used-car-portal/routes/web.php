@@ -22,3 +22,7 @@ Route::get('/contact', function () {
 Route::get('/research', function () {
     return Inertia('features/CarListing/Pages/CarListingPage');
 });
+
+Route::get('/register', function () {
+    return Inertia('features/Register/Pages/RegisterPage');
+});

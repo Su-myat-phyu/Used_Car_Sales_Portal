@@ -239,7 +239,7 @@ const RegistrationForm = () => {
                 {/* Register Button */}
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
+                    className="w-full bg-accent-500 text-white p-2 rounded hover:bg-primary-400 transition"
                 >
                     Register
                 </button>
@@ -250,6 +250,13 @@ const RegistrationForm = () => {
                         {errors.general}
                     </p>
                 )}
+
+                {/* Login Link */}
+                <p className="text-center text-gray-700 text-sm">
+                    Already have an account?{" "}
+                    <a href="/login" className="text-accent-500 hover:text-primary-400">
+                        Login
+                    </a></p>
             </form>
         </div>
     );

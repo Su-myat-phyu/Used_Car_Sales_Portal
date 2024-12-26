@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\Auth\LoginController;
 
 //Route::get('/', function () {
    // return view('Home');
@@ -23,6 +25,10 @@ Route::get('/research', function () {
     return Inertia('features/CarListing/Pages/CarListingPage');
 });
 
-Route::get('/register', function () {
-    return Inertia('features/Register/Pages/RegisterPage');
-});
+
+Route::get('/register', [RegistrationController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegistrationController::class, 'register']);
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

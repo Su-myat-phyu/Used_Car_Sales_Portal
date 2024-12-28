@@ -8,7 +8,7 @@ const DetailHeroSection = ({ car }) => {
                 <img
                     src={car.image}
                     alt={car.title}
-                    className="w-full h-96 object-cover"
+                    className="w-full h-full object-cover"
                 />
             </div>
 

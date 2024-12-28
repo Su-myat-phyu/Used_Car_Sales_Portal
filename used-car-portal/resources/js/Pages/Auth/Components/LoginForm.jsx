@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "@inertiajs/react";
 
+
+
 const LoginForm = () => {
     const { data, setData, post, errors, processing } = useForm({
         email: "",
@@ -10,8 +12,14 @@ const LoginForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route("login"));
+        post('/login', {
+            onSuccess: () => {
+                window.location.href = '/dashboard';
+            },
+        });
+        
     };
+    
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -67,13 +75,16 @@ const LoginForm = () => {
                     </div>
 
                     {/* Submit Button */}
-                    <button
-                        type="submit"
-                        disabled={processing}
-                        className="w-full bg-accent-500 text-white py-2 px-4 rounded-md hover:bg-primary-400 transition"
-                    >
-                        Login
-                    </button>
+                                <button
+                type="submit"
+                disabled={processing}
+                className={`w-full ${
+                    processing ? "bg-gray-300" : "bg-accent-500"
+                } text-white py-2 px-4 rounded-md hover:bg-primary-400 transition`}
+            >
+                {processing ? "Logging in..." : "Login"}
+            </button>
+
                 </form>
 
                 {/* Forgot Password */}

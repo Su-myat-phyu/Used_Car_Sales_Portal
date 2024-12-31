@@ -25,15 +25,23 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-
-            // Redirect to intended page or default to user dashboard
-            return redirect()->intended(route('user.dashboard'));
+        
+            // Redirect based on user role
+            $user = Auth::user();
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+            if ($user->role === 'user') {
+                return redirect()->route('user.dashboard');
+            }
         }
+        
 
         // Return errors if login fails
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
+        
     }
 
     // Handle logout

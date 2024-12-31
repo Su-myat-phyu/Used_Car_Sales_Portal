@@ -76,14 +76,14 @@ const LoginForm = () => {
 
                     {/* Submit Button */}
                                 <button
-                type="submit"
-                disabled={processing}
-                className={`w-full ${
-                    processing ? "bg-gray-300" : "bg-accent-500"
-                } text-white py-2 px-4 rounded-md hover:bg-primary-400 transition`}
-            >
-                {processing ? "Logging in..." : "Login"}
-            </button>
+                                    type="submit"
+                                    disabled={processing}
+                                    className={`w-full ${
+                                        processing ? "bg-gray-300" : "bg-accent-500"
+                                    } text-white py-2 px-4 rounded-md hover:bg-primary-400 transition`}
+                                >
+                                    {processing ? "Logging in..." : "Login"}
+                                </button>
 
                 </form>
 

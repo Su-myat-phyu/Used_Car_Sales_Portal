@@ -18,16 +18,16 @@ class RegistrationController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|confirmed|min:8',
-            'role' => ['required', Rule::in(['user', 'admin'])],
-            
+            'fullName' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed|min:8',
+            'role' => 'required|in:user,admin',
+        
             // User-specific validation
             'phone_number' => 'nullable|required_if:role,user|string',
             'address' => 'nullable|required_if:role,user|string|max:500',
             'profile_picture' => 'nullable|file|image|max:2048',
-
+        
             // Admin-specific validation
             'employee_id' => 'nullable|required_if:role,admin|string|max:50',
             'department' => 'nullable|required_if:role,admin|string',
@@ -41,7 +41,7 @@ class RegistrationController extends Controller
 
         // Create User
         User::create([
-            'full_name' => $validated['full_name'],
+            'name' => $validated['fullName'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
@@ -51,6 +51,7 @@ class RegistrationController extends Controller
             'employee_id' => $validated['employee_id'] ?? null,
             'department' => $validated['department'] ?? null,
         ]);
+        
 
         return redirect('/login')->with('success', 'Registration successful! Please log in.');
     }

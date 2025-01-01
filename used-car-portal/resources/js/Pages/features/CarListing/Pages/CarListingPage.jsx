@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Header from "../../../Components/Header";
-import Footer from "../../../Components/Footer";
+import Header from "../../../../Components/HeaderFooter/Header";
+import Footer from "../../../../Components/HeaderFooter/Footer";
 import CarHeroSection from "../Components/CarHeroSection";
 import CarListingSection from "../Components/CarListingSection";
 import CallToActionSection from "../Components/CallToActionSection";

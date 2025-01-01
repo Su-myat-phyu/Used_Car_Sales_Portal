@@ -14,9 +14,11 @@ const LoginForm = () => {
         e.preventDefault();
         post('/login', {
             onSuccess: () => {
-                window.location.href = '/dashboard';
+                const role = data.role; // Add role if returned via inertia response
+                window.location.href = role === "admin" ? "/admin-dashboard" : "/user-dashboard";
             },
         });
+        
         
     };
     

@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../../Components/Header";
-import Footer from "../../Components/Footer";
-import RegistrationForm from "../Components/RegistrationForm";
+import Header from "../../Components/HeaderFooter/Header";
+import Footer from "../../Components/HeaderFooter/Footer";
+import RegistrationForm from "../../Components/Forms/RegistrationForm";
 
 
 

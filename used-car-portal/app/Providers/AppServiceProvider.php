@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
-
+use App\Models\Role;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -12,7 +12,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind('role', function ($app) {
+            return new Role();
+        });
     }
 
     /**

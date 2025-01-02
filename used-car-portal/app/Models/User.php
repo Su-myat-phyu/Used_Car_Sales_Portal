@@ -7,6 +7,11 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+
+    public function role()
+{
+    return $this->belongsTo(Role::class);
+}
     use Notifiable;
 
     // app/Models/User.php

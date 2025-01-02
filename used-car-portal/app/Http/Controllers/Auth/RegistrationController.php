@@ -7,9 +7,16 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use App\Models\Role;
 
 class RegistrationController extends Controller
 {
+    protected $role; // Declare the property
+
+    public function __construct(Role $role)
+    {
+        $this->role = $role; // Assign the dependency
+    }
     public function showRegistrationForm()
     {
         return inertia('Auth/Pages/RegisterPage'); // Ensure you have an Inertia component named Register
@@ -55,4 +62,5 @@ class RegistrationController extends Controller
 
         return redirect('/login')->with('success', 'Registration successful! Please log in.');
     }
+ 
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarController;
+use App\Http\Models\User;
 
 //Route::get('/', function () {
    // return view('Home');
@@ -40,6 +41,9 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 
 
+
 Route::get('/user-dashboard', function () {
-    return Inertia::render('Dashboard/UserDashboard');
-})->middleware(['auth', 'verified', 'role:user'])->name('user-dashboard');
+    return inertia('UserDashboard'); // Assuming you have a React component named UserDashboard
+})->middleware(['auth', 'role:user']);
+
+

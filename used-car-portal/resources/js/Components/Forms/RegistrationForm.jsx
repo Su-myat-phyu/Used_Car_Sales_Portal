@@ -4,7 +4,7 @@ import { useForm } from "@inertiajs/react";
 const RegistrationForm = () => {
     const [role, setRole] = useState("user");
     const { data, setData, post, errors } = useForm({
-        fullName: "",
+        full_name: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -78,11 +78,11 @@ const RegistrationForm = () => {
                         type="text"
                         className="w-full border border-gray-300 p-2 rounded"
                         value={data.fullName}
-                        onChange={(e) => setData("fullName", e.target.value)}
+                        onChange={(e) => setData("full_name", e.target.value)}
                         required
                     />
-                    {errors.fullName && (
-                        <p className="text-red-500 text-sm">{errors.fullName}</p>
+                    {errors.full_name && (
+                        <p className="text-red-500 text-sm">{errors.full_name}</p>
                     )}
                 </div>
 
@@ -128,18 +128,19 @@ const RegistrationForm = () => {
                     <input
                         type="password"
                         className="w-full border border-gray-300 p-2 rounded"
-                        value={data.confirmPassword}
+                        value={data.password_confirmation} // Change here
                         onChange={(e) =>
-                            setData("confirmPassword", e.target.value)
+                            setData("password_confirmation", e.target.value) // Change here
                         }
                         required
                     />
-                    {errors.confirmPassword && (
+                    {errors.password_confirmation && ( // Change here
                         <p className="text-red-500 text-sm">
-                            {errors.confirmPassword}
+                            {errors.password_confirmation} // Change here
                         </p>
                     )}
                 </div>
+
 
                 {/* Role Selection */}
                 <div>

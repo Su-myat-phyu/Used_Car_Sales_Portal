@@ -12,15 +12,23 @@ const LoginForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+    
         post('/login', {
-            onSuccess: () => {
-                const role = data.role; // Add role if returned via inertia response
-                window.location.href = role === "admin" ? "/admin-dashboard" : "/user-dashboard";
+            onSuccess: (response) => {
+                if (response && response.props && response.props.role) {
+                    const role = response.props.role; // Assuming the role is returned in the response props
+                    window.location.href = role === "admin" ? "/admin-dashboard" : "/user-dashboard";
+                } else {
+                    console.error("Role not found in the response.");
+                }
+            },
+            onError: (errors) => {
+                console.error("Login failed:", errors);
+                alert("Login failed. Please check your credentials.");
             },
         });
-        
-        
     };
+    
     
 
     return (

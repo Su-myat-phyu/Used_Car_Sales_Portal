@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CarController;
 
 //Route::get('/', function () {
    // return view('Home');
@@ -26,7 +27,7 @@ Route::get('/research', function () {
     return Inertia('features/CarListing/Pages/CarListingPage');
 });
 
-
+Route::get('/car-details/{id}', [CarController::class, 'show'])->name('car.details');
 
 
 Route::get('/register', fn() => Inertia::render('Auth/Register'));
@@ -37,5 +38,8 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::get('/user-dashboard', fn() => Inertia::render('User/Dashboard'))->middleware('auth');
-Route::get('/admin-dashboard', fn() => Inertia::render('Admin/Dashboard'))->middleware('auth');
+
+
+Route::get('/user-dashboard', function () {
+    return Inertia::render('Dashboard/UserDashboard');
+})->middleware(['auth', 'verified', 'role:user'])->name('user-dashboard');

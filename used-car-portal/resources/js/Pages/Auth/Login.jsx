@@ -5,7 +5,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import LoginForm from '@/Components/Forms/LoginForm';
 
 
-export default function Register() {
+export default function Login() {
     
 
     return (

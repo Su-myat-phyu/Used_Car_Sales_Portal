@@ -25,15 +25,21 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-        
-            // Redirect based on user role
+    
             $user = Auth::user();
+    
+            // Pass the user's role to the frontend
+            return inertia('Dashboard', [
+                'role' => $user->role, // This makes the role available to the Inertia component
+            ]);
+    
+            // Alternatively, redirect based on role
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
-            }
+             }
             if ($user->role === 'user') {
                 return redirect()->route('user.dashboard');
-            }
+             }
         }
         
 

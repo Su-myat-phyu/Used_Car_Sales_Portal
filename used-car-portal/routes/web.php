@@ -5,6 +5,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarController;
 use App\Http\Models\User;
+use App\Http\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 //Route::get('/', function () {
    // return view('Home');
@@ -41,9 +43,19 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 
 
+Route::get('/dashboard', function () {
+    $user = Auth::user();
+    if ($user) {
+        if ($user->roles->contains('name', 'user')) {
+            return redirect()->route('user-dashboard');
+        }
 
-Route::get('/user-dashboard', function () {
-    return inertia('UserDashboard'); // Assuming you have a React component named UserDashboard
-})->middleware(['auth', 'role:user']);
+        if ($user->roles->contains('name', 'admin')) {
+            return redirect()->route('admin-dashboard');
+        }    
+    }
+    return redirect()->route('home');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 

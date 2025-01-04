@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'full_name' => fake()->name(), // Match 'full_name' with the database column
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
-            'role' => 'user', // Add default value if needed
+            'role_id' => Role::inRandomOrder()->first()->id, // Assign a random role
             'phone_number' => fake()->phoneNumber(),
             'address' => fake()->address(),
             'profile_picture' => null, // Add appropriate default if needed

@@ -7,15 +7,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use App\Models\Roles;
+use App\Models\Role;
 
 class RegistrationController extends Controller
 {
     protected $role; // Declare the property
 
-    public function __construct(Roles $roles)
+    public function __construct(Role $role)
     {
-        $this->role = $roles; // Assign the dependency
+        $this->role = $role; // Assign the dependency
     }
     public function showRegistrationForm()
     {

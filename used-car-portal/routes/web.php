@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarController;
-use App\Http\Models\User;
-use App\Http\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UserDashboardController;
 
 //Route::get('/', function () {
    // return view('Home');
@@ -41,21 +41,24 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
 
+Route::get('/user-dashboard', [UserDashboardController::class, 'index'])
+    ->middleware(['auth', 'verified', 'role:user'])
+    ->name('user-dashboard');
 
-
-Route::get('/dashboard', function () {
-    $user = Auth::user();
-    if ($user) {
-        if ($user->roles->contains('name', 'user')) {
-            return redirect()->route('user-dashboard');
+    Route::get('/dashboard', function () {
+        $user = Auth::user();
+        if ($user) {
+            if ($user->roles->pluck('name')->contains('user')) { // Use pluck() for role names
+                return redirect()->route('user-dashboard');
+            }
+    
+            if ($user->roles->pluck('name')->contains('admin')) {
+                return redirect()->route('admin-dashboard');
+            }
         }
-
-        if ($user->roles->contains('name', 'admin')) {
-            return redirect()->route('admin-dashboard');
-        }    
-    }
-    return redirect()->route('home');
-})->middleware(['auth', 'verified'])->name('dashboard');
+        return redirect()->route('home');
+    })->middleware(['auth', 'verified'])->name('dashboard');
+    
 
 
 

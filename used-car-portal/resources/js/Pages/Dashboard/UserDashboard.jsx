@@ -10,7 +10,9 @@ import UserActivityOverview from "./Components/UserActivityOverview";
 const UserDashboard = () => {
     return (
         <main className=" flex flex-col min-h-screen">
-            <Header />
+            <div className="bg-gray-100 text-center py-2">
+                <p className="font-bold text-5xl">User Dashboard</p>
+            </div>
             <MainDashboardSection />
             <UserActivityOverview />
             <Footer />

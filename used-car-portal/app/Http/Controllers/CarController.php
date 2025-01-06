@@ -2,40 +2,43 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Car;
 
 class CarController extends Controller
 {
-    public function show($id)
+    public function store(Request $request)
     {
-        $cars = [
-            [
-                'id' => 1,
-                'title' => 'Toyota Camry 2021',
-                'price' => '$20,000',
-                'tagline' => 'Reliable. Affordable. Ready for You.',
-                'image' => asset('storage/images/toyotaCamry.webp'),
-                'make' => 'Toyota',
-                'model' => 'Camry',
-                'year' => 2021,
-                'mileage' => '20,000 miles',
-                'condition' => 'Excellent',
-                'fuelType' => 'Gasoline',
-                'transmission' => 'Automatic',
-                'exteriorColor' => 'White',
-                'interiorColor' => 'Black',
-            ],
-            // Add more cars...
-        ];
+        $validated = $request->validate([
+            'make' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'year' => 'required|integer|min:1900|max:' . date('Y'),
+            'price' => 'required|numeric|min:0',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+        ]);
 
-        $car = collect($cars)->firstWhere('id', $id);
-
-        if (!$car) {
-            abort(404, 'Car not found');
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imagePaths[] = $image->store('cars', 'public');
+            }
         }
 
-        return Inertia::render('features/CarDetail/Pages/CarDetailPage', [
-            'car' => $car,
+        $car = Car::create([
+            'make' => $validated['make'],
+            'model' => $validated['model'],
+            'year' => $validated['year'],
+            'price' => $validated['price'],
+            'images' => json_encode($imagePaths),
         ]);
+
+        return response()->json(['car' => $car], 201);
+    }
+
+    public function index()
+    {
+        $cars = Car::all();
+        return response()->json(['cars' => $cars]);
     }
 }

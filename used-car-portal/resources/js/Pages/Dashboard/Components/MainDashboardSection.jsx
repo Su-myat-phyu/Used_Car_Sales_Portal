@@ -7,8 +7,6 @@ const MainDashboardSection = () => {
         model: "",
         year: "",
         price: "",
-        mileage: "",
-        description: "",
         images: [],
     });
     const [profile, setProfile] = useState({
@@ -26,10 +24,7 @@ const MainDashboardSection = () => {
     // Handle file uploads
     const handleFileChange = (e, field) => {
         if (field === "carImages") {
-            setCarDetails({
-                ...carDetails,
-                images: Array.from(e.target.files),
-            });
+            setCarDetails({ ...carDetails, images: Array.from(e.target.files) });
         } else if (field === "profilePicture") {
             setProfile({
                 ...profile,
@@ -52,9 +47,26 @@ const MainDashboardSection = () => {
     };
 
     // Submit handlers (placeholders for backend integration)
-    const handlePostCar = (e) => {
+    const handlePostCar = async (e) => {
         e.preventDefault();
-        console.log("Car Details Submitted:", carDetails);
+        const formData = new FormData();
+        formData.append("make", carDetails.make);
+        formData.append("model", carDetails.model);
+        formData.append("year", carDetails.year);
+        formData.append("price", carDetails.price);
+        carDetails.images.forEach((image, index) =>
+            formData.append(`images[${index}]`, image)
+        );
+
+        try {
+            const response = await axios.post("/api/cars", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+            alert("Car posted successfully!");
+            console.log(response.data.car);
+        } catch (error) {
+            console.error("Error posting car:", error.response.data);
+        }
     };
 
     const handleUpdateProfile = (e) => {
@@ -94,7 +106,7 @@ const MainDashboardSection = () => {
                                 required
                             />
                             <input
-                                type="text"
+                                type="number"
                                 name="year"
                                 placeholder="Year"
                                 value={carDetails.year}
@@ -111,25 +123,9 @@ const MainDashboardSection = () => {
                                 className="border rounded-md p-2"
                                 required
                             />
-                            <input
-                                type="text"
-                                name="mileage"
-                                placeholder="Mileage"
-                                value={carDetails.mileage}
-                                onChange={(e) => handleChange(e, "carDetails")}
-                                className="border rounded-md p-2"
-                                required
-                            />
+                            
                         </div>
-                        <textarea
-                            name="description"
-                            placeholder="Description"
-                            value={carDetails.description}
-                            onChange={(e) => handleChange(e, "carDetails")}
-                            className="border rounded-md p-2 w-full"
-                            rows="4"
-                            required
-                        />
+                        
                         <input
                             type="file"
                             multiple

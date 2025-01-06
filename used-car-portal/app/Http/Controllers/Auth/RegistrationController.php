@@ -47,7 +47,7 @@ class RegistrationController extends Controller
         }
 
         // Create User
-        User::create([
+        $user = User::create([
             'name' => $validated['full_name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),

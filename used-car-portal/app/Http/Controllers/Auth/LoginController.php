@@ -18,29 +18,18 @@ class LoginController extends Controller
     // Handle login request
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-    
+        if (Auth::attempt($credentials)) {
             $user = Auth::user();
     
-            // Pass the user's role to the frontend
-            return inertia('Dashboard', [
-                'role' => $user->role, // This makes the role available to the Inertia component
+            return response()->json([
+                'success' => true,
+                'role' => $user->role, // Return the user's role
+                'message' => 'Login successful!'
             ]);
-    
-            // Alternatively, redirect based on role
-            if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-             }
-            if ($user->role === 'user') {
-                return redirect()->route('user.dashboard');
-             }
         }
+    
         
 
         // Return errors if login fails

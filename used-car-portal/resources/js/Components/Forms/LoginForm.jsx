@@ -13,10 +13,10 @@ const LoginForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
     
-        post('/login', {
+        post("/login", {
             onSuccess: (response) => {
                 if (response && response.props && response.props.role) {
-                    const role = response.props.role; // Assuming the role is returned in the response props
+                    const role = response.props.role; // Get the role from response
                     window.location.href = role === "admin" ? "/admin-dashboard" : "/user-dashboard";
                 } else {
                     console.error("Role not found in the response.");
@@ -27,6 +27,7 @@ const LoginForm = () => {
                 alert("Login failed. Please check your credentials.");
             },
         });
+        
     };
     
     

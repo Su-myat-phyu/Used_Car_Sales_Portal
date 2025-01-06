@@ -20,39 +20,20 @@ const RegistrationForm = () => {
         e.preventDefault();
 
         // Submit the form data to backend
+        // Submit the form data to backend
         post("/register", {
             onSuccess: (response) => {
-                // Handle successful registration
-                // Redirect to login or another page, show notifications, or log details
-                if (response && response.data.success) {
-                    // Show success notification (if needed)
-                    alert("Registration successful! Redirecting to login...");
-                    
-                    // Redirect to login
-                    window.location.href = "/login";
-                } else {
-                    // If additional processing is required
-                    console.log("Registration succeeded but no redirection set.");
-                }
+                alert("Registration successful! Redirecting to login...");
+                window.location.href = "/login"; // Redirect to login
             },
             onError: (errors) => {
-                // Handle validation or server errors
-                if (errors) {
-                    console.error("Registration failed:", errors);
-        
-                    // Display specific error messages if needed
-                    if (errors.email) {
-                        alert(`Error with email: ${errors.email}`);
-                    }
-                    if (errors.password) {
-                        alert(`Error with password: ${errors.password}`);
-                    }
-                } else {
-                    // Fallback for general errors
-                    alert("An unknown error occurred. Please try again.");
-                }
+                console.error("Registration failed:", errors);
+                alert("Registration failed. Please try again.");
             },
         });
+        
+
+        
         
         
     };

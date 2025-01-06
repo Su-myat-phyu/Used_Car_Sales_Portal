@@ -7,6 +7,8 @@ use App\Http\Controllers\CarController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\Auth\LoginController;
 
 //Route::get('/', function () {
    // return view('Home');
@@ -40,24 +42,9 @@ Route::get('/login', fn() => Inertia::render('Auth/Login'));
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
-
-Route::get('/user-dashboard', [UserDashboardController::class, 'index'])
-    ->middleware(['auth', 'verified', 'role:user'])
-    ->name('user-dashboard');
-
-    Route::get('/dashboard', function () {
-        $user = Auth::user();
-        if ($user) {
-            if ($user->roles->pluck('name')->contains('user')) { // Use pluck() for role names
-                return redirect()->route('user-dashboard');
-            }
-    
-            if ($user->roles->pluck('name')->contains('admin')) {
-                return redirect()->route('admin-dashboard');
-            }
-        }
-        return redirect()->route('home');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware('auth')->get('/user-dashboard', function () {
+    return Inertia::render('Dashboard/UserDashboard'); // Render React component
+});
     
 
 

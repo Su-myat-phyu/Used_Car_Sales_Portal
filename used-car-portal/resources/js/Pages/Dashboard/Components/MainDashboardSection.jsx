@@ -63,11 +63,11 @@ const MainDashboardSection = () => {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             alert("Car posted successfully!");
-            console.log(response.data.car);
-        } catch (error) {
-            console.error("Error posting car:", error.response.data);
-        }
-    };
+            window.location.href = "/car-listing"; // Redirect to car listing page
+            } catch (error) {
+                console.error("Error posting car:", error.response.data);
+            }
+        };
 
     const handleUpdateProfile = (e) => {
         e.preventDefault();

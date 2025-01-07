@@ -50,4 +50,8 @@ Route::middleware('auth')->get('/user-dashboard', function () {
    // Route::post('/api/cars', [CarController::class, 'store'])->name('cars.store'); // Add car
    // Route::get('/api/cars', [CarController::class, 'index'])->name('cars.index'); // Get cars
 //});
+Route::prefix('cars')->group(function () {
+    Route::post('/', [CarController::class, 'store'])->name('cars.store');
+    Route::get('/', [CarController::class, 'index'])->name('cars.index');
+});
 

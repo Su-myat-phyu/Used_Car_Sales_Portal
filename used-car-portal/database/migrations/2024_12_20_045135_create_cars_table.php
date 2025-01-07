@@ -14,6 +14,7 @@ class CreateCarsTable extends Migration
             $table->string('model');
             $table->integer('year');
             $table->decimal('price', 10, 2);
+            $table->decimal('biddingPrice', 10, 2);
             $table->text('image_path')->nullable(); // Store image paths as JSON
             $table->timestamps();
         });

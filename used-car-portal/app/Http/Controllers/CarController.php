@@ -1,44 +1,72 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Car;
 
 class CarController extends Controller
 {
+    // Mock database for cars (you should replace this with an actual database)
+    private static $cars = [];
+
+    /**
+     * Add a new car with images.
+     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'make' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'year' => 'required|integer|min:1900|max:' . date('Y'),
-            'price' => 'required|numeric|min:0',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+        // Validate input data
+        $validatedData = $request->validate([
+            'make' => 'required|string',
+            'model' => 'required|string',
+            'year' => 'required|integer',
+            'price' => 'required|numeric',
+            'images.*' => 'file|image|max:2048', // Validate uploaded images
         ]);
 
-        $imagePaths = [];
+        // Handle uploaded images
+        $images = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $imagePaths[] = $image->store('cars', 'public');
+                $path = $image->store('uploads', 'public');
+                $images[] = Storage::url($path);
             }
         }
 
-        $car = Car::create([
-            'make' => $validated['make'],
-            'model' => $validated['model'],
-            'year' => $validated['year'],
-            'price' => $validated['price'],
-            'images' => json_encode($imagePaths),
+        // Create a new car (mock database implementation)
+        $newCar = array_merge($validatedData, [
+            'id' => count(self::$cars) + 1,
+            'images' => $images,
         ]);
 
-        return response()->json(['car' => $car], 201);
+        self::$cars[] = $newCar;
+
+        // Return the newly created car
+        return response()->json(['car' => $newCar], 201);
     }
 
-    public function index()
+    /**
+     * Get all cars with filtering options.
+     */
+    public function index(Request $request)
     {
-        $cars = Car::all();
-        return response()->json(['cars' => $cars]);
+        // Get filtering parameters from query
+        $make = $request->query('make');
+        $model = $request->query('model');
+        $year = $request->query('year');
+        $minPrice = $request->query('minPrice');
+        $maxPrice = $request->query('maxPrice');
+
+        // Filter cars (mock database implementation)
+        $filteredCars = collect(self::$cars);
+
+        if ($make) $filteredCars = $filteredCars->where('make', $make);
+        if ($model) $filteredCars = $filteredCars->where('model', $model);
+        if ($year) $filteredCars = $filteredCars->where('year', (int)$year);
+        if ($minPrice) $filteredCars = $filteredCars->where('price', '>=', (float)$minPrice);
+        if ($maxPrice) $filteredCars = $filteredCars->where('price', '<=', (float)$maxPrice);
+
+        // Return filtered cars
+        return response()->json(['cars' => $filteredCars->values()]);
     }
 }

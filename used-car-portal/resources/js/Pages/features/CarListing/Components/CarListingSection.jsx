@@ -1,44 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const CarListingSection = ({ filters }) => {
+const CarListingSection = () => {
     const [cars, setCars] = useState([]);
 
     useEffect(() => {
         const fetchCars = async () => {
-            const response = await axios.get("/api/cars");
-            setCars(response.data.cars);
+            try {
+                const response = await axios.get("/api/cars");
+                setCars(response.data.cars);
+            } catch (error) {
+                console.error("Error fetching cars:", error);
+            }
         };
+
         fetchCars();
     }, []);
 
-    const filteredCars = cars.filter((car) => {
-        return (
-            (!filters.make || car.make === filters.make) &&
-            (!filters.model || car.model === filters.model) &&
-            (!filters.year || car.year.toString() === filters.year) &&
-            (!filters.minPrice || car.price >= filters.minPrice) &&
-            (!filters.maxPrice || car.price <= filters.maxPrice)
-        );
-    });
-
     return (
-        <section>
-            <h2>Available Cars</h2>
-            <div>
-                {filteredCars.length > 0 ? (
-                    filteredCars.map((car) => (
-                        <div key={car.id}>
-                            <h3>
-                                {car.make} {car.model} ({car.year})
-                            </h3>
-                            <p>{car.price}</p>
-                            <img src={`/storage/${JSON.parse(car.images)[0]}`} alt="Car" />
-                        </div>
-                    ))
-                ) : (
-                    <p>No cars found.</p>
-                )}
+        <section className="py-16 bg-gray-50">
+            <div className="container mx-auto px-6">
+                <h2 className="text-4xl font-bold text-center text-primary-700 mb-12">
+                    Available Cars
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {cars.length > 0 ? (
+                        cars.map((car) => (
+                            <div
+                                key={car.id}
+                                className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
+                            >
+                                <img
+                                    src={car.thumbnail}
+                                    alt={`${car.make} ${car.model}`}
+                                    className="w-full h-48 object-cover"
+                                />
+                                <div className="p-6">
+                                    <h3 className="text-xl font-bold text-gray-800">
+                                        {car.make} {car.model}
+                                    </h3>
+                                    <p className="text-gray-600">{car.year}</p>
+                                    <p className="text-accent-500 font-semibold text-lg">
+                                        ${car.price.toLocaleString()}
+                                    </p>
+                                    <button
+                                        onClick={() => handleViewDetails(car.id)}
+                                        className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
+                                    >
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-gray-500 text-center col-span-full">
+                            No cars match your search criteria.
+                        </p>
+                    )}
+                </div>
             </div>
         </section>
     );

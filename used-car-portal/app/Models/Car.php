@@ -14,6 +14,7 @@ class Car extends Model
         'model',
         'year',
         'price',
+        'biddingPrice',
         'image_path',
     ];
 }

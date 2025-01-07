@@ -7,6 +7,17 @@ const CarHeroSection = ({ filters, onFilterChange }) => {
         onFilterChange({ ...filters, [name]: value });
     };
 
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get("/api/cars", {
+                params: filters, // Pass filters as query params
+            });
+            onFilterChange(response.data.cars); // Update car list based on filters
+        } catch (error) {
+            console.error("Error filtering cars:", error);
+        }
+    };
+
     return (
         <section className="relative bg-gradient-to-b from-primary-700 to-primary-500 text-white py-24">
             <div
@@ -22,7 +33,7 @@ const CarHeroSection = ({ filters, onFilterChange }) => {
                     Explore a wide range of used cars at unbeatable prices.
                 </p>
 
-                <form className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-4">
+                <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }} className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-4">
                     <select
                         name="make"
                         value={filters.make}

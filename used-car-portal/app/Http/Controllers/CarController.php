@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -7,66 +6,78 @@ use Illuminate\Support\Facades\Storage;
 
 class CarController extends Controller
 {
-    // Mock database for cars (you should replace this with an actual database)
-    private static $cars = [];
-
-    /**
-     * Add a new car with images.
-     */
-    public function store(Request $request)
+    // Fetch all cars
+    public function apiIndex()
     {
-        // Validate input data
+        return response()->json([
+            [
+                'id' => 1,
+                'make' => 'Toyota',
+                'model' => 'Camry',
+                'year' => 2021,
+                'price' => 20000,
+                'image_path' => asset('storage/images/toyotaCar.png'),
+                'biddingPrice' => 25000,
+            ],
+            [
+                'id' => 2,
+                'make' => 'Honda',
+                'model' => 'Civic',
+                'year' => 2020,
+                'price' => 18000,
+                'image_path' => 'https://example.com/images/car2.jpg',
+                'biddingPrice' => 13000,
+            ],
+        ]);
+    }
+
+    // Store a new car
+    public function apiStore(Request $request)
+    {
+        // Validate incoming request
         $validatedData = $request->validate([
-            'make' => 'required|string',
-            'model' => 'required|string',
-            'year' => 'required|integer',
-            'price' => 'required|numeric',
-            'images.*' => 'file|image|max:2048', // Validate uploaded images
+            'make' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'year' => 'required|integer|min:1886|max:' . date('Y'),
+            'image_path' => 'nullable|image|max:2048', // Optional image upload
+            'biddingPrice' => 'required|numeric|min:0',
         ]);
 
-        // Handle uploaded images
-        $images = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('uploads', 'public');
-                $images[] = Storage::url($path);
-            }
+        // Handle image upload
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('cars', 'public');
         }
 
-        // Create a new car (mock database implementation)
-        $newCar = array_merge($validatedData, [
-            'id' => count(self::$cars) + 1,
-            'images' => $images,
-        ]);
+        // Simulate saving car to DB
+        $car = [
+            'id' => rand(100, 999),
+            'make' => $validatedData['make'],
+            'model' => $validatedData['model'],
+            'year' => $validatedData['year'],
+            'price' => $validatedData['price'],
+            'image_path' => $imagePath ? Storage::url($imagePath) : null,
+            'biddingPrice' => $validatedData['biddingPrice'],
+        ];
 
-        self::$cars[] = $newCar;
-
-        // Return the newly created car
-        return response()->json(['car' => $newCar], 201);
+        return response()->json(['message' => 'Car created successfully!', 'car' => $car], 201);
     }
 
-    /**
-     * Get all cars with filtering options.
-     */
-    public function index(Request $request)
+    // Fetch a specific car
+    public function apiShow($id)
     {
-        // Get filtering parameters from query
-        $make = $request->query('make');
-        $model = $request->query('model');
-        $year = $request->query('year');
-        $minPrice = $request->query('minPrice');
-        $maxPrice = $request->query('maxPrice');
-
-        // Filter cars (mock database implementation)
-        $filteredCars = collect(self::$cars);
-
-        if ($make) $filteredCars = $filteredCars->where('make', $make);
-        if ($model) $filteredCars = $filteredCars->where('model', $model);
-        if ($year) $filteredCars = $filteredCars->where('year', (int)$year);
-        if ($minPrice) $filteredCars = $filteredCars->where('price', '>=', (float)$minPrice);
-        if ($maxPrice) $filteredCars = $filteredCars->where('price', '<=', (float)$maxPrice);
-
-        // Return filtered cars
-        return response()->json(['cars' => $filteredCars->values()]);
+        // Simulated response for fetching a specific car
+        return response()->json([
+            'id' => 1,
+                'make' => 'Toyota',
+                'model' => 'Camry',
+                'year' => 2021,
+                'price' => 20000,
+                'image_path' => asset('storage/images/toyotaCar.png'),
+                'biddingPrice' => 25000,
+            
+        ]);
     }
+
+    
 }

@@ -7,6 +7,7 @@ const MainDashboardSection = () => {
         model: "",
         year: "",
         price: "",
+        biddingPrice: "",
         images: [],
     });
     const [profile, setProfile] = useState({
@@ -16,10 +17,7 @@ const MainDashboardSection = () => {
         address: "",
         profilePicture: null,
     });
-    const [bid, setBid] = useState({
-        selectedCar: "",
-        biddingPrice: "",
-    });
+
 
     // Handle file uploads
     const handleFileChange = (e, field) => {
@@ -41,9 +39,7 @@ const MainDashboardSection = () => {
             setCarDetails({ ...carDetails, [name]: value });
         } else if (type === "profile") {
             setProfile({ ...profile, [name]: value });
-        } else if (type === "bid") {
-            setBid({ ...bid, [name]: value });
-        }
+        } 
     };
 
     // Submit handlers (placeholders for backend integration)
@@ -54,12 +50,13 @@ const MainDashboardSection = () => {
         formData.append("model", carDetails.model);
         formData.append("year", carDetails.year);
         formData.append("price", carDetails.price);
+        formData.append("biddingPrice", carDetails.biddingPrice);
         carDetails.images.forEach((image, index) =>
             formData.append(`images[${index}]`, image)
         );
 
         try {
-            const response = await axios.post("/api/cars", formData, {
+            const response = await axios.post("/cars", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             alert("Car posted successfully!");
@@ -74,10 +71,7 @@ const MainDashboardSection = () => {
         console.log("Profile Updated:", profile);
     };
 
-    const handlePostBid = (e) => {
-        e.preventDefault();
-        console.log("Bid Posted:", bid);
-    };
+
 
     return (
         <section className="container mx-auto px-6 py-12">
@@ -119,6 +113,16 @@ const MainDashboardSection = () => {
                                 name="price"
                                 placeholder="Price"
                                 value={carDetails.price}
+                                onChange={(e) => handleChange(e, "carDetails")}
+                                className="border rounded-md p-2"
+                                required
+                            />
+
+                            <input
+                                type="text"
+                                name="biddingPrice"
+                                placeholder="BiddingPrice"
+                                value={carDetails.biddingPrice}
                                 onChange={(e) => handleChange(e, "carDetails")}
                                 className="border rounded-md p-2"
                                 required
@@ -196,40 +200,7 @@ const MainDashboardSection = () => {
                 </div>
             </div>
 
-            {/* Post a Bidding Price */}
-            <div className="mt-12">
-                <h2 className="text-2xl font-bold mb-4">Post Your Bid</h2>
-                <form onSubmit={handlePostBid} className="space-y-4">
-                    <select
-                        name="selectedCar"
-                        value={bid.selectedCar}
-                        onChange={(e) => handleChange(e, "bid")}
-                        className="border rounded-md p-2 w-full"
-                    >
-                        <option value="" disabled>
-                            Select a Car
-                        </option>
-                        {/* Replace with dynamic car listings */}
-                        <option value="Car 1">Car 1</option>
-                        <option value="Car 2">Car 2</option>
-                    </select>
-                    <input
-                        type="text"
-                        name="biddingPrice"
-                        placeholder="Bidding Price"
-                        value={bid.biddingPrice}
-                        onChange={(e) => handleChange(e, "bid")}
-                        className="border rounded-md p-2 w-full"
-                        required
-                    />
-                    <button
-                        type="submit"
-                        className="bg-purple-500 text-white px-4 py-2 rounded-md"
-                    >
-                        Post Bid
-                    </button>
-                </form>
-            </div>
+            
         </section>
     );
 };

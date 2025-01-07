@@ -7,8 +7,8 @@ const CarListingSection = () => {
     useEffect(() => {
         const fetchCars = async () => {
             try {
-                const response = await axios.get("/api/cars");
-                setCars(response.data.cars);
+                const response = await axios.get("/cars");
+                setCars(response.data); // Handle flat array structure
             } catch (error) {
                 console.error("Error fetching cars:", error);
             }
@@ -16,6 +16,11 @@ const CarListingSection = () => {
 
         fetchCars();
     }, []);
+
+    const handleViewDetails = (id) => {
+        // Implement details handling logic
+        console.log(`View details for car ID: ${id}`);
+    };
 
     return (
         <section className="py-16 bg-gray-50">
@@ -27,30 +32,33 @@ const CarListingSection = () => {
                     {cars.length > 0 ? (
                         cars.map((car) => (
                             <div
-                                key={car.id}
-                                className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
-                            >
-                                <img
-                                    src={car.thumbnail}
-                                    alt={`${car.make} ${car.model}`}
-                                    className="w-full h-48 object-cover"
-                                />
-                                <div className="p-6">
-                                    <h3 className="text-xl font-bold text-gray-800">
-                                        {car.make} {car.model}
-                                    </h3>
-                                    <p className="text-gray-600">{car.year}</p>
-                                    <p className="text-accent-500 font-semibold text-lg">
-                                        ${car.price.toLocaleString()}
-                                    </p>
-                                    <button
-                                        onClick={() => handleViewDetails(car.id)}
-                                        className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
-                                    >
-                                        View Details
-                                    </button>
-                                </div>
-                            </div>
+        key={car.id}
+        className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
+    >
+        <img
+            src={car.image_path} // Updated to match the correct database column
+            alt={`${car.make} ${car.model}`}
+            className="w-full h-48 object-cover"
+        />
+        <div className="p-6">
+            <h3 className="text-xl font-bold text-gray-800">
+                {car.make} {car.model}
+            </h3>
+            <p className="text-gray-600">Year: {car.registration_year || car.year}</p>
+            <p className="text-accent-500 font-semibold text-lg">
+                Price: ${car.price.toLocaleString()}
+            </p>
+            <p className="text-blue-600 font-medium text-lg">
+                Bidding Price: ${car.biddingPrice?.toLocaleString()}
+            </p>
+            <button
+                onClick={() => handleViewDetails(car.id)}
+                className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
+            >
+                View Details
+            </button>
+        </div>
+    </div>
                         ))
                     ) : (
                         <p className="text-gray-500 text-center col-span-full">

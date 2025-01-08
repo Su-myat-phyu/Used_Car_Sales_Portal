@@ -15,8 +15,12 @@ class Car extends Model
         'year',
         'price',
         'biddingPrice',
-        'image_path',
+        'images',
         'user_id',
+    ];
+
+    protected $casts = [
+        'images' => 'array', // Cast images column as an array
     ];
 }
 

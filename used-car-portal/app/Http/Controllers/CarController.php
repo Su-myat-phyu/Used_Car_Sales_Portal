@@ -10,10 +10,21 @@ class CarController extends Controller
 {
     public function index()
 {
-    $cars = Car::all(); // Fetch cars from the database
-    return response()->json($cars); // Return them as JSON
+    try {
+        $cars = Car::all();
+        foreach ($cars as $car) {
+            if (!empty($car->image_path)) {
+                // Use asset() to generate full URL
+                $car->image_path = collect(json_decode($car->image_path))->map(function ($path) {
+                    return asset('storage/cars/' . $path);
+                });
+            }
+        }
+        return response()->json($cars);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
 }
-
     // Store a new car
     public function store(Request $request)
 {
@@ -23,14 +34,17 @@ class CarController extends Controller
         'model' => 'required|string|max:255',
         'year' => 'required|integer|min:1886|max:' . date('Y'),
         'price' => 'required|numeric|min:0',
-        'image' => 'nullable|image|max:2048', // Optional image upload
+        'images.*' => 'nullable|image|max:2048', // Array of images
         'biddingPrice' => 'required|numeric|min:0',
     ]);
 
     // Handle image upload
-    $imagePath = null;
-    if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('cars', 'public');
+    $imagePaths = [];
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('cars', 'public');
+            $imagePaths[] = Storage::url($path);
+        }
     }
 
     // Save car to the database
@@ -39,10 +53,13 @@ class CarController extends Controller
         'model' => $validatedData['model'],
         'year' => $validatedData['year'],
         'price' => $validatedData['price'],
-        'image_path' => $imagePath ? Storage::url($imagePath) : null,
+        //'image_path' => $imagePaths ? Storage::url($imagePath) : null,
         'biddingPrice' => $validatedData['biddingPrice'],
         'user_id' => Auth::id(), // Set user_id from authenticated user
     ]);
+    // Store image paths in a separate table or as JSON
+    $car->images = json_encode($imagePaths);
+    $car->save();
 
     return response()->json(['message' => 'Car created successfully!', 'car' => $car], 201);
 }

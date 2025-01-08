@@ -22,7 +22,12 @@ const MainDashboardSection = () => {
     // Handle file uploads
     const handleFileChange = (e, field) => {
         if (field === "carImages") {
-            setCarDetails({ ...carDetails, images: Array.from(e.target.files) });
+            const files = Array.from(e.target.files);
+            if (files.length > 5) {
+                alert("You can only upload up to 5 images.");
+                return;
+            }
+            setCarDetails({ ...carDetails, images: files });
         } else if (field === "profilePicture") {
             setProfile({
                 ...profile,

@@ -11,6 +11,7 @@ const CarListingSection = () => {
                 console.log("Fetched Cars:", response.data); // Check response structure
                 setCars(response.data); // Handle flat array structure
             } catch (error) {
+                setError("Failed to load cars. Please try again later.");
                 console.error("Error fetching cars:", error);
             }
         };
@@ -37,8 +38,7 @@ const CarListingSection = () => {
         className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
     >
         <img
-            src={car.image_path} // Updated to match the correct database column
-            alt={`${car.make} ${car.model}`}
+            img src={`${window.location.origin}${car.image_path}`} alt={`${car.make} ${car.model}`}
             className="w-full h-48 object-cover"
         />
         <div className="p-6">

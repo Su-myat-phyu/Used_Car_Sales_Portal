@@ -16,6 +16,7 @@ class CreateCarsTable extends Migration
             $table->decimal('price', 10, 2);
             $table->decimal('biddingPrice', 10, 2);
             $table->text('image_path')->nullable(); // Store image paths as JSON
+            $table->unsignedBigInteger('user_id')->nullable()->change(); // Allow null values for user_id
             $table->timestamps();
         });
     }

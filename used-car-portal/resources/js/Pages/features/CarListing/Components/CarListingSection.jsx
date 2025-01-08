@@ -8,6 +8,7 @@ const CarListingSection = () => {
         const fetchCars = async () => {
             try {
                 const response = await axios.get("/cars");
+                console.log("Fetched Cars:", response.data); // Check response structure
                 setCars(response.data); // Handle flat array structure
             } catch (error) {
                 console.error("Error fetching cars:", error);

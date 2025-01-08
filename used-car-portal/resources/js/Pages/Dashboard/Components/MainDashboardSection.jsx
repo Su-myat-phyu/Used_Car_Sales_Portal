@@ -42,29 +42,44 @@ const MainDashboardSection = () => {
         } 
     };
 
-    // Submit handlers (placeholders for backend integration)
     const handlePostCar = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
+
+    try {
+        // Ensure carDetails is valid
+        if (!carDetails.make || !carDetails.model || !carDetails.year || !carDetails.price || !carDetails.biddingPrice) {
+            alert("Please fill out all required fields.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("make", carDetails.make);
         formData.append("model", carDetails.model);
         formData.append("year", carDetails.year);
         formData.append("price", carDetails.price);
         formData.append("biddingPrice", carDetails.biddingPrice);
-        carDetails.images.forEach((image, index) =>
-            formData.append(`images[${index}]`, image)
-        );
 
-        try {
-            const response = await axios.post("/cars", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
+        // Handle images array
+        if (Array.isArray(carDetails.images) && carDetails.images.length > 0) {
+            carDetails.images.forEach((image, index) => {
+                formData.append(`images[${index}]`, image);
             });
-            alert("Car posted successfully!");
-            window.location.href = "/car-listing"; // Redirect to car listing page
-            } catch (error) {
-                console.error("Error posting car:", error.response.data);
-            }
-        };
+        }
+
+        const response = await axios.post("/cars", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        // Success feedback
+        alert("Car posted successfully!");
+        window.location.href = "/research"; // Redirect to the listing page
+    } catch (error) {
+        // Improved error logging
+        console.error("Error posting car:", error.response?.data || error.message || "Unknown error");
+        alert("Failed to post the car. Please try again.");
+    }
+};
+
 
     const handleUpdateProfile = (e) => {
         e.preventDefault();

@@ -1,18 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import carBanner from "../../../../../assets/carBanner.jpg";
+import axios from "axios";
 
-const CarHeroSection = ({ filters, onFilterChange }) => {
+const CarHeroSection = ({ cars = [], onFilterChange }) => {
+    const [makes, setMakes] = useState([]);
+    const [models, setModels] = useState([]);
+    const [filters, setFilters] = useState({
+        make: "",
+        model: "",
+        year: "",
+        minPrice: "",
+        maxPrice: "",
+    });
+
+    useEffect(() => {
+        // Extract unique makes and models from the cars prop
+        if (cars.length > 0) {
+            const uniqueMakes = [...new Set(cars.map(car => car.make))];
+            const uniqueModels = [...new Set(cars.map(car => car.model))];
+
+            setMakes(uniqueMakes);
+            setModels(uniqueModels);
+        }
+    }, [cars]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        onFilterChange({ ...filters, [name]: value });
+        setFilters({ ...filters, [name]: value });
     };
 
-    const handleSearch = async () => {
+    const handleSearch = async (e) => {
+        e.preventDefault();
         try {
-            const response = await axios.get("/api/cars", {
-                params: filters, // Pass filters as query params
+            const response = await axios.get("/cars", {
+                params: filters, 
             });
-            onFilterChange(response.data.cars); // Update car list based on filters
+            onFilterChange(response.data.cars); 
         } catch (error) {
             console.error("Error filtering cars:", error);
         }
@@ -33,7 +56,10 @@ const CarHeroSection = ({ filters, onFilterChange }) => {
                     Explore a wide range of used cars at unbeatable prices.
                 </p>
 
-                <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }} className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-4">
+                <form
+                    onSubmit={handleSearch}
+ className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-4"
+                >
                     <select
                         name="make"
                         value={filters.make}
@@ -41,18 +67,11 @@ const CarHeroSection = ({ filters, onFilterChange }) => {
                         className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white text-gray-700"
                     >
                         <option value="">Make</option>
-                        <option value="Toyota">Toyota</option>
-                        <option value="Honda">Honda</option>
-                        <option value="Ford">Ford</option>
-                        <option value="BMW">BMW</option>
-                        <option value="Tesla">Tesla</option>
-                        <option value="Mercedes">Mercedes</option>
-                        <option value="Audi">Audi</option>
-                        <option value="Chevrolet">Chevrolet</option>
-                        <option value="Jeep">Jeep</option>
-                        <option value="Hyundai">Hyundai</option>
-                        <option value="Volvo">Volvo</option>
-                        <option value="Lexus">Lexus</option>
+                        {makes.map((make) => (
+                            <option key={make} value={make}>
+                                {make}
+                            </option>
+                        ))}
                     </select>
                     <select
                         name="model"
@@ -61,18 +80,11 @@ const CarHeroSection = ({ filters, onFilterChange }) => {
                         className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white text-gray-700"
                     >
                         <option value="">Model</option>
-                        <option value="Camry">Camry</option>
-                        <option value="Civic">Civic</option>
-                        <option value="Mustang">Mustang</option>
-                        <option value="3 Series">3 Series</option>
-                        <option value="Model 3">Model 3</option>
-                        <option value="Benz C200">Benz C200</option>
-                        <option value="Q5">Q5</option>
-                        <option value="Silverado">Silverado</option>
-                        <option value="Wrangler">Wrangler</option>
-                        <option value="Santa Fe">Santa Fe</option>
-                        <option value="XC90">XC90</option>
-                        <option value="RX 350">RX 350</option>
+                        {models.map((model) => (
+                            <option key={model} value={model}>
+                                {model}
+                            </option>
+                        ))}
                     </select>
                     <input
                         type="number"
@@ -98,6 +110,12 @@ const CarHeroSection = ({ filters, onFilterChange }) => {
                         onChange={handleChange}
                         className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white text-gray-700"
                     />
+                    <button
+                        type="submit"
+                        className="bg-primary-500 text-white rounded-md p-3 hover:bg-primary-600 transition duration-200"
+                    >
+                        Search
+                    </button>
                 </form>
             </div>
         </section>

@@ -54,6 +54,8 @@ Route::prefix('cars')->group(function () {
     Route::post('/', [CarController::class, 'store'])->name('cars.store');
     Route::get('/', [CarController::class, 'index'])->name('cars.index');
     Route::get('/{id}', [CarController::class, 'apiShow'])->name('cars.show'); // Add this route
+    Route::get('/cars/filters', [CarController::class, 'getFilters'])->name('cars.filters');
+
 });
 // Car API Routes
 //Route::get('/cars', [CarController::class, 'apiIndex'])->name('cars.index');; // Fetch all cars

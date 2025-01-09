@@ -78,4 +78,16 @@ class CarController extends Controller
             return response()->json(['error' => $e->getMessage()], 404);
         }
     }
+
+    public function getFilters()
+    {
+        $makes = Car::distinct()->pluck('make');
+        $models = Car::distinct()->pluck('model');
+    
+        return response()->json([
+            'makes' => $makes,
+            'models' => $models,
+        ]);
+    }
+
 }

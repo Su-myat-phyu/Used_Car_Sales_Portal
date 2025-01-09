@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const CarListingSection = () => {
+const CarListingSection = ({ newCar }) => {
     const [cars, setCars] = useState([]);
-    const [error, setError] = useState(null); // Add error state
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchCars = async () => {
             try {
                 const response = await axios.get("/cars");
-                console.log("Fetched Cars:", response.data); // Check response structure
-                setCars(response.data); // Assuming response.data is an array
+                setCars(response.data);
             } catch (error) {
                 setError("Failed to load cars. Please try again later.");
                 console.error("Error fetching cars:", error);
@@ -20,8 +19,13 @@ const CarListingSection = () => {
         fetchCars();
     }, []);
 
+    useEffect(() => {
+        if (newCar) {
+            setCars((prevCars) => [...prevCars, newCar]);
+        }
+    }, [newCar]);
+
     const handleViewDetails = (id) => {
-        // Implement details handling logic
         console.log(`View details for car ID: ${id}`);
     };
 
@@ -43,7 +47,7 @@ const CarListingSection = () => {
                                 >
                                     {car.images && car.images.length > 0 ? (
                                         <img
-                                            src={car.images[0]} // Display the first image
+                                            src={car.images[0]}
                                             alt={`${car.make} ${car.model}`}
                                             className="w-full h-48 object-cover"
                                         />
@@ -57,15 +61,13 @@ const CarListingSection = () => {
                                             {car.make} {car.model}
                                         </h3>
                                         <p className="text-gray-600">
-                                            Year: {car.registration_year || car.year}
+                                            Year: {car.year}
                                         </p>
                                         <p className="text-accent-500 font-semibold text-lg">
-                                            Price: $
-                                            {Number(car.price).toLocaleString() || "N/A"}
+                                            Price: ${Number(car.price).toLocaleString() || "N/A"}
                                         </p>
                                         <p className="text-blue-600 font-medium text-lg">
-                                            Bidding Price: $
-                                            {Number(car.biddingPrice).toLocaleString() || "N/A"}
+                                            Bidding Price: ${Number(car.biddingPrice).toLocaleString() || "N/A"}
                                         </p>
                                         <button
                                             onClick={() => handleViewDetails(car.id)}

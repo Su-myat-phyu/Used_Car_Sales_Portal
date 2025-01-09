@@ -7,6 +7,7 @@ use App\Http\Controllers\CarDetailController;
 use App\Models\Car;
 use App\Http\Controllers\CarController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 //Route::get('/', function () {
@@ -41,10 +42,33 @@ Route::get('/login', fn() => Inertia::render('Auth/Login'));
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
-Route::middleware('auth')->get('/user-dashboard', function () {
-    return Inertia::render('Dashboard/UserDashboard'); // Render React component
-});
 
+Route::get('/user-dashboard', function () {
+    return Inertia::render('Dashboard/UserDashboard');
+})->middleware(['auth', 'verified', 'role:user'])->name('user-dashboard');
+
+//Route::middleware('auth')->get('/user-dashboard', function () {
+    //return Inertia::render('Dashboard/UserDashboard'); // Render React component
+//});
+
+//Route::middleware('auth')->get('/user-dashboard', function () {
+    //return Inertia::render('Dashboard/UserDashboard'); // Render React component
+//})->name('user-dashboard');
+
+Route::get('/dashboard', function () {
+    $user = Auth::user();
+    if ($user) {
+        if ($user->roles->contains('name', 'user')) {
+            return redirect()->route('user-dashboard');
+        }
+
+        if ($user->roles->contains('name', 'admin')) {
+            return redirect()->route('admin-dashboard');
+        }
+
+    }
+    return redirect()->route('home');
+})->middleware(['auth', 'verified'])->name('dashboard');
 //Added car
 //Route::middleware(['auth'])->group(function () {
    // Route::post('/api/cars', [CarController::class, 'store'])->name('cars.store'); // Add car

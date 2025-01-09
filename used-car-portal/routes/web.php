@@ -80,8 +80,11 @@ Route::prefix('cars')->group(function () {
     Route::post('/', [CarController::class, 'store'])->name('cars.store');
     Route::get('/', [CarController::class, 'index'])->name('cars.index');
     Route::get('/{id}', [CarController::class, 'apiShow'])->name('cars.show'); // Add this route
+<<<<<<< HEAD
     Route::get('/cars/filters', [CarController::class, 'getFilters'])->name('cars.filters');
 
+=======
+>>>>>>> e9a2b57 (Successfully added car image and details)
 });
 // Car API Routes
 //Route::get('/cars', [CarController::class, 'apiIndex'])->name('cars.index');; // Fetch all cars

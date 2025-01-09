@@ -66,9 +66,12 @@ const MainDashboardSection = () => {
 
         // Handle images array
         if (Array.isArray(carDetails.images) && carDetails.images.length > 0) {
-            carDetails.images.forEach((image, index) => {
-                formData.append(`images[${index}]`, image);
+            carDetails.images.forEach((file, index) => {
+                formData.append(`images[${index}]`, file);
             });
+            //car.images.forEach((file, index) => {
+                //formData.append(`images[${index}]`, file); // Correctly append files
+            //});
         }
 
         const response = await axios.post("/cars", formData, {

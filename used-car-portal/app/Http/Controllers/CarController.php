@@ -65,29 +65,18 @@ class CarController extends Controller
 
     public function apiShow($id)
     {
-        try {
-            $car = Car::findOrFail($id);
-            if (!empty($car->images)) {
-                // Decode and map image paths for the frontend
-                $car->images = collect(json_decode($car->images))->map(function ($path) {
-                    return asset('storage/' . $path);
-                })->toArray();
-            }
-            return response()->json($car);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 404);
-        }
-    }
-
-    public function getFilters()
-    {
-        $makes = Car::distinct()->pluck('make');
-        $models = Car::distinct()->pluck('model');
-    
+        // Simulated response for fetching a specific car
         return response()->json([
-            'makes' => $makes,
-            'models' => $models,
+            'id' => 1,
+                'make' => 'Toyota',
+                'model' => 'Camry',
+                'year' => 2021,
+                'price' => 20000,
+                'image_path' => asset('storage/images/toyotaCar.png'),
+                'biddingPrice' => 25000,
+            
         ]);
     }
 
+    
 }

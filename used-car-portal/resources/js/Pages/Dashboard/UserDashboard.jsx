@@ -5,9 +5,7 @@ import Navbar from "./Components/Navbar";
 import MainDashboardSection from "./Components/MainDashboardSection";
 import UserActivityOverview from "./Components/UserActivityOverview";
 
-const UserDashboard = () => {
-    const userName = "John Doe"; // Replace this with the actual registered name (e.g., from context or props)
-
+const UserDashboard = ({ userName }) => {
     return (
         <AuthenticatedLayout>
             {/* Navbar */}

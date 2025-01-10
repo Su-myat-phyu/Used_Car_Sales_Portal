@@ -46,7 +46,8 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $role = Auth::user()->role;
-            return redirect()->intended($role === 'admin' ? '/admin-dashboard' : '/user-dashboard');
+            //return redirect()->intended($role === 'admin' ? '/admin-dashboard' : '/user-dashboard');
+            return Inertia::location($role === 'admin' ? '/admin-dashboard' : '/user-dashboard');
         }
 
         return back()->withErrors([

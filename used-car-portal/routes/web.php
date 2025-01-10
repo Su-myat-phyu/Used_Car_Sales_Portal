@@ -8,6 +8,8 @@ use App\Models\Car;
 use App\Http\Controllers\CarController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\UserController;
 
 
 //Route::get('/', function () {
@@ -45,17 +47,17 @@ Route::post('/logout', [AuthController::class, 'logout']);
 // New route to fetch authenticated user's data
 
 
-Route::get('/user-dashboard', function () {
-    return Inertia::render('Dashboard/UserDashboard');
-})->middleware(['auth', 'verified', 'role:user'])->name('user-dashboard');
+//Route::get('/user-dashboard', function () {
+    //return Inertia::render('Dashboard/UserDashboard');
+//})->middleware(['auth', 'verified', 'role:user'])->name('user-dashboard');
 
 //Route::middleware('auth')->get('/user-dashboard', function () {
     //return Inertia::render('Dashboard/UserDashboard'); // Render React component
 //});
 
-//Route::middleware('auth')->get('/user-dashboard', function () {
-    //return Inertia::render('Dashboard/UserDashboard'); // Render React component
-//})->name('user-dashboard');
+Route::middleware('auth')->get('/user-dashboard', function () {
+    return Inertia::render('Dashboard/UserDashboard'); // Render React component
+})->name('user-dashboard');
 
 Route::get('/dashboard', function () {
     $user = Auth::user();
@@ -79,14 +81,27 @@ Route::get('/dashboard', function () {
 Route::prefix('cars')->group(function () {
     Route::post('/', [CarController::class, 'store'])->name('cars.store');
     Route::get('/', [CarController::class, 'index'])->name('cars.index');
-    Route::get('/{id}', [CarController::class, 'apiShow'])->name('cars.show'); // Add this route
-<<<<<<< HEAD
-    Route::get('/cars/filters', [CarController::class, 'getFilters'])->name('cars.filters');
-
-=======
->>>>>>> e9a2b57 (Successfully added car image and details)
 });
 // Car API Routes
 //Route::get('/cars', [CarController::class, 'apiIndex'])->name('cars.index');; // Fetch all cars
 //Route::post('/cars', [CarController::class, 'apiStore']); // Create a new car
 //Route::get('cars/{id}', [CarController::class, 'apiShow']); // Fetch a single car by ID
+
+/*Route::post('/register', [RegistrationController::class, 'register']);
+Route::post('/login', [LoginController::class, 'login']);
+Route::middleware('auth')->get('/user-dashboard', function () {
+    return Inertia::render('Dashboard/UserDashboard'); // Render React component
+});*/
+
+//Handle username in dashboard
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/user-dashboard', [UserDashboardController::class, 'userDashboard'])->name('user.dashboard');
+});
+
+//update user profile
+Route::middleware('auth')->group(function () {
+    Route::put('/user/profile-information', [UserController::class, 'updateProfile']);
+});
+
+
+

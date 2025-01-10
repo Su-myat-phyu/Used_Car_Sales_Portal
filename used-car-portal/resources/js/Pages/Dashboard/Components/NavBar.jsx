@@ -60,8 +60,9 @@ const Navbar = ({ userName }) => {
                         <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-10">
                             <ul className="py-1 text-sm text-gray-700">
                                 <li>
-                                    <Link
-                                        href="/profile"
+                                <Link
+                                        href="/user/profile-information"
+                                        method="get" // Ensure a GET request
                                         className="block px-4 py-2 hover:bg-gray-100"
                                     >
                                         Profile
@@ -85,3 +86,4 @@ const Navbar = ({ userName }) => {
 };
 
 export default Navbar;
+

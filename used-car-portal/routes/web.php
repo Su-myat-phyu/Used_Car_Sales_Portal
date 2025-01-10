@@ -42,6 +42,8 @@ Route::get('/login', fn() => Inertia::render('Auth/Login'));
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
+// New route to fetch authenticated user's data
+
 
 Route::get('/user-dashboard', function () {
     return Inertia::render('Dashboard/UserDashboard');

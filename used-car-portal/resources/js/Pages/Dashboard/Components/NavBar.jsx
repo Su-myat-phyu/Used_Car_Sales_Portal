@@ -1,14 +1,21 @@
 import React, { useState } from "react";
-import { Link } from "@inertiajs/react"; // Import Inertia for navigation
+import { Inertia } from "@inertiajs/inertia"; // Import Inertia for API calls
+import { Link } from "@inertiajs/react"; // Import Inertia's Link for navigation
 import logo from "../../../../assets/logo.png";
 
 const Navbar = ({ userName }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleLogout = () => {
-        // Perform logout logic here
-        console.log("Logging out...");
-        Link.visit("/login"); // Use Inertia's visit method for navigation
+        Inertia.post("/logout", {}, {
+            onSuccess: () => {
+                console.log("Logged out successfully");
+            },
+            onError: (error) => {
+                alert("Failed to logout. Please try again.");
+                console.error("Error during logout:", error);
+            },
+        });
     };
 
     return (
@@ -28,8 +35,11 @@ const Navbar = ({ userName }) => {
                     <button
                         onClick={() => setDropdownOpen(!dropdownOpen)}
                         className="flex items-center space-x-2 focus:outline-none"
+                        aria-expanded={dropdownOpen}
                     >
-                        <span className="text-gray-700 font-semibold">{userName}</span>
+                        <span className="text-gray-700 font-semibold">
+                            {userName || "Guest"}
+                        </span>
                         <svg
                             className={`w-5 h-5 transform transition-transform ${
                                 dropdownOpen ? "rotate-180" : ""
@@ -50,12 +60,12 @@ const Navbar = ({ userName }) => {
                         <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-10">
                             <ul className="py-1 text-sm text-gray-700">
                                 <li>
-                                    <button
-                                        onClick={() => Inertia.visit("/profile")} // Use Inertia's visit method for navigation
-                                        className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                    <Link
+                                        href="/profile"
+                                        className="block px-4 py-2 hover:bg-gray-100"
                                     >
                                         Profile
-                                    </button>
+                                    </Link>
                                 </li>
                                 <li>
                                     <button

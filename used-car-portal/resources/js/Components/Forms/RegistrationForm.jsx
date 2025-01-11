@@ -9,7 +9,7 @@ const RegistrationForm = () => {
         password: "",
         confirmPassword: "",
         role: "user",
-        phoneNumber: "",
+        phone_number: "",
         address: "",
         profilePicture: null,
         employeeId: "",
@@ -152,15 +152,15 @@ const RegistrationForm = () => {
                             <input
                                 type="text"
                                 className="w-full border border-gray-300 p-2 rounded"
-                                value={data.phoneNumber}
+                                value={data.phone_number}
                                 onChange={(e) =>
-                                    setData("phoneNumber", e.target.value)
+                                    setData("phone_number", e.target.value)
                                 }
                                 required
                             />
-                            {errors.phoneNumber && (
+                            {errors.phone_number && (
                                 <p className="text-red-500 text-sm">
-                                    {errors.phoneNumber}
+                                    {errors.phone_number}
                                 </p>
                             )}
                         </div>

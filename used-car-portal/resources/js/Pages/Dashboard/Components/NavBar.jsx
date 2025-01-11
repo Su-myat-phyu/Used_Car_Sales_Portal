@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Inertia } from "@inertiajs/inertia"; // Import Inertia for API calls
-import { Link } from "@inertiajs/react"; // Import Inertia's Link for navigation
+import { usePage,Link } from "@inertiajs/react"; // Import Inertia's Link for navigation
 import logo from "../../../../assets/logo.png";
 
 const Navbar = ({ userName }) => {
+    const { auth } = usePage().props;
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleLogout = () => {
@@ -38,7 +39,7 @@ const Navbar = ({ userName }) => {
                         aria-expanded={dropdownOpen}
                     >
                         <span className="text-gray-700 font-semibold">
-                            {userName || "Guest"}
+                        {auth.user.full_name || "Guest"}
                         </span>
                         <svg
                             className={`w-5 h-5 transform transition-transform ${
@@ -61,12 +62,11 @@ const Navbar = ({ userName }) => {
                             <ul className="py-1 text-sm text-gray-700">
                                 <li>
                                 <Link
-                                        href="/user/profile-information"
-                                        method="get" // Ensure a GET request
-                                        className="block px-4 py-2 hover:bg-gray-100"
-                                    >
-                                        Profile
-                                    </Link>
+                                    href="/profile"
+                                    className="block px-4 py-2 hover:bg-gray-100"
+                                >
+                                    Profile
+                                </Link>
                                 </li>
                                 <li>
                                     <button

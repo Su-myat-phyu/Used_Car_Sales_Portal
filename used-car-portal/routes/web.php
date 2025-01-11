@@ -100,8 +100,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 //update user profile
 Route::middleware('auth')->group(function () {
-    Route::put('/user/profile-information', [UserController::class, 'updateProfile']);
+    Route::get('/profile', function () {
+        return inertia('Dashboard/Components/Profile');
+    })->name('profile.view'); // Name your route for easier reference
+
+    //Route::put('/user/profile-information', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::match(['put', 'patch'], '/user/profile-information', [UserController::class, 'updateProfile'])->name('profile.update');
+
 });
+
 
 
 

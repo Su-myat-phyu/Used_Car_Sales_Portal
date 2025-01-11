@@ -1,113 +1,186 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Transition } from '@headlessui/react';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import React, { useState } from "react";
+import { useForm, usePage } from "@inertiajs/react";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
+import PrimaryButton from "@/Components/PrimaryButton";
 
-export default function UpdateProfileInformation({
-    mustVerifyEmail,
-    status,
-    className = '',
-}) {
-    const user = usePage().props.auth.user;
+const UpdateProfileInformationForm = () => {
+    const { auth } = usePage().props;
+    const [role, setRole] = useState(auth.user.role || "user");
+    const [successMessage, setSuccessMessage] = useState(null);
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
-        useForm({
-            name: user.name,
-            email: user.email,
-        });
+    const { data, setData, patch, errors, processing } = useForm({
+        full_name: auth.user.full_name || "",
+        email: auth.user.email || "",
+        phoneNumber: auth.user.phone_number || "",
+        address: auth.user.address || "",
+        employeeId: auth.user.employeeId || "",
+        department: auth.user.department || "",
+        profilePicture: null, // Leave empty to avoid overriding unless uploaded
+    });
 
-    const submit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
+        patch(route("profile.update"), {
+            onSuccess: () => {
+                setSuccessMessage("Profile updated successfully.");
+            },
+        });
+    };;
 
-        patch(route('profile.update'));
+    const handleFileChange = (e) => {
+        setData("profilePicture", e.target.files[0]);
     };
 
     return (
-        <section className={className}>
-            <header>
-                <h2 className="text-lg font-medium text-gray-900">
-                    Profile Information
-                </h2>
+        <section className="container mx-auto px-6 py-16">
+            
+            {/*<header className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Update Profile</h2>
+            </header>*/}
 
-                <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
-                </p>
-            </header>
+{successMessage ? (
+                <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4">
+                    <p>{successMessage}</p>
+                    <button
+                        onClick={() => window.location.href = route("dashboard")}
+                        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                    >
+                        Back to Dashboard
+                    </button>
+                </div>
+            ) : (
 
-            <form onSubmit={submit} className="mt-6 space-y-6">
+            <form
+                onSubmit={handleSubmit}
+                className="max-w-lg mx-auto bg-white shadow-md rounded-lg p-8 space-y-6"
+            >
+                {/* Full Name */}
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
-
+                    <InputLabel htmlFor="full_name" value="Full Name" />
                     <TextInput
-                        id="name"
+                        id="full_name"
                         className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
+                        value={data.full_name}
+                        onChange={(e) => setData("full_name", e.target.value)}
                         required
-                        isFocused
-                        autoComplete="name"
                     />
-
-                    <InputError className="mt-2" message={errors.name} />
+                    <InputError className="mt-2" message={errors.full_name} />
                 </div>
 
+                {/* Email */}
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
+                    <InputLabel htmlFor="email" value="Email Address" />
                     <TextInput
                         id="email"
                         type="email"
                         className="mt-1 block w-full"
                         value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
+                        onChange={(e) => setData("email", e.target.value)}
                         required
-                        autoComplete="username"
                     />
-
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 
-                {mustVerifyEmail && user.email_verified_at === null && (
-                    <div>
-                        <p className="mt-2 text-sm text-gray-800">
-                            Your email address is unverified.
-                            <Link
-                                href={route('verification.send')}
-                                method="post"
-                                as="button"
-                                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            >
-                                Click here to re-send the verification email.
-                            </Link>
-                        </p>
+                {/* Role */}
+                <div>
+                    <InputLabel htmlFor="role" value="Role" />
+                    <select
+                        id="role"
+                        value={role}
+                        onChange={(e) => {
+                            setRole(e.target.value);
+                            setData("role", e.target.value);
+                        }}
+                        className="mt-1 block w-full border border-gray-300 p-2 rounded"
+                        disabled // Role shouldn't be updated in profile updates
+                    >
+                        <option value="user">User</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
 
-                        {status === 'verification-link-sent' && (
-                            <div className="mt-2 text-sm font-medium text-green-600">
-                                A new verification link has been sent to your
-                                email address.
-                            </div>
-                        )}
-                    </div>
+                {/* Conditional Fields for Role: User */}
+                {role === "user" && (
+                    <>
+                        {/* Phone Number */}
+                        <div>
+                            <InputLabel htmlFor="phoneNumber" value="Phone Number" />
+                            <TextInput
+                                id="phoneNumber"
+                                className="mt-1 block w-full"
+                                value={data.phone_number}
+                                onChange={(e) => setData("phoneNumber", e.target.value)}
+                            />
+                            <InputError className="mt-2" message={errors.phoneNumber} />
+                        </div>
+
+                        {/* Address */}
+                        <div>
+                            <InputLabel htmlFor="address" value="Address" />
+                            <TextInput
+                                id="address"
+                                className="mt-1 block w-full"
+                                value={data.address}
+                                onChange={(e) => setData("address", e.target.value)}
+                            />
+                            <InputError className="mt-2" message={errors.address} />
+                        </div>
+
+                        {/* Profile Picture */}
+                        <div>
+                            <InputLabel htmlFor="profilePicture" value="Profile Picture" />
+                            <input
+                                id="profilePicture"
+                                type="file"
+                                className="mt-1 block w-full border border-gray-300 p-2 rounded"
+                                onChange={handleFileChange}
+                            />
+                            <InputError className="mt-2" message={errors.profilePicture} />
+                        </div>
+                    </>
                 )}
 
-                <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                {/* Conditional Fields for Role: Admin */}
+                {role === "admin" && (
+                    <>
+                        {/* Employee ID */}
+                        <div>
+                            <InputLabel htmlFor="employeeId" value="Employee ID" />
+                            <TextInput
+                                id="employeeId"
+                                className="mt-1 block w-full"
+                                value={data.employeeId}
+                                onChange={(e) => setData("employeeId", e.target.value)}
+                            />
+                            <InputError className="mt-2" message={errors.employeeId} />
+                        </div>
 
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-gray-600">
-                            Saved.
-                        </p>
-                    </Transition>
-                </div>
+                        {/* Department */}
+                        <div>
+                            <InputLabel htmlFor="department" value="Department" />
+                            <select
+                                id="department"
+                                className="mt-1 block w-full border border-gray-300 p-2 rounded"
+                                value={data.department}
+                                onChange={(e) => setData("department", e.target.value)}
+                            >
+                                <option value="sales">Sales</option>
+                                <option value="management">Management</option>
+                                <option value="support">Support</option>
+                            </select>
+                            <InputError className="mt-2" message={errors.department} />
+                        </div>
+                    </>
+                )}
+
+                {/* Save Button */}
+                <PrimaryButton processing={processing}>Save Changes</PrimaryButton>
             </form>
+            )}
         </section>
     );
-}
+};
+
+export default UpdateProfileInformationForm;

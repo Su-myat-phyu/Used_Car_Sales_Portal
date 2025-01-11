@@ -1,4 +1,4 @@
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import UpdateProfileInformationForm from '../../Profile/Partials/UpdateProfileInformationForm';
 
 const Profile = () => {
     return (

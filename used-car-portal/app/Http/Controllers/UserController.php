@@ -10,15 +10,28 @@ class UserController extends Controller
 {
     public function updateProfile(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
-        ]);
+        $user = $request->user();
 
-        /** @var User $user */
-        $user = Auth::user();
-        $user->update($request->only('name', 'email'));
+    $validated = $request->validate([
+        'full_name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        'phone_number' => 'required|string|max:15',
+        'address' => 'required|string|max:255',
+        'employeeId' => 'nullable|string|max:50',
+        'department' => 'nullable|string|max:50',
+        'profilePicture' => 'nullable|image|max:2048',
+    ]);
 
-        return response()->json(['message' => 'Profile updated successfully.']);
+    if ($request->hasFile('profilePicture')) {
+        $path = $request->file('profilePicture')->store('profile_pictures', 'public');
+        $validated['profilePicture'] = $path;
     }
+
+    $user->update($validated);
+
+    return redirect()->route('dashboard')->with([
+        'message' => 'Profile updated successfully.',
+        'auth.user' => $user->fresh(), // Ensure Inertia gets updated user data
+    ]);
+}
 }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 
 
 //Route::get('/', function () {
@@ -55,11 +56,11 @@ Route::post('/logout', [AuthController::class, 'logout']);
     //return Inertia::render('Dashboard/UserDashboard'); // Render React component
 //});
 
-Route::middleware('auth')->get('/user-dashboard', function () {
+/*Route::middleware('auth')->get('/user-dashboard', function () {
     return Inertia::render('Dashboard/UserDashboard'); // Render React component
 })->name('user-dashboard');
 
-Route::get('/dashboard', function () {
+Route::get('/user-dashboard', function () {
     $user = Auth::user();
     if ($user) {
         if ($user->roles->contains('name', 'user')) {
@@ -72,7 +73,22 @@ Route::get('/dashboard', function () {
 
     }
     return redirect()->route('home');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');*/
+Route::middleware(['auth', 'verified'])->get('/user-dashboard', function () {
+    $user = Auth::user();
+    if ($user) {
+        if ($user->role === 'user') {
+            return Inertia::render('Dashboard/UserDashboard'); // React component for user dashboard
+        }
+
+        if ($user->role === 'admin') {
+            return redirect()->route('admin-dashboard');
+        }
+    }
+
+    return redirect()->route('home');
+})->name('user-dashboard');
+
 //Added car
 //Route::middleware(['auth'])->group(function () {
    // Route::post('/api/cars', [CarController::class, 'store'])->name('cars.store'); // Add car
@@ -107,6 +123,11 @@ Route::middleware('auth')->group(function () {
     //Route::put('/user/profile-information', [UserController::class, 'updateProfile'])->name('profile.update');
     Route::match(['put', 'patch'], '/user/profile-information', [UserController::class, 'updateProfile'])->name('profile.update');
 
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 

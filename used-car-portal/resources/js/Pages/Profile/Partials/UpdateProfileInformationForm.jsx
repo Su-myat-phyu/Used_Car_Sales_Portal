@@ -44,11 +44,20 @@ const UpdateProfileInformationForm = () => {
                 <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4">
                     <p>{successMessage}</p>
                     <button
-                        onClick={() => window.location.href = route("dashboard")}
+                        onClick={() => {
+                            try {
+                                const dashboardRoute = route('user-dashboard');
+                                window.location.href = '/user-dashboard';
+                            } catch (error) {
+                                console.error('Route not found, redirecting to home.');
+                                window.location.href = '/';
+                            }
+                        }}
                         className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
                     >
                         Back to Dashboard
                     </button>
+
                 </div>
             ) : (
 

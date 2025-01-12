@@ -44,12 +44,12 @@ const CarListingPage = () => {
     });
 
     // Handle filter changes from CarHeroSection
-    const handleFilterChange = (updatedFilters) => {
+    /*const handleFilterChange = (updatedFilters) => {
         setFilters(updatedFilters);
-    };
+    };*/
 
     // Filter the cars based on current filters
-    const filteredCars = cars.filter((car) => {
+   /* const filteredCars = cars.filter((car) => {
         const { make, model, year, minPrice, maxPrice } = filters;
 
         const matchesMake = !make || car.make.toLowerCase() === make.toLowerCase();
@@ -60,13 +60,22 @@ const CarListingPage = () => {
             (!maxPrice || car.price <= parseInt(maxPrice));
 
         return matchesMake && matchesModel && matchesYear && matchesPrice;
-    });
+    });*/
+
+    const [filteredCars, setFilteredCars] = useState([]);
+
+    const handleFilterChange = (cars) => {
+        console.log("Updated Filtered Cars:", cars); // Debug here
+        setFilteredCars(cars); // Update filtered cars
+    };
+
 
     return (
         <main className="flex flex-col min-h-screen">
             <Header />
             {/* Pass filters and handler to CarHeroSection */}
-            <CarHeroSection filters={filters} onFilterChange={handleFilterChange} />
+            {/*<CarHeroSection filters={filters} onFilterChange={handleFilterChange} />*/}
+            <CarHeroSection onFilterChange={handleFilterChange} />
             {/* Pass filtered cars to CarListingSection */}
             <CarListingSection cars={filteredCars} />
             <CallToActionSection />

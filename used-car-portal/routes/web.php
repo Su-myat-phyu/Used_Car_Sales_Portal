@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserActivityController;
 
 
 //Route::get('/', function () {
@@ -128,6 +129,13 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+//Posted car and bid
+Route::middleware('auth')->group(function () {
+    Route::get('/user/cars-for-sale', [UserActivityController::class, 'getCarsForSale']);
+    Route::get('/user/active-bids', [UserActivityController::class, 'getActiveBids'])->middleware('auth');;
+    Route::delete('/user/car/{id}', [UserActivityController::class, 'deleteCar']);
 });
 
 

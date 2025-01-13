@@ -8,42 +8,23 @@ use Illuminate\Support\Facades\Auth;
 
 class CarController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $query = Car::query();
-
-    // Filter by user-specific cars
-    $query->where('user_id', Auth::id());
-
-    // Apply filters if provided
-    if ($request->has('make')) {
-        $query->where('make', $request->make);
-    }
-    if ($request->has('model')) {
-        $query->where('model', $request->model);
-    }
-    if ($request->has('year')) {
-        $query->where('year', $request->year);
-    }
-    if ($request->has('minPrice')) {
-        $query->where('price', '>=', $request->minPrice);
-    }
-    if ($request->has('maxPrice')) {
-        $query->where('price', '<=', $request->maxPrice);
-    }
-        
-    $cars = $query->get();
-
-    foreach ($cars as $car) {
-        if (!empty($car->images)) {
-            $car->images = collect(json_decode($car->images))->map(function ($path) {
-                return asset('storage/' . $path);
-            })->toArray();
+        try {
+            $cars = Car::all();
+            foreach ($cars as $car) {
+                if (!empty($car->images)) {
+                    // Decode and map image paths for the frontend
+                    $car->images = collect(json_decode($car->images))->map(function ($path) {
+                        return asset('storage/' . $path); // Convert paths to full URLs
+                    })->toArray();
+                }
+            }
+            return response()->json($cars); // Return cars with images
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
-    return response()->json($cars);
-}
 
     public function store(Request $request)
     {

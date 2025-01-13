@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../../../Components/HeaderFooter/Header";
 import Footer from "../../../../Components/HeaderFooter/Footer";
 import CarHeroSection from "../Components/CarHeroSection";
@@ -34,7 +34,6 @@ const cars = [
 ];
 
 const CarListingPage = () => {
-    // State to manage filters
     const [filters, setFilters] = useState({
         make: "",
         model: "",
@@ -43,13 +42,25 @@ const CarListingPage = () => {
         maxPrice: "",
     });
 
-    // Handle filter changes from CarHeroSection
-    /*const handleFilterChange = (updatedFilters) => {
-        setFilters(updatedFilters);
-    };*/
+    const [cars, setCars] = useState([]);
 
-    // Filter the cars based on current filters
-   /* const filteredCars = cars.filter((car) => {
+    useEffect(() => {
+        const fetchCars = async () => {
+            try {
+                const response = await axios.get("/cars");
+                setCars(response.data);
+            } catch (error) {
+                console.error("Failed to fetch cars:", error);
+            }
+        };
+        fetchCars();
+    }, []);
+
+    const handleFilterChange = (updatedFilters) => {
+        setFilters(updatedFilters);
+    };
+
+    const filteredCars = cars.filter((car) => {
         const { make, model, year, minPrice, maxPrice } = filters;
 
         const matchesMake = !make || car.make.toLowerCase() === make.toLowerCase();
@@ -60,28 +71,20 @@ const CarListingPage = () => {
             (!maxPrice || car.price <= parseInt(maxPrice));
 
         return matchesMake && matchesModel && matchesYear && matchesPrice;
-    });*/
-
-    const [filteredCars, setFilteredCars] = useState([]);
-
-    const handleFilterChange = (cars) => {
-        console.log("Updated Filtered Cars:", cars); // Debug here
-        setFilteredCars(cars); // Update filtered cars
-    };
-
+    });
 
     return (
         <main className="flex flex-col min-h-screen">
             <Header />
-            {/* Pass filters and handler to CarHeroSection */}
-            {/*<CarHeroSection filters={filters} onFilterChange={handleFilterChange} />*/}
-            <CarHeroSection onFilterChange={handleFilterChange} />
-            {/* Pass filtered cars to CarListingSection */}
+            <CarHeroSection
+                filters={filters}
+                onFilterChange={handleFilterChange}
+                allCars={cars}
+            />
             <CarListingSection cars={filteredCars} />
             <CallToActionSection />
             <Footer />
         </main>
     );
 };
-
 export default CarListingPage;

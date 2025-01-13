@@ -1,105 +1,38 @@
 import React, { useEffect, useState } from "react";
 import carBanner from "../../../../../assets/carBanner.jpg";
-import axios from "axios";
 
-const CarHeroSection = ({ onFilterChange }) => {
+const CarHeroSection = ({ filters, onFilterChange, allCars }) => {
     const [makes, setMakes] = useState([]);
     const [models, setModels] = useState([]);
-    const [allCars, setAllCars] = useState([]); // Store all cars
-    const [filters, setFilters] = useState({
-        make: "",
-        model: "",
-        year: "",
-        minPrice: "",
-        maxPrice: "",
-    });
 
-    // Fetch all cars to populate dropdowns and store all cars
     useEffect(() => {
-        const fetchCars = async () => {
-            try {
-                const response = await axios.get("/cars");
-                const cars = response.data;
-
-                setAllCars(cars); // Store all cars
-                onFilterChange(cars); // Initially display all cars
-
-                // Extract unique makes and models from cars
-                const uniqueMakes = [...new Set(cars.map((car) => car.make))];
-                const uniqueModels = [...new Set(cars.map((car) => car.model))];
-
-                setMakes(uniqueMakes);
-                setModels(uniqueModels);
-            } catch (error) {
-                console.error("Error fetching cars:", error);
-            }
-        };
-
-        fetchCars();
-    }, []);
+        // Extract unique makes and models from cars
+        const uniqueMakes = [...new Set(allCars.map((car) => car.make))];
+        const uniqueModels = [...new Set(allCars.map((car) => car.model))];
+        setMakes(uniqueMakes);
+        setModels(uniqueModels);
+    }, [allCars]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const updatedFilters = { ...filters, [name]: value };
-        setFilters(updatedFilters);
-
-        // Apply filtering immediately
-        applyFilters(updatedFilters);
+        onFilterChange({ ...filters, [name]: value });
     };
 
-    const applyFilters = (currentFilters) => {
-        console.log("Filters:", currentFilters); // Log selected filters
-        console.log("All Cars:", allCars); // Log all cars before filtering
-    
-        const filteredCars = allCars.filter((car) => {
-            const matchesMake = currentFilters.make
-                ? car.make === currentFilters.make
-                : true;
-            const matchesModel = currentFilters.model
-                ? car.model === currentFilters.model
-                : true;
-            const matchesYear = currentFilters.year
-                ? car.registration_year?.toString() === currentFilters.year
-                : true;
-            const matchesMinPrice = currentFilters.minPrice
-                ? car.price >= Number(currentFilters.minPrice)
-                : true;
-            const matchesMaxPrice = currentFilters.maxPrice
-                ? car.price <= Number(currentFilters.maxPrice)
-                : true;
-    
-            return (
-                matchesMake &&
-                matchesModel &&
-                matchesYear &&
-                matchesMinPrice &&
-                matchesMaxPrice
-            );
-        });
-    
-        console.log("Filtered Cars:", filteredCars); // Log filtered results
-        onFilterChange(filteredCars); // Update displayed cars
-    };
-
-    const handleClearFilters = () => {
-        const defaultFilters = {
+    const clearFilters = () => {
+        onFilterChange({
             make: "",
             model: "",
             year: "",
             minPrice: "",
             maxPrice: "",
-        };
-        setFilters(defaultFilters);
-        onFilterChange(allCars); // Reset to all cars
+        });
     };
 
     return (
         <section className="relative bg-gradient-to-b from-primary-700 to-primary-500 text-white py-24">
             <div
                 className="absolute inset-0 bg-cover bg-center opacity-30"
-                style={{
-                    backgroundImage: `url(${carBanner})`,
-                }}
+                style={{ backgroundImage: `url(${carBanner})` }}
             ></div>
 
             <div className="relative z-10 container mx-auto px-6 text-center">
@@ -159,14 +92,14 @@ const CarHeroSection = ({ onFilterChange }) => {
                         onChange={handleChange}
                         className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white text-gray-700"
                     />
-                    <button
-                        type="button"
-                        onClick={handleClearFilters}
-                        className="bg-red-500 text-white rounded-md p-3 hover:bg-red-600 transition duration-200"
-                    >
-                        Clear Filters
-                    </button>
                 </form>
+
+                <button
+                    onClick={clearFilters}
+                    className="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-500 transition"
+                >
+                    Clear Filter
+                </button>
             </div>
         </section>
     );

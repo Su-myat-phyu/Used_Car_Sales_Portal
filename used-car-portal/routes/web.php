@@ -138,6 +138,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/user/car/{id}', [UserActivityController::class, 'deleteCar']);
 });
 
+Route::get('/cars/active-bids', [CarController::class, 'getActiveBids']);
+Route::get('/cars/inactive-bids', [CarController::class, 'getInactiveBids']);
+
+Route::patch('/cars/{id}/update-bidding-status', [CarController::class, 'updateBiddingStatus']);
+
 
 
 

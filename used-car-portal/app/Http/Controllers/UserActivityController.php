@@ -42,4 +42,24 @@ class UserActivityController extends Controller
 
         return response()->json(['error' => 'Car not found or unauthorized'], 404);
     }
+
+    public function updateStatus(Request $request, $id)
+{
+    $request->validate([
+        'is_active' => 'required|boolean',
+    ]);
+
+    $bid = Bid::find($id);
+
+    if (!$bid) {
+        return response()->json(['error' => 'Bid not found'], 404);
+    }
+
+    $bid->is_active = $request->input('is_active');
+    $bid->save();
+
+    return response()->json(['message' => 'Bid status updated successfully'], 200);
 }
+
+}
+

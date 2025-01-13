@@ -17,6 +17,7 @@ class Car extends Model
         'biddingPrice',
         'images',
         'user_id',
+        'bidding_status',
     ];
 
     protected $casts = [

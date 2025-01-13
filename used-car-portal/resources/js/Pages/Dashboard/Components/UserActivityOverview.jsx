@@ -20,7 +20,7 @@ const UserActivityOverview = () => {
         // Fetch user's active bids
         const fetchActiveBids = async () => {
             try {
-                const response = await axios.get("/user/active-bids");
+                const response = await axios.get("/cars/active-bids");
                 setActiveBids(response.data);
             } catch (err) {
                 setError("Failed to fetch active bids.");
@@ -47,8 +47,8 @@ const UserActivityOverview = () => {
         alert(`View car with ID: ${carId}`);
     };
 
-    const handleViewBid = (bidId) => {
-        alert(`View bid with ID: ${bidId}`);
+    const handleViewBid = (id) => {
+        alert(`View bid with ID: ${id}`);
     };
 
     return (

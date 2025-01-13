@@ -2,12 +2,30 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const CarListingSection = ({ cars }) => {
+
+    const toggleBiddingStatus = async (carId, currentStatus) => {
+        try {
+            const newStatus = currentStatus === "active" ? "inactive" : "active";
+            await axios.patch(`/cars/${carId}/update-bidding-status`, { bidding_status: newStatus });
+            setCars((prevCars) =>
+                prevCars.map((car) =>
+                    car.id === carId ? { ...car, bidding_status: newStatus } : car
+                )
+            );
+        } catch (error) {
+            console.error("Failed to update bidding status:", error);
+        }
+    };
+
+        
     return (
         <section className="py-16 bg-gray-50">
             <div className="container mx-auto px-6">
                 <h2 className="text-4xl font-bold text-center text-primary-700 mb-12">
                     Available Cars
                 </h2>
+
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {cars.length > 0 ? (
                         cars.map((car) => (
@@ -43,6 +61,16 @@ const CarListingSection = ({ cars }) => {
                                         >
                                             View Details
                                         </button>
+
+                                        <button
+                                            onClick={() => toggleBiddingStatus(car.id, car.bidding_status)}
+                                            className={`mt-2 px-4 py-2 rounded ${
+                                                car.bidding_status === "active" ? "bg-red-600 text-white" : "bg-green-600 text-white"
+                                            }`}
+                                        >
+                                            {car.bidding_status === "active" ? "Deactivate Bidding" : "Activate Bidding"}
+                                        </button>
+
 
                                 </div>
                             </div>

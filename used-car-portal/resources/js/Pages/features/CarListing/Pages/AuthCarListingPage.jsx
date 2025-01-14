@@ -43,6 +43,11 @@ const AuthCarListingPage = (userName) => {
         maxPrice: "",
     });
 
+    const handleSubmitBid = (carId, bidAmount) => {
+        console.log(`Bid submitted: $${bidAmount} for Car ID: ${carId}`);
+        // Add your API call or logic to handle the bid submission here.
+    };
+
     const [cars, setCars] = useState([]);
 
     useEffect(() => {
@@ -82,7 +87,7 @@ const AuthCarListingPage = (userName) => {
                 onFilterChange={handleFilterChange}
                 allCars={cars}
             />
-            <AuthCarListingSection cars={filteredCars} />
+            <AuthCarListingSection cars={filteredCars} handleSubmitBid={handleSubmitBid} />
             <CallToActionSection />
             <AuthFooter />
         </main>

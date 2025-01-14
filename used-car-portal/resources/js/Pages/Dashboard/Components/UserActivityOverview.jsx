@@ -3,6 +3,7 @@ import axios from "axios";
 
 const UserActivityOverview = () => {
     const [carsForSale, setCarsForSale] = useState([]);
+    const [bidsReceived, setBidsReceived] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -16,10 +17,18 @@ const UserActivityOverview = () => {
             }
         };
 
-        
+        // Fetch bids received for user's cars
+        const fetchBidsReceived = async () => {
+            try {
+                const response = await axios.get("/user/bids-received");
+                setBidsReceived(response.data);
+            } catch (err) {
+                setError("Failed to fetch bids received.");
+            }
+        };
 
         fetchCarsForSale();
-
+        fetchBidsReceived();
     }, []);
 
     const handleDeleteCar = async (carId) => {
@@ -33,14 +42,25 @@ const UserActivityOverview = () => {
             }
         }
     };
-    
 
-    const handleViewCar = (carId) => {
-        alert(`View car with ID: ${carId}`);
+    const handleAcceptBid = async (bidId) => {
+        try {
+            await axios.post(`/user/bid/${bidId}/accept`);
+            alert("Bid accepted successfully.");
+            setBidsReceived((prevBids) => prevBids.filter((bid) => bid.id !== bidId));
+        } catch (err) {
+            alert("Failed to accept bid. Please try again.");
+        }
     };
 
-    const handleViewBid = (id) => {
-        alert(`View bid with ID: ${id}`);
+    const handleDeclineBid = async (bidId) => {
+        try {
+            await axios.post(`/user/bid/${bidId}/decline`);
+            alert("Bid declined successfully.");
+            setBidsReceived((prevBids) => prevBids.filter((bid) => bid.id !== bidId));
+        } catch (err) {
+            alert("Failed to decline bid. Please try again.");
+        }
     };
 
     return (
@@ -64,7 +84,7 @@ const UserActivityOverview = () => {
                                     </div>
                                     <div className="flex space-x-2">
                                         <button
-                                            onClick={() => handleViewCar(car.id)}
+                                            onClick={() => alert(`View car with ID: ${car.id}`)}
                                             className="px-4 py-2 bg-green-500 text-white rounded-md"
                                         >
                                             View
@@ -75,7 +95,6 @@ const UserActivityOverview = () => {
                                         >
                                             Deactivate
                                         </button>
-                                        
                                     </div>
                                 </li>
                             ))}
@@ -86,40 +105,46 @@ const UserActivityOverview = () => {
                 </div>
             </div>
 
-            {/* Active Bids */}
-            {/*<div>
-                <h2 className="text-2xl font-bold mb-4">Active Bids</h2>
+            {/* Bids Received */}
+            <div>
+                <h2 className="text-2xl font-bold mb-4">Bids Received</h2>
                 <div className="bg-white shadow-md rounded-lg p-6">
-                {activeBids.length > 0 ? (
-    <ul className="space-y-4">
-        {activeBids.map((bid) => (
-            <li
-                key={bid.id}
-                className="flex items-center justify-between border-b pb-4"
-            >
-                <div>
-                    <h3 className="font-bold">
-                        {bid.car.make} {bid.car.model} ({bid.car.year})
-                    </h3>
-                    <p className="text-gray-600">Bid Amount: ${bid.bidAmount.toLocaleString()}</p>
+                    {bidsReceived.length > 0 ? (
+                        <ul className="space-y-4">
+                            {bidsReceived.map((bid) => (
+                                <li
+                                    key={bid.id}
+                                    className="flex flex-col border-b pb-4"
+                                >
+                                    <div className="mb-2">
+                                        <h3 className="font-bold">
+                                            {bid.car.make} {bid.car.model} ({bid.car.year})
+                                        </h3>
+                                        <p className="text-gray-600">Bid Amount: ${bid.bid_amount.toLocaleString()}</p>
+                                        <p className="text-gray-600">Bidder: {bid.user.username}</p>
+                                    </div>
+                                    <div className="flex space-x-2">
+                                        <button
+                                            onClick={() => handleAcceptBid(bid.id)}
+                                            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                                        >
+                                            Accept
+                                        </button>
+                                        <button
+                                            onClick={() => handleDeclineBid(bid.id)}
+                                            className="px-4 py-2 bg-red-500 text-white rounded-md"
+                                        >
+                                            Decline
+                                        </button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-gray-600">No bids received.</p>
+                    )}
                 </div>
-                <div>
-                    <button
-                        onClick={() => handleViewBid(bid.id)}
-                        className="px-4 py-2 bg-green-500 text-white rounded-md"
-                    >
-                        View
-                    </button>
-                </div>
-            </li>
-        ))}
-    </ul>
-) : (
-    <p className="text-gray-600">No active bids placed.</p>
-)}
-
-                </div>
-            </div>*/}
+            </div>
         </section>
     );
 };

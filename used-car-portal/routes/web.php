@@ -193,6 +193,20 @@ Route::post('/bids', [BidController::class, 'store']);
 
 Route::get('/cars/{id}/bids', [BidController::class, 'index']);
 
+//fetch bids received
+Route::get('/user/bids-received', [BidController::class, 'getReceivedBids']);
+
+//accept bid
+Route::post('/user/bid/{bidId}/accept', [BidController::class, 'acceptBid']);
+
+//decline bid
+Route::post('/user/bid/{bidId}/decline', [BidController::class, 'declineBid']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/user/bid/{bidId}/accept', [BidController::class, 'acceptBid']);
+    Route::post('/user/bid/{bidId}/decline', [BidController::class, 'declineBid']);
+});
+
 
 
 

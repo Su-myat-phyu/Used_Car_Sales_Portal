@@ -63,26 +63,24 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                                     </p>
                                     
 
-                                    {/* Bidding Form */}
-                                    {car.bidding_status === "active" && (
-                                        <div className="mt-4">
-                                            <input
-                                                type="number"
-                                                placeholder="Enter your bid"
-                                                className="border border-gray-300 py-2 px-4 rounded-lg w-full mb-2"
-                                                value={biddingAmounts[car.id] || ""}
-                                                onChange={(e) =>
-                                                    handleInputChange(car.id, e.target.value)
-                                                }
-                                            />
-                                            <button
-                                                onClick={() => handleBidSubmit(car.id)}
-                                                className="bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
-                                            >
-                                                Submit Bid
-                                            </button>
-                                        </div>
-                                    )}
+                                    {/* Show Bidding Form for all cars */}
+                                    <div className="mt-4">
+                                        <input
+                                            type="number"
+                                            placeholder="Enter your bid"
+                                            className="border border-gray-300 py-2 px-4 rounded-lg w-full mb-2"
+                                            value={biddingAmounts[car.id] || ""}
+                                            onChange={(e) =>
+                                                handleInputChange(car.id, e.target.value)
+                                            }
+                                        />
+                                        <button
+                                            onClick={() => handleBidSubmit(car.id)}
+                                            className="bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
+                                        >
+                                            Submit Bid
+                                        </button>
+                                    </div>
 
                                     {/* View Details */}
                                     <button

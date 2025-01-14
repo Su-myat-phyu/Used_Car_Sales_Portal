@@ -34,4 +34,48 @@ class BidController extends Controller
     return response()->json($bids);
 }
 
+public function getReceivedBids(Request $request)
+{
+    $userId = Auth::id();
+
+    $bids = Bid::with(['car', 'user']) // Eager load car and user details
+        ->whereHas('car', function ($query) use ($userId) {
+            $query->where('user_id', $userId); // Only cars posted by the logged-in user
+        })
+        ->get();
+
+    return response()->json($bids, 200);
+}
+public function acceptBid($bidId)
+{
+    $bid = Bid::with('car')->findOrFail($bidId);
+
+    // Ensure the car belongs to the logged-in user
+    if ($bid->car->user_id !== Auth::id()) {
+        return response()->json(['error' => 'Unauthorized action.'], 403);
+    }
+
+    // Mark the bid as accepted
+    $bid->update(['status' => 'accepted']);
+
+    return response()->json(['message' => 'Bid accepted successfully.']);
+}
+
+public function declineBid($bidId)
+{
+    $bid = Bid::with('car')->findOrFail($bidId);
+
+    // Ensure the car belongs to the logged-in user
+    if ($bid->car->user_id !== Auth::id()) {
+        return response()->json(['error' => 'Unauthorized action.'], 403);
+    }
+
+    // Mark the bid as declined
+    $bid->update(['status' => 'declined']);
+
+    return response()->json(['message' => 'Bid declined successfully.']);
+}
+
+
+
 }

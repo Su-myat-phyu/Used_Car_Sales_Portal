@@ -16,7 +16,6 @@ return new class extends Migration
         $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key to users table
         $table->foreignId('car_id')->constrained()->onDelete('cascade'); // Foreign key to cars table
         $table->decimal('bid_amount', 10, 2); // Bid amount
-        $table->boolean('is_active')->default(true); // Active bid flag
         $table->timestamps(); // Created_at and updated_at
     });
 }

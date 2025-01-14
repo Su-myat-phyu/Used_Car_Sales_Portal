@@ -7,17 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bid extends Model
 {
-    use HasFactory;
-
-    protected $fillable = ['user_id', 'car_id', 'bid_amount', 'is_active'];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = ['car_id', 'user_id', 'bid_amount'];
 
     public function car()
     {
         return $this->belongsTo(Car::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

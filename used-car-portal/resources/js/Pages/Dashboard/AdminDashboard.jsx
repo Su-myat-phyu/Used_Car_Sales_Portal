@@ -44,4 +44,4 @@ const AdminDashboard = ({ userName }) => {
     );
 };
 
-export default UserDashboard;
+export default AdminDashboard;

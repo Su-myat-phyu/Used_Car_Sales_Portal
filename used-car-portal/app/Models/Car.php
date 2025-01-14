@@ -23,5 +23,11 @@ class Car extends Model
     protected $casts = [
         'images' => 'array', // Cast images column as an array
     ];
+
+    public function bids()
+{
+    return $this->hasMany(Bid::class);
+}
+
 }
 

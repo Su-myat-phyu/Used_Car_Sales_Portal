@@ -79,7 +79,7 @@ const MainDashboardSection = () => {
 
         // Success feedback
         alert("Car posted successfully!");
-        window.location.href = "/research"; // Redirect to the listing page
+        window.location.href = "/authResearch"; // Redirect to the listing page
     } catch (error) {
         // Improved error logging
         console.error("Error posting car:", error.response?.data || error.message || "Unknown error");

@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 
-const CarListingSection = ({ cars }) => {
-    const handleViewDetails = (id) => {
-        console.log(`View details for car ID: ${id}`);
+const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
+    const [biddingAmounts, setBiddingAmounts] = useState({}); // Store bid amounts per car
+
+    const handleInputChange = (carId, value) => {
+        setBiddingAmounts({
+            ...biddingAmounts,
+            [carId]: value,
+        });
+    };
+
+    const handleBidSubmit = (carId) => {
+        const bidAmount = biddingAmounts[carId];
+        if (bidAmount) {
+            handleSubmitBid(carId, bidAmount); // Call the handler from props
+            alert(`Bid submitted: $${bidAmount} for Car ID: ${carId}`);
+            setBiddingAmounts({
+                ...biddingAmounts,
+                [carId]: "", // Reset the bid amount field for that car
+            });
+        } else {
+            alert("Please enter a bid amount before submitting.");
+        }
     };
 
     return (
@@ -18,6 +37,7 @@ const CarListingSection = ({ cars }) => {
                                 key={car.id}
                                 className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
                             >
+                                {/* Car Image */}
                                 {car.images && car.images.length > 0 ? (
                                     <img
                                         src={car.images[0]} // Display the first image
@@ -29,6 +49,8 @@ const CarListingSection = ({ cars }) => {
                                         No Image Available
                                     </div>
                                 )}
+
+                                {/* Car Details */}
                                 <div className="p-6">
                                     <h3 className="text-xl font-bold text-gray-800">
                                         {car.make} {car.model}
@@ -39,23 +61,31 @@ const CarListingSection = ({ cars }) => {
                                     <p className="text-accent-500 font-semibold text-lg">
                                         Price: ${Number(car.price).toLocaleString() || "N/A"}
                                     </p>
-                                    <p className="text-blue-600 font-medium text-lg">
-                                        Bidding Price: ${Number(car.biddingPrice).toLocaleString() || "N/A"}
-                                    </p>
-                                    {/* Display bidding status */}
-                                    <p
-                                        className={`text-sm font-semibold ${
-                                            car.bidding_status === "active"
-                                                ? "text-green-600"
-                                                : "text-gray-500"
-                                        }`}
-                                    >
-                                        {car.bidding_status === "active"
-                                            ? "Active Bids"
-                                            : "Inactive Bids"}
-                                    </p>
+                                    
+
+                                    {/* Bidding Form */}
+                                    {car.bidding_status === "active" && (
+                                        <div className="mt-4">
+                                            <input
+                                                type="number"
+                                                placeholder="Enter your bid"
+                                                className="border border-gray-300 py-2 px-4 rounded-lg w-full mb-2"
+                                                value={biddingAmounts[car.id] || ""}
+                                                onChange={(e) =>
+                                                    handleInputChange(car.id, e.target.value)
+                                                }
+                                            />
+                                            <button
+                                                onClick={() => handleBidSubmit(car.id)}
+                                                className="bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
+                                            >
+                                                Submit Bid
+                                            </button>
+                                        </div>
+                                    )}
+
+                                    {/* View Details */}
                                     <button
-                                        onClick={() => handleViewDetails(car.id)}
                                         className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
                                     >
                                         View Details
@@ -74,4 +104,4 @@ const CarListingSection = ({ cars }) => {
     );
 };
 
-export default CarListingSection;
+export default AuthCarListingSection;

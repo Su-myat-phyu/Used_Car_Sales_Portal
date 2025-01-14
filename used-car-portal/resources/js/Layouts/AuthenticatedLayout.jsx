@@ -6,7 +6,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <main>{children}</main>
+            <main>{children}
+                
+            </main>
+
         </div>
     );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import Footer from "../../Components/HeaderFooter/Footer";
+import AuthFooter from "../../Components/HeaderFooter/AuthFooter";
 import Navbar from "./Components/Navbar";
 import MainDashboardSection from "./Components/MainDashboardSection";
 import UserActivityOverview from "./Components/UserActivityOverview";
@@ -27,7 +27,7 @@ const UserDashboard = ({ userName }) => {
                 </section>
 
                 {/* Footer */}
-                <Footer />
+                <AuthFooter />
             </main>
         </AuthenticatedLayout>
     );

@@ -3,7 +3,6 @@ import axios from "axios";
 
 const UserActivityOverview = () => {
     const [carsForSale, setCarsForSale] = useState([]);
-    const [activeBids, setActiveBids] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -17,18 +16,10 @@ const UserActivityOverview = () => {
             }
         };
 
-        // Fetch user's active bids
-        const fetchActiveBids = async () => {
-            try {
-                const response = await axios.get("/cars/active-bids");
-                setActiveBids(response.data);
-            } catch (err) {
-                setError("Failed to fetch active bids.");
-            }
-        };
+        
 
         fetchCarsForSale();
-        fetchActiveBids();
+
     }, []);
 
     const handleDeleteCar = async (carId) => {
@@ -42,22 +33,7 @@ const UserActivityOverview = () => {
             }
         }
     };
-    const handleToggleBiddingStatus = async (carId, currentStatus) => {
-        const newStatus = currentStatus === "active" ? "inactive" : "active";
-        try {
-            await axios.patch(`/cars/${carId}/update-bidding-status`, {
-                bidding_status: newStatus,
-            });
-            setCarsForSale((prevCars) =>
-                prevCars.map((car) =>
-                    car.id === carId ? { ...car, bidding_status: newStatus } : car
-                )
-            );
-        } catch (error) {
-            alert("Failed to update bidding status. Please try again.");
-            console.error(error);
-        }
-    };
+    
 
     const handleViewCar = (carId) => {
         alert(`View car with ID: ${carId}`);
@@ -97,20 +73,9 @@ const UserActivityOverview = () => {
                                             onClick={() => handleDeleteCar(car.id)}
                                             className="px-4 py-2 bg-red-500 text-white rounded-md"
                                         >
-                                            Delete
+                                            Deactivate
                                         </button>
-                                        <button
-                                            onClick={() => handleToggleBiddingStatus(car.id, car.bidding_status)}
-                                            className={`px-4 py-2 rounded-md ${
-                                                car.bidding_status === "active"
-                                                    ? "bg-red-500 text-white"
-                                                    : "bg-blue-500 text-white"
-                                            }`}
-                                        >
-                                            {car.bidding_status === "active"
-                                                ? "Deactivate Bids"
-                                                : "Activate Bids"}
-                                        </button>
+                                        
                                     </div>
                                 </li>
                             ))}

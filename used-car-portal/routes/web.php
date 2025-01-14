@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserActivityController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\BidController;
 
 
 //Route::get('/', function () {
@@ -170,6 +171,27 @@ Route::get('/cars/active-bids', [CarController::class, 'getActiveBids']);
 Route::get('/cars/inactive-bids', [CarController::class, 'getInactiveBids']);
 
 Route::patch('/cars/{id}/update-bidding-status', [CarController::class, 'updateBiddingStatus']);
+
+//Authenticated parts
+Route::get('/authResearch', function () {
+    return Inertia('features/CarListing/Pages/AuthCarListingPage');
+});
+
+Route::get('/authHome', function () {
+    return inertia('AuthHome');
+});
+
+Route::get('/authAbout', function () {
+    return Inertia('features/AboutUs/Pages/AuthAboutUsPage');
+});
+
+Route::get('/authContact', function () {
+    return Inertia('features/ContactUs/Pages/AuthContactUsPage');
+});
+
+Route::post('/bids', [BidController::class, 'store']);
+
+Route::get('/cars/{id}/bids', [BidController::class, 'index']);
 
 
 

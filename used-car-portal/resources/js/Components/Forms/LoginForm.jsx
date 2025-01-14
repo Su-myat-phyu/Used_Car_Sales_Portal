@@ -17,7 +17,7 @@ const LoginForm = () => {
             onSuccess: (response) => {
                 if (response && response.props && response.props.role) {
                     const role = response.props.role; // Get the role from response
-                    window.location.href = role === "admin" ? "/admin-dashboard" : "/user-dashboard";
+                    window.location.href = "/dashboard"; // Redirect to the role-based dashboard route
                 } else {
                     console.error("Role not found in the response.");
                 }
@@ -27,7 +27,6 @@ const LoginForm = () => {
                 alert("Login failed. Please check your credentials.");
             },
         });
-        
     };
     
     

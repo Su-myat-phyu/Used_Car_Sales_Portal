@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "@inertiajs/react";
 
 const RegistrationForm = () => {
-    const [role, setRole] = useState("user");
+    const [roleOptions] = useState(["user", "admin"]); // Available roles
     const { data, setData, post, errors } = useForm({
         full_name: "",
         email: "",
@@ -22,7 +22,7 @@ const RegistrationForm = () => {
         // Submit the form data to backend
         // Submit the form data to backend
         post("/register", {
-            onSuccess: (response) => {
+            onSuccess: () => {
                 alert("Registration successful! Redirecting to login...");
                 window.location.href = "/login"; // Redirect to login
             },
@@ -129,20 +129,24 @@ const RegistrationForm = () => {
                         Role
                     </label>
                     <select
-                        value={role}
+                        value={data.role}
                         onChange={(e) => {
-                            setRole(e.target.value);
+                            
                             setData("role", e.target.value);
                         }}
                         className="w-full border border-gray-300 p-2 rounded"
                     >
-                        <option value="user">User</option>
-                        <option value="admin">Administrator</option>
-                    </select>
-                </div>
+                        {roleOptions.map((option) => (
+                        <option key={option} value={option}>
+                            {option.charAt(0).toUpperCase() + option.slice(1)}
+                        </option>
+                    ))}
+                </select>
+                {errors.role && <p>{errors.role}</p>}
+            </div>
 
                 {/* Conditional Fields Based on Role */}
-                {role === "user" && (
+                {data.role === "user" && (
                     <>
                         {/* Phone Number */}
                         <div>
@@ -200,7 +204,7 @@ const RegistrationForm = () => {
                     </>
                 )}
 
-                {role === "admin" && (
+                {data.role === "admin" && (
                     <>
                         {/* Employee ID */}
                         <div>

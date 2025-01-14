@@ -12,6 +12,7 @@ use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserActivityController;
+use App\Http\Controllers\AdminDashboardController;
 
 
 //Route::get('/', function () {
@@ -75,7 +76,7 @@ Route::get('/user-dashboard', function () {
     }
     return redirect()->route('home');
 })->middleware(['auth', 'verified'])->name('dashboard');*/
-Route::middleware(['auth', 'verified'])->get('/user-dashboard', function () {
+/*Route::middleware(['auth', 'verified'])->get('/user-dashboard', function () {
     $user = Auth::user();
     if ($user) {
         if ($user->role === 'user') {
@@ -83,12 +84,35 @@ Route::middleware(['auth', 'verified'])->get('/user-dashboard', function () {
         }
 
         if ($user->role === 'admin') {
-            return redirect()->route('admin-dashboard');
+            return Inertia::render('Dashboard/AdminDashboard'); 
         }
     }
 
     return redirect()->route('home');
-})->name('user-dashboard');
+})->name('dashboard');*/
+// User Dashboard Route
+Route::middleware(['auth', 'verified', 'role:user'])->get('/user-dashboard', function () {
+    return Inertia::render('Dashboard/UserDashboard');
+})->name('user.dashboard');
+
+// Admin Dashboard Route
+Route::middleware(['auth', 'verified', 'role:admin'])->get('/admin-dashboard', function () {
+    return Inertia::render('Dashboard/AdminDashboard');
+})->name('admin.dashboard');
+// Middleware to handle role-based dashboard redirection
+Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
+    $user = Auth::user();
+
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+
+    if ($user->role === 'user') {
+        return redirect()->route('user.dashboard');
+    }
+
+    return redirect('/home'); // Fallback
+})->name('dashboard');
 
 //Added car
 //Route::middleware(['auth'])->group(function () {
@@ -113,6 +137,10 @@ Route::middleware('auth')->get('/user-dashboard', function () {
 //Handle username in dashboard
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/user-dashboard', [UserDashboardController::class, 'userDashboard'])->name('user.dashboard');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/admin-dashboard', [AdminDashboardController::class, 'adminDashboard'])->name('admin.dashboard');
 });
 
 //update user profile

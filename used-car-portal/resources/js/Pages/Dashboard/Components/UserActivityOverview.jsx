@@ -42,6 +42,22 @@ const UserActivityOverview = () => {
             }
         }
     };
+    const handleToggleBiddingStatus = async (carId, currentStatus) => {
+        const newStatus = currentStatus === "active" ? "inactive" : "active";
+        try {
+            await axios.patch(`/cars/${carId}/update-bidding-status`, {
+                bidding_status: newStatus,
+            });
+            setCarsForSale((prevCars) =>
+                prevCars.map((car) =>
+                    car.id === carId ? { ...car, bidding_status: newStatus } : car
+                )
+            );
+        } catch (error) {
+            alert("Failed to update bidding status. Please try again.");
+            console.error(error);
+        }
+    };
 
     const handleViewCar = (carId) => {
         alert(`View car with ID: ${carId}`);
@@ -83,6 +99,18 @@ const UserActivityOverview = () => {
                                         >
                                             Delete
                                         </button>
+                                        <button
+                                            onClick={() => handleToggleBiddingStatus(car.id, car.bidding_status)}
+                                            className={`px-4 py-2 rounded-md ${
+                                                car.bidding_status === "active"
+                                                    ? "bg-red-500 text-white"
+                                                    : "bg-blue-500 text-white"
+                                            }`}
+                                        >
+                                            {car.bidding_status === "active"
+                                                ? "Deactivate Bids"
+                                                : "Activate Bids"}
+                                        </button>
                                     </div>
                                 </li>
                             ))}
@@ -94,7 +122,7 @@ const UserActivityOverview = () => {
             </div>
 
             {/* Active Bids */}
-            <div>
+            {/*<div>
                 <h2 className="text-2xl font-bold mb-4">Active Bids</h2>
                 <div className="bg-white shadow-md rounded-lg p-6">
                 {activeBids.length > 0 ? (
@@ -126,7 +154,7 @@ const UserActivityOverview = () => {
 )}
 
                 </div>
-            </div>
+            </div>*/}
         </section>
     );
 };

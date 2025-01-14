@@ -79,22 +79,23 @@ class CarController extends Controller
     }
 
     public function updateBiddingStatus(Request $request, $id)
-    {
-        $request->validate([
-            'bidding_status' => 'required|in:active,inactive',
-        ]);
-    
-        $car = Car::find($id);
-    
-        if (!$car) {
-            return response()->json(['error' => 'Car not found'], 404);
-        }
-    
-        $car->bidding_status = $request->input('bidding_status');
-        $car->save();
-    
-        return response()->json(['message' => 'Bidding status updated successfully', 'car' => $car], 200);
+{
+    $car = Car::find($id);
+
+    if (!$car) {
+        return response()->json(['error' => 'Car not found'], 404);
     }
+
+    $validated = $request->validate([
+        'bidding_status' => 'required|in:active,inactive',
+    ]);
+
+    $car->bidding_status = $validated['bidding_status'];
+    $car->save();
+
+    return response()->json(['success' => true, 'bidding_status' => $car->bidding_status], 200);
+}
+
 
     
 }

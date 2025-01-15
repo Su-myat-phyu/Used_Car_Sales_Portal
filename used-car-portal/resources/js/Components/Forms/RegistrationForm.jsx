@@ -8,7 +8,7 @@ const RegistrationForm = () => {
         email: "",
         password: "",
         confirmPassword: "",
-        role: "user",
+        role: "",
         phone_number: "",
         address: "",
         profilePicture: null,

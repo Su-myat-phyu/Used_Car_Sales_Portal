@@ -10,7 +10,7 @@ const LoginForm = () => {
         remember: false,
     });
 
-    const handleSubmit = (e) => {
+    /*const handleSubmit = (e) => {
         e.preventDefault();
     
         post("/login", {
@@ -22,6 +22,16 @@ const LoginForm = () => {
                     console.error("Role not found in the response.");
                 }
             },
+            onError: (errors) => {
+                console.error("Login failed:", errors);
+                alert("Login failed. Please check your credentials.");
+            },
+        });
+    };*/
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post("/login", {
             onError: (errors) => {
                 console.error("Login failed:", errors);
                 alert("Login failed. Please check your credentials.");

@@ -211,6 +211,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user/bid/{bidId}/decline', [BidController::class, 'declineBid']);
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user/bids', [BidController::class, 'getUserBids']);
+});
 
 
 

@@ -75,7 +75,30 @@ public function declineBid($bidId)
 
     return response()->json(['message' => 'Bid declined successfully.']);
 }
+public function getUserBids(Request $request)
+{
+    try {
+        // Get the currently authenticated user
+        $user = Auth::user();
 
+        // Retrieve all bids made by the user
+        $bids = Bid::with('car') // Assuming a relationship between Bid and Car exists
+            ->where('user_id', $user->id)
+            ->get();
+
+        // Return bids as JSON
+        return response()->json([
+            'success' => true,
+            'bids' => $bids,
+        ]);
+    } catch (\Exception $e) {
+        // Return an error response
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to fetch bids',
+        ], 500);
+    }
+}
 
 
 }

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import CarDetailModal from "./CarDetailModal";
+import React, {useState } from "react";
 
 const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
     const [biddingAmounts, setBiddingAmounts] = useState({}); // Store bid amounts per car
@@ -41,7 +42,15 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
             alert("Failed to submit bid. Please try again.");
         }
     };
+    const [selectedCar, setSelectedCar] = useState(null);
     
+        const handleViewDetails = (car) => {
+            setSelectedCar(car);
+        };
+    
+        const closeModal = () => {
+            setSelectedCar(null);
+        };
 
     return (
         <section className="py-16 bg-gray-50">
@@ -104,6 +113,7 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
 
                                     {/* View Details */}
                                     <button
+                                        onClick={() => handleViewDetails(car)}
                                         className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
                                     >
                                         View Details
@@ -118,6 +128,10 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                     )}
                 </div>
             </div>
+            {/* Modal */}
+            {selectedCar && (
+                <CarDetailModal car={selectedCar} onClose={closeModal} />
+            )}
         </section>
     );
 };

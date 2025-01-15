@@ -133,6 +133,15 @@ const MainDashboardSection = () => {
                                 required
                             />
 
+                            <textarea
+                                name="description"
+                                placeholder="Car Description"
+                                value={carDetails.description}
+                                onChange={(e) => handleChange(e, "carDetails")}
+                                className="border rounded-md p-2 w-full"
+                                required
+                            />
+
                            
                             
                         </div>

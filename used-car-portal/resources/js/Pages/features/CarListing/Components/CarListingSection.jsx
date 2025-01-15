@@ -1,8 +1,15 @@
-import React from "react";
+import CarDetailModal from "./CarDetailModal";
+import React, {useState } from "react";
 
 const CarListingSection = ({ cars }) => {
-    const handleViewDetails = (id) => {
-        console.log(`View details for car ID: ${id}`);
+    const [selectedCar, setSelectedCar] = useState(null);
+
+    const handleViewDetails = (car) => {
+        setSelectedCar(car);
+    };
+
+    const closeModal = () => {
+        setSelectedCar(null);
     };
 
     return (
@@ -42,7 +49,7 @@ const CarListingSection = ({ cars }) => {
 
                                     
                                     <button
-                                        onClick={() => handleViewDetails(car.id)}
+                                        onClick={() => handleViewDetails(car)}
                                         className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
                                     >
                                         View Details
@@ -57,6 +64,11 @@ const CarListingSection = ({ cars }) => {
                     )}
                 </div>
             </div>
+
+            {/* Modal */}
+            {selectedCar && (
+                <CarDetailModal car={selectedCar} onClose={closeModal} />
+            )}
         </section>
     );
 };

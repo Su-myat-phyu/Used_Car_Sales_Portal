@@ -70,6 +70,7 @@ class CarController extends Controller
                 'model' => 'Camry',
                 'year' => 2021,
                 'price' => 20000,
+                'description' => 'required|string',
                 'image_path' => asset('storage/images/toyotaCar.png'),
             
         ]);

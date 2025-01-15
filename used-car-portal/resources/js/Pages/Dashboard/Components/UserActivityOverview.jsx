@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import CarDetailModal from "../../features/CarListing/Components/CarDetailModal";
 
 const UserActivityOverview = () => {
     const [carsForSale, setCarsForSale] = useState([]);
@@ -64,6 +65,15 @@ const UserActivityOverview = () => {
             alert("Failed to decline bid. Please try again.");
         }
     };
+    const [selectedCar, setSelectedCar] = useState(null);
+    
+        const handleViewDetails = (car) => {
+            setSelectedCar(car);
+        };
+    
+        const closeModal = () => {
+            setSelectedCar(null);
+        };
 
     return (
         <section className="container mx-auto px-6 py-12">
@@ -86,7 +96,7 @@ const UserActivityOverview = () => {
                                     </div>
                                     <div className="flex space-x-2">
                                         <button
-                                            onClick={() => alert(`View car with ID: ${car.id}`)}
+                                            onClick={() => handleViewDetails(car)}
                                             className="px-4 py-2 bg-green-500 text-white rounded-md"
                                         >
                                             View
@@ -147,6 +157,10 @@ const UserActivityOverview = () => {
                     )}
                 </div>
             </div>
+            {/* Modal */}
+            {selectedCar && (
+                <CarDetailModal car={selectedCar} onClose={closeModal} />
+            )}
         </section>
     );
 };

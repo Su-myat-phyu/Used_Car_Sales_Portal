@@ -165,6 +165,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/cars-for-sale', [UserActivityController::class, 'getCarsForSale']);
     Route::get('/user/active-bids', [UserActivityController::class, 'getActiveBids'])->middleware('auth');;
     Route::delete('/user/car/{id}', [UserActivityController::class, 'deleteCar']);
+    Route::put('/user/car/{id}', [CarController::class, 'updateCar']);
 });
 
 

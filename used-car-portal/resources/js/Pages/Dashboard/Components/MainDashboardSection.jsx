@@ -7,6 +7,7 @@ const MainDashboardSection = () => {
         model: "",
         year: "",
         price: "",
+        description: "",
         images: [],
     });
     const [profile, setProfile] = useState({
@@ -60,6 +61,7 @@ const MainDashboardSection = () => {
         formData.append("model", carDetails.model);
         formData.append("year", carDetails.year);
         formData.append("price", carDetails.price);
+        formData.append("description", carDetails.description);
 
         // Handle images array
         if (Array.isArray(carDetails.images) && carDetails.images.length > 0) {
@@ -88,86 +90,87 @@ const MainDashboardSection = () => {
 
 
 
-    return (
-        <section className="container mx-auto px-6 py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                {/* Post a Car for Sale */}
-                <div>
-                    <h2 className="text-2xl font-bold mb-4">Post a Car for Sale</h2>
-                    <form onSubmit={handlePostCar} className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                            <input
-                                type="text"
-                                name="make"
-                                placeholder="Car Make"
-                                value={carDetails.make}
-                                onChange={(e) => handleChange(e, "carDetails")}
-                                className="border rounded-md p-2"
-                                required
-                            />
-                            <input
-                                type="text"
-                                name="model"
-                                placeholder="Car Model"
-                                value={carDetails.model}
-                                onChange={(e) => handleChange(e, "carDetails")}
-                                className="border rounded-md p-2"
-                                required
-                            />
-                            <input
-                                type="number"
-                                name="year"
-                                placeholder="Year"
-                                value={carDetails.year}
-                                onChange={(e) => handleChange(e, "carDetails")}
-                                className="border rounded-md p-2"
-                                required
-                            />
-                            <input
-                                type="text"
-                                name="price"
-                                placeholder="Price"
-                                value={carDetails.price}
-                                onChange={(e) => handleChange(e, "carDetails")}
-                                className="border rounded-md p-2"
-                                required
-                            />
-
-                            <textarea
-                                name="description"
-                                placeholder="Car Description"
-                                value={carDetails.description}
-                                onChange={(e) => handleChange(e, "carDetails")}
-                                className="border rounded-md p-2 w-full"
-                                required
-                            />
-
-                           
-                            
-                        </div>
-                        
+return (
+    <section className="container mx-auto px-6 py-12">
+        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
+            {/* Post a Car for Sale */}
+            <div>
+                <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Post a Car for Sale</h2>
+                <form onSubmit={handlePostCar} className="space-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <input
-                            type="file"
-                            multiple
-                            onChange={(e) => handleFileChange(e, "carImages")}
-                            className="border rounded-md p-2 w-full"
+                            type="text"
+                            name="make"
+                            placeholder="Car Make (e.g. Toyota)"
+                            value={carDetails.make}
+                            onChange={(e) => handleChange(e, "carDetails")}
+                            className="w-full border rounded-lg p-3 focus:outline-none focus:ring focus:ring-blue-300"
+                                required
+                            
                         />
-                        <button
-                            type="submit"
-                            className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                        >
-                            Post Car
-                        </button>
-                    </form>
-                </div>
+                        <input
+                            type="text"
+                            name="model"
+                            placeholder="Car Model (e.g. Corolla)"
+                            value={carDetails.model}
+                            onChange={(e) => handleChange(e, "carDetails")}
+                            className="w-full border rounded-lg p-3 focus:outline-none focus:ring focus:ring-blue-300"
+                            required
+                        />
+                        <input
+                            type="number"
+                            name="year"
+                            placeholder="Year"
+                            value={carDetails.year}
+                            onChange={(e) => handleChange(e, "carDetails")}
+                            className="w-full border rounded-lg p-3 focus:outline-none focus:ring focus:ring-blue-300"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="price"
+                            placeholder="Price"
+                            value={carDetails.price}
+                            onChange={(e) => handleChange(e, "carDetails")}
+                            className="w-full border rounded-lg p-3 focus:outline-none focus:ring focus:ring-blue-300"
+                            required
+                        />
 
-                
-                
+                        <textarea
+                            name="description"
+                            placeholder="Car Description"
+                            value={carDetails.description}
+                            onChange={(e) => handleChange(e, "carDetails")}
+                            className="w-full border rounded-lg p-3 focus:outline-none focus:ring focus:ring-blue-300"
+                            required
+                        />
+
+                       
+                        
+                    </div>
+                    
+                    <input
+                        type="file"
+                        multiple
+                        onChange={(e) => handleFileChange(e, "carImages")}
+                        className="w-full border rounded-lg p-3 focus:outline-none focus:ring focus:ring-blue-300"
+                    />
+                    <button
+                        type="submit"
+                        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                    >
+                        Post Car
+                    </button>
+                </form>
             </div>
 
             
-        </section>
-    );
+            
+        </div>
+
+        
+    </section>
+);
 };
 
 export default MainDashboardSection;

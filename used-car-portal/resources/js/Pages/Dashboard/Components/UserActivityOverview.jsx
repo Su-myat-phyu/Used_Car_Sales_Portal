@@ -6,6 +6,7 @@ const UserActivityOverview = () => {
     const [carsForSale, setCarsForSale] = useState([]);
     const [bidsReceived, setBidsReceived] = useState([]);
     const [error, setError] = useState(null);
+    const [selectedCar, setSelectedCar] = useState(null);
 
     useEffect(() => {
         // Fetch user's cars for sale
@@ -46,6 +47,19 @@ const UserActivityOverview = () => {
         }
     };
 
+    const handleUpdateCar = async (updatedCar) => {
+        try {
+            const response = await axios.put(`/user/car/${updatedCar.id}`, updatedCar);
+            setCarsForSale((prevCars) =>
+                prevCars.map((car) => (car.id === updatedCar.id ? response.data : car))
+            );
+            alert("Car updated successfully");
+            setSelectedCar(null);
+        } catch (err) {
+            alert("Failed to update car. Please try again.");
+        }
+    };
+
     const handleAcceptBid = async (bidId) => {
         try {
             await axios.post(`/user/bid/${bidId}/accept`);
@@ -65,15 +79,7 @@ const UserActivityOverview = () => {
             alert("Failed to decline bid. Please try again.");
         }
     };
-    const [selectedCar, setSelectedCar] = useState(null);
     
-        const handleViewDetails = (car) => {
-            setSelectedCar(car);
-        };
-    
-        const closeModal = () => {
-            setSelectedCar(null);
-        };
 
     return (
         <section className="container mx-auto px-6 py-12">
@@ -95,11 +101,11 @@ const UserActivityOverview = () => {
                                         <p className="text-gray-600">${car.price.toLocaleString()}</p>
                                     </div>
                                     <div className="flex space-x-2">
-                                        <button
-                                            onClick={() => handleViewDetails(car)}
-                                            className="px-4 py-2 bg-green-500 text-white rounded-md"
+                                    <button
+                                            onClick={() => setSelectedCar(car)}
+                                            className="px-4 py-2 bg-yellow-500 text-white rounded-md"
                                         >
-                                            View
+                                            Update
                                         </button>
                                         <button
                                             onClick={() => handleDeleteCar(car.id)}
@@ -116,7 +122,93 @@ const UserActivityOverview = () => {
                     )}
                 </div>
             </div>
-
+                
+            {/* Update Car Modal */}
+            {selectedCar && (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-6 rounded-lg w-full max-w-lg">
+                        <h2 className="text-xl font-bold mb-4">Update Car Details</h2>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                handleUpdateCar(selectedCar);
+                            }}
+                            className="space-y-4"
+                        >
+                            <input
+                                type="text"
+                                name="make"
+                                placeholder="Car Make"
+                                value={selectedCar.make}
+                                onChange={(e) =>
+                                    setSelectedCar({ ...selectedCar, make: e.target.value })
+                                }
+                                className="w-full border rounded-lg p-2"
+                                required
+                            />
+                            <input
+                                type="text"
+                                name="model"
+                                placeholder="Car Model"
+                                value={selectedCar.model}
+                                onChange={(e) =>
+                                    setSelectedCar({ ...selectedCar, model: e.target.value })
+                                }
+                                className="w-full border rounded-lg p-2"
+                                required
+                            />
+                            <input
+                                type="number"
+                                name="year"
+                                placeholder="Year"
+                                value={selectedCar.year}
+                                onChange={(e) =>
+                                    setSelectedCar({ ...selectedCar, year: e.target.value })
+                                }
+                                className="w-full border rounded-lg p-2"
+                                required
+                            />
+                            <input
+                                type="text"
+                                name="price"
+                                placeholder="Price"
+                                value={selectedCar.price}
+                                onChange={(e) =>
+                                    setSelectedCar({ ...selectedCar, price: e.target.value })
+                                }
+                                className="w-full border rounded-lg p-2"
+                                required
+                            />
+                            <textarea
+                                name="description"
+                                placeholder="Description"
+                                value={selectedCar.description}
+                                onChange={(e) =>
+                                    setSelectedCar({ ...selectedCar, description: e.target.value })
+                                }
+                                className="w-full border rounded-lg p-2"
+                                rows={4}
+                                required
+                            ></textarea>
+                            <div className="flex justify-end space-x-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setSelectedCar(null)}
+                                    className="px-4 py-2 bg-gray-500 text-white rounded-lg"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                                >
+                                    Update
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
             {/* Bids Received */}
             <div>
                 <h2 className="text-2xl font-bold mb-4">Bids Received</h2>
@@ -157,10 +249,7 @@ const UserActivityOverview = () => {
                     )}
                 </div>
             </div>
-            {/* Modal */}
-            {selectedCar && (
-                <CarDetailModal car={selectedCar} onClose={closeModal} />
-            )}
+            
         </section>
     );
 };

@@ -53,6 +53,7 @@ class CarController extends Controller
             'model' => $validatedData['model'],
             'year' => $validatedData['year'],
             'price' => $validatedData['price'],
+            'description' => $request->input('description', 'No description provided'),
             'user_id' => Auth::id(),
         ]);
         $car->images = json_encode($imagePaths); // Save image paths as JSON
@@ -75,6 +76,26 @@ class CarController extends Controller
             
         ]);
     }
+    public function updateCar(Request $request, $id)
+{
+    $car = Car::findOrFail($id);
+
+    if ($car->user_id !== $request->user()->id) {
+        return response()->json(['error' => 'Unauthorized'], 403);
+    }
+
+    $validatedData = $request->validate([
+        'make' => 'required|string|max:255',
+        'model' => 'required|string|max:255',
+        'year' => 'required|integer',
+        'price' => 'required|numeric',
+        'description' => 'nullable|string',
+    ]);
+
+    $car->update($validatedData);
+
+    return response()->json($car);
+}
 
     
 

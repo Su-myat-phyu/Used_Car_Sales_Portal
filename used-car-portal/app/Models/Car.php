@@ -14,10 +14,8 @@ class Car extends Model
         'model',
         'year',
         'price',
-        'biddingPrice',
         'images',
         'user_id',
-        'bidding_status',
     ];
 
     protected $casts = [
@@ -27,6 +25,10 @@ class Car extends Model
     public function bids()
 {
     return $this->hasMany(Bid::class);
+}
+public function user()
+{
+    return $this->belongsTo(User::class);
 }
 
 }

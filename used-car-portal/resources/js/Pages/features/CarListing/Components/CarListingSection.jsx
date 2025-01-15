@@ -39,21 +39,8 @@ const CarListingSection = ({ cars }) => {
                                     <p className="text-accent-500 font-semibold text-lg">
                                         Price: ${Number(car.price).toLocaleString() || "N/A"}
                                     </p>
-                                    <p className="text-blue-600 font-medium text-lg">
-                                        Bidding Price: ${Number(car.biddingPrice).toLocaleString() || "N/A"}
-                                    </p>
-                                    {/* Display bidding status */}
-                                    <p
-                                        className={`text-sm font-semibold ${
-                                            car.bidding_status === "active"
-                                                ? "text-green-600"
-                                                : "text-gray-500"
-                                        }`}
-                                    >
-                                        {car.bidding_status === "active"
-                                            ? "Active Bids"
-                                            : "Inactive Bids"}
-                                    </p>
+
+                                    
                                     <button
                                         onClick={() => handleViewDetails(car.id)}
                                         className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"

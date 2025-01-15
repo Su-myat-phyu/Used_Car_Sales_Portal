@@ -167,8 +167,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/user/car/{id}', [UserActivityController::class, 'deleteCar']);
 });
 
-Route::get('/cars/active-bids', [CarController::class, 'getActiveBids']);
-Route::get('/cars/inactive-bids', [CarController::class, 'getInactiveBids']);
+
 
 Route::patch('/cars/{id}/update-bidding-status', [CarController::class, 'updateBiddingStatus']);
 
@@ -194,7 +193,12 @@ Route::post('/bids', [BidController::class, 'store']);
 Route::get('/cars/{id}/bids', [BidController::class, 'index']);
 
 //fetch bids received
-Route::get('/user/bids-received', [BidController::class, 'getReceivedBids']);
+Route::middleware(['auth'])->group(function () {
+    //Route::post('/user/bids-received', [BidController::class, 'getReceivedBids']);
+    //Route::match(['GET', 'POST'], '/user/bids-received', [BidController::class, 'getReceivedBids']);
+    Route::get('/user/bids-received', [BidController::class, 'getReceivedBids']);
+
+});
 
 //accept bid
 Route::post('/user/bid/{bidId}/accept', [BidController::class, 'acceptBid']);

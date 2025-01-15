@@ -7,7 +7,6 @@ const MainDashboardSection = () => {
         model: "",
         year: "",
         price: "",
-        biddingPrice: "",
         images: [],
     });
     const [profile, setProfile] = useState({
@@ -51,7 +50,7 @@ const MainDashboardSection = () => {
 
     try {
         // Ensure carDetails is valid
-        if (!carDetails.make || !carDetails.model || !carDetails.year || !carDetails.price || !carDetails.biddingPrice) {
+        if (!carDetails.make || !carDetails.model || !carDetails.year || !carDetails.price) {
             alert("Please fill out all required fields.");
             return;
         }
@@ -61,7 +60,6 @@ const MainDashboardSection = () => {
         formData.append("model", carDetails.model);
         formData.append("year", carDetails.year);
         formData.append("price", carDetails.price);
-        formData.append("biddingPrice", carDetails.biddingPrice);
 
         // Handle images array
         if (Array.isArray(carDetails.images) && carDetails.images.length > 0) {
@@ -135,15 +133,7 @@ const MainDashboardSection = () => {
                                 required
                             />
 
-                            <input
-                                type="text"
-                                name="biddingPrice"
-                                placeholder="BiddingPrice"
-                                value={carDetails.biddingPrice}
-                                onChange={(e) => handleChange(e, "carDetails")}
-                                className="border rounded-md p-2"
-                                required
-                            />
+                           
                             
                         </div>
                         

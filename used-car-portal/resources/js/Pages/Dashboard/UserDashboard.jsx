@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import AuthFooter from "../../Components/HeaderFooter/AuthFooter";
 import Navbar from "./Components/Navbar";
 import MainDashboardSection from "./Components/MainDashboardSection";
+import BiddingStatusSection from "./Components/BiddingStatusSection";
 import UserActivityOverview from "./Components/UserActivityOverview";
 
 const UserDashboard = ({ userName }) => {
@@ -24,6 +25,7 @@ const UserDashboard = ({ userName }) => {
                 <section className="flex-grow px-4 md:px-8 py-4 space-y-6">
                     <MainDashboardSection />
                     <UserActivityOverview />
+                    <BiddingStatusSection /> 
                 </section>
 
                 {/* Footer */}

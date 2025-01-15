@@ -10,7 +10,7 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
         });
     };
 
-    const handleBidSubmit = (carId) => {
+    /*const handleBidSubmit = (carId) => {
         const bidAmount = biddingAmounts[carId];
         if (bidAmount) {
             handleSubmitBid(carId, bidAmount); // Call the handler from props
@@ -22,7 +22,26 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
         } else {
             alert("Please enter a bid amount before submitting.");
         }
+    };*/
+    const handleBidSubmit = async (carId, bidAmount) => {
+        if (!bidAmount) {
+            alert("Please enter a bid amount before submitting.");
+            return;
+        }
+    
+        try {
+            const response = await axios.post("/bids", {
+                car_id: carId,
+                bid_amount: bidAmount,
+            });
+            alert("Bid submitted successfully!");
+            console.log(response.data);
+        } catch (err) {
+            console.error("Error submitting bid:", err.response || err.message);
+            alert("Failed to submit bid. Please try again.");
+        }
     };
+    
 
     return (
         <section className="py-16 bg-gray-50">
@@ -75,7 +94,8 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                                             }
                                         />
                                         <button
-                                            onClick={() => handleBidSubmit(car.id)}
+                                            onClick={() => handleBidSubmit(car.id, biddingAmounts[car.id])}
+
                                             className="bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
                                         >
                                             Submit Bid

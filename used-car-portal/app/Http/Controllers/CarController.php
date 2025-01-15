@@ -36,7 +36,6 @@ class CarController extends Controller
             'price' => 'required|numeric|min:0',
             'images' => 'nullable|array',
             'images.*' => 'image|max:2048',
-            'biddingPrice' => 'required|numeric|min:0',
         ]);
 
         // Handle image upload
@@ -54,7 +53,6 @@ class CarController extends Controller
             'model' => $validatedData['model'],
             'year' => $validatedData['year'],
             'price' => $validatedData['price'],
-            'biddingPrice' => $validatedData['biddingPrice'],
             'user_id' => Auth::id(),
         ]);
         $car->images = json_encode($imagePaths); // Save image paths as JSON
@@ -73,28 +71,11 @@ class CarController extends Controller
                 'year' => 2021,
                 'price' => 20000,
                 'image_path' => asset('storage/images/toyotaCar.png'),
-                'biddingPrice' => 25000,
             
         ]);
     }
 
-    public function updateBiddingStatus(Request $request, $id)
-{
-    $car = Car::find($id);
-
-    if (!$car) {
-        return response()->json(['error' => 'Car not found'], 404);
-    }
-
-    $validated = $request->validate([
-        'bidding_status' => 'required|in:active,inactive',
-    ]);
-
-    $car->bidding_status = $validated['bidding_status'];
-    $car->save();
-
-    return response()->json(['success' => true, 'bidding_status' => $car->bidding_status], 200);
-}
+    
 
 
     

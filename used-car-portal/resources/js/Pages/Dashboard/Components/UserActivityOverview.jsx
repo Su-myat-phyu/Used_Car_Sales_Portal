@@ -21,8 +21,10 @@ const UserActivityOverview = () => {
         const fetchBidsReceived = async () => {
             try {
                 const response = await axios.get("/user/bids-received");
+                console.log("Bids Received:", response.data); 
                 setBidsReceived(response.data);
             } catch (err) {
+                console.error("Error fetching bids received:", err.response || err.message);
                 setError("Failed to fetch bids received.");
             }
         };
@@ -121,7 +123,7 @@ const UserActivityOverview = () => {
                                             {bid.car.make} {bid.car.model} ({bid.car.year})
                                         </h3>
                                         <p className="text-gray-600">Bid Amount: ${bid.bid_amount.toLocaleString()}</p>
-                                        <p className="text-gray-600">Bidder: {bid.user.username}</p>
+                                        <p className="text-gray-600">Bidder: {bid.user.full_name}</p>
                                     </div>
                                     <div className="flex space-x-2">
                                         <button

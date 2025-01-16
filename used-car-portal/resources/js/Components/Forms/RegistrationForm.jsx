@@ -19,12 +19,33 @@ const RegistrationForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if (data.password !== data.confirmPassword) {
+            alert("Passwords do not match.");
+            return;
+        }
+
+        if (data.role === "user" && (!data.phone_number || !data.address)) {
+            alert("Please fill out all required user fields.");
+            return;
+        }
+
+        if (data.role === "admin" && (!data.employeeId || !data.department)) {
+            alert("Please fill out all required admin fields.");
+            return;
+        }
+
+        const formData = new FormData();
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
+
         // Submit the form data to backend
         // Submit the form data to backend
         post("/register", {
             onSuccess: () => {
                 alert("Registration successful! Redirecting to login...");
                 window.location.href = "/login"; // Redirect to login
+                //Inertia.visit("/login", { preserveScroll: true });
             },
             onError: (errors) => {
                 console.error("Registration failed:", errors);
@@ -124,11 +145,31 @@ const RegistrationForm = () => {
 
 
                 {/* Role Selection */}
+                
+                {/* Role Selection */}
                 <div>
                     <label className="block text-sm font-bold text-gray-700 mb-1">
                         Role
                     </label>
                     <select
+                        id="role"
+                        name="role"
+                        value={data.role}
+                        onChange={(e) => setData("role", e.target.value)} // Add handler
+                        className="w-full border border-gray-300 p-2 rounded"
+                    >
+                        <option value="">Select Role</option>
+                        {roleOptions.map((option) => (
+                            <option key={option} value={option}>
+                                {option.charAt(0).toUpperCase() + option.slice(1)}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.role && (
+                        <p className="text-red-500 text-sm">{errors.role}</p>
+                    )}
+                </div>
+                    {/*<select
                         value={data.role}
                         onChange={(e) => {
                             
@@ -136,14 +177,15 @@ const RegistrationForm = () => {
                         }}
                         className="w-full border border-gray-300 p-2 rounded"
                     >
+                        <option value="">Select Role</option>
                         {roleOptions.map((option) => (
                         <option key={option} value={option}>
                             {option.charAt(0).toUpperCase() + option.slice(1)}
                         </option>
                     ))}
-                </select>
-                {errors.role && <p>{errors.role}</p>}
-            </div>
+                </select>*/}
+
+                
 
                 {/* Conditional Fields Based on Role */}
                 {data.role === "user" && (
@@ -247,6 +289,7 @@ const RegistrationForm = () => {
                         </div>
                     </>
                 )}
+                
 
                 {/* Register Button */}
                 <button

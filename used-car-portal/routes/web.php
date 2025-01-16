@@ -92,7 +92,7 @@ Route::get('/user-dashboard', function () {
     return redirect()->route('home');
 })->name('dashboard');*/
 // User Dashboard Route
-Route::middleware(['auth', 'verified', 'role:user'])->get('/user-dashboard', function () {
+/*Route::middleware(['auth', 'verified', 'role:user'])->get('/user-dashboard', function () {
     return Inertia::render('Dashboard/UserDashboard');
 })->name('user.dashboard');
 
@@ -113,6 +113,14 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
     }
 
     return redirect('/home'); // Fallback
+})->name('dashboard');*/
+
+Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
+    $user = Auth::user();
+
+    return $user->role === 'admin'
+        ? redirect()->route('admin.dashboard')
+        : redirect()->route('user.dashboard');
 })->name('dashboard');
 
 //Added car

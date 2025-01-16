@@ -32,6 +32,14 @@ const LoginForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         post("/login", {
+            onSuccess: (response) => {
+                const role = response.props.role; // Role passed via Laravel
+                if (role === "admin") {
+                    window.location.href = "/admin-dashboard";
+                } else if (role === "user") {
+                    window.location.href = "/user-dashboard";
+                }
+            },
             onError: (errors) => {
                 console.error("Login failed:", errors);
                 alert("Login failed. Please check your credentials.");

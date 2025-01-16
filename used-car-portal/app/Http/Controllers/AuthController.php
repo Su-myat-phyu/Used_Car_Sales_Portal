@@ -20,7 +20,7 @@ class AuthController extends Controller
             'role' => 'required|in:user,admin',
         ]);
 
-        $user = User::create([
+        User::create([
             'full_name' => $request->full_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -47,7 +47,12 @@ class AuthController extends Controller
 
             $role = Auth::user()->role;
             //return redirect()->intended($role === 'admin' ? '/admin-dashboard' : '/user-dashboard');
-            return Inertia::location($role === 'admin' ? '/admin-dashboard' : '/user-dashboard');
+            //return Inertia::location($role === 'admin' ? '/admin-dashboard' : '/user-dashboard');
+            if ($role === 'admin') {
+                return redirect('/admin-dashboard');
+            } elseif ($role === 'user') {
+                return redirect('/user-dashboard');
+            }
         }
 
         return back()->withErrors([

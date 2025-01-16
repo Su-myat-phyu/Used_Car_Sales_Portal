@@ -114,14 +114,40 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
 
     return redirect('/home'); // Fallback
 })->name('dashboard');*/
+/*Route::get('/user-dashboard', function () {
+    return Inertia::render('Dashboard/UserDashboard');
+})->middleware(['auth', 'verified', 'role:user'])->name('user-dashboard');
 
-Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
+Route::get('/admin-dashboard', function () {
+    return Inertia::render('Dashboard/AdminDashboard');
+})->middleware(['auth', 'verified'])->name('admin-dashboard');
+
+Route::get('/dashboard', function () {
     $user = Auth::user();
+    if ($user) {
+        if ($user->role->contains('name', 'admin')) {
+            return redirect()->route('admin-dashboard');
+        }
 
-    return $user->role === 'admin'
-        ? redirect()->route('admin.dashboard')
-        : redirect()->route('user.dashboard');
-})->name('dashboard');
+        if ($user->role->contains('name', 'user')) {
+            return redirect()->route('user-dashboard');
+        }
+
+        
+    }
+    return redirect()->route('home');
+})->middleware(['auth', 'verified'])->name('dashboard');*/
+
+// Dashboard Routes (Protected by Middleware)
+Route::middleware('auth')->group(function () {
+    Route::get('/admin-dashboard', function () {
+        return inertia('Dashboard/AdminDashboard'); // Render Admin Dashboard
+    })->middleware('role:admin');
+
+    Route::get('/user-dashboard', function () {
+        return inertia('Dashboard/UserDashboard'); // Render User Dashboard
+    })->middleware('role:user');
+});
 
 //Added car
 //Route::middleware(['auth'])->group(function () {

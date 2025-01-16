@@ -29,12 +29,19 @@ public function login(Request $request)
 
         $user = Auth::user();
 
-        if ($user->role === 'admin') {
+        /*if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
 
         if ($user->role === 'user') {
             return redirect()->route('user.dashboard');
+        }*/
+
+        if ($user->role->contains('name', 'user')) {
+            return redirect()->route('user-dashboard');
+        }
+        if ($user->role->contains('name', 'admin')) {
+            return redirect()->route('admin-dashboard');
         }
         return redirect('/home')->with('error', 'Unauthorized role.');;
     }

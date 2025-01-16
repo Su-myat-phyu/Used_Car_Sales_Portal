@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useState} from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Footer from "../../Components/HeaderFooter/Footer";
 import Navbar from "./Components/Navbar";
@@ -31,11 +31,11 @@ const AdminDashboard = ({ userName }) => {
                     </p>
                 </div>
 
-                {/* Main Content Sections */}
+                {/* Main Content Sections 
                 <section className="flex-grow px-4 md:px-8 py-4 space-y-6">
                     <Sidebar setSelectedSection={setSelectedSection} />
                     <main className="flex-1 p-6 bg-gray-100">{renderSection()}</main>
-                </section>
+                </section>*/}
 
                 {/* Footer */}
                 <Footer />

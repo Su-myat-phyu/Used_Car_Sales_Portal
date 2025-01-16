@@ -34,12 +34,33 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $user = Auth::user();
-        $redirectRoute = $user->role === 'admin' ? 'admin.dashboard' : 'user.dashboard';
+        //$redirectRoute = $user->role === 'admin' ? 'admin.dashboard' : 'user.dashboard';
     
-        return redirect()->route($redirectRoute);
+        //return redirect()->route($redirectRoute);
 
         //return redirect()->intended(route('dashboard', absolute: false));
+        // Check if the user has roles and redirect accordingly
+        if ($user) {
+            // Check for admin role first
+            if ($user->role->pluck('name')->contains('admin')) {
+                return redirect()->route('admin-dashboard');
+            }
+
+            // Check for member role if no admin role
+            if ($user->roles->pluck('name')->contains('user')) {
+                return redirect()->route('user-dashboard');
+            }
+
+            
+
+            // Default redirection if no specific role matches
+            return redirect()->route('home');
+        }
+
+        // Fallback if no user is authenticated
+        return redirect()->route('login');
     }
+    
 
     /**
      * Destroy an authenticated session.

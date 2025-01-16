@@ -19,33 +19,12 @@ const RegistrationForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (data.password !== data.confirmPassword) {
-            alert("Passwords do not match.");
-            return;
-        }
-
-        if (data.role === "user" && (!data.phone_number || !data.address)) {
-            alert("Please fill out all required user fields.");
-            return;
-        }
-
-        if (data.role === "admin" && (!data.employeeId || !data.department)) {
-            alert("Please fill out all required admin fields.");
-            return;
-        }
-
-        const formData = new FormData();
-        for (const key in data) {
-            formData.append(key, data[key]);
-        }
-
         // Submit the form data to backend
         // Submit the form data to backend
         post("/register", {
-            onSuccess: () => {
+            onSuccess: (response) => {
                 alert("Registration successful! Redirecting to login...");
                 window.location.href = "/login"; // Redirect to login
-                //Inertia.visit("/login", { preserveScroll: true });
             },
             onError: (errors) => {
                 console.error("Registration failed:", errors);
@@ -144,7 +123,7 @@ const RegistrationForm = () => {
                 </div>
 
 
-                {/* Role Selection */}
+           
                 
                 {/* Role Selection */}
                 <div>

@@ -2,19 +2,24 @@ import {React, useState} from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Footer from "../../Components/HeaderFooter/Footer";
 import Navbar from "./Components/Navbar";
+import Sidebar from "./Components/Sidebar";
 
 
 const AdminDashboard = ({ userName }) => {
-    const [selectedSection, setSelectedSection] = useState("users");
+    const [activeSection, setActiveSection] = useState('users');
 
     const renderSection = () => {
-        switch (selectedSection) {
-            case "users":
-                return <ViewUsers />;
-            case "cars":
-                return <ManageCars />;
+        switch (activeSection) {
+            case 'users':
+                return <UsersManagement />;
+            case 'carPosts':
+                return <CarPostsApproval />;
+            case 'appointments':
+                return <AppointmentsApproval />;
+            case 'transactions':
+                return <Transactions />;
             default:
-                return <ViewUsers />;
+                return <div>Select a section</div>;
         }
     };
     return (
@@ -31,11 +36,11 @@ const AdminDashboard = ({ userName }) => {
                     </p>
                 </div>
 
-                {/* Main Content Sections 
+                {/* Main Content Sections */}
                 <section className="flex-grow px-4 md:px-8 py-4 space-y-6">
-                    <Sidebar setSelectedSection={setSelectedSection} />
-                    <main className="flex-1 p-6 bg-gray-100">{renderSection()}</main>
-                </section>*/}
+                    <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+                   {/*<main className="flex-1 p-6 bg-gray-100">{renderSection()}</main> */}
+                </section>
 
                 {/* Footer */}
                 <Footer />

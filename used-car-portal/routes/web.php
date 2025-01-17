@@ -14,7 +14,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserActivityController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\BidController;
-
+use App\Http\Controllers\TestDriveController;
 
 //Route::get('/', function () {
    // return view('Home');
@@ -250,8 +250,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/bids', [BidController::class, 'getUserBids']);
 });
 
+//Admin
+// Admin routes for managing users
+Route::get('/users-management', [UserController::class, 'index']);
+Route::put('/users-management/{id}', [UserController::class, 'update']);
+Route::delete('/users-management/{id}', [UserController::class, 'destroy']);
 
-
-
+// Admin routes for managing test drive appointments
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/test-drives', [TestDriveController::class, 'index']);
+    Route::patch('/test-drives/{id}', [TestDriveController::class, 'update']);
+});
 
 

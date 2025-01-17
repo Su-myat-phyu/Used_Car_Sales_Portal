@@ -12,4 +12,10 @@ class TestDrive extends Model
     protected $fillable = [
         'car_id', 'name', 'email', 'date',
     ];
+
+    public function car()
+    {
+        return $this->belongsTo(Car::class);
+    }
 }
+

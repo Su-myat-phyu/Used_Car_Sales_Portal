@@ -21,4 +21,22 @@ class TestDriveController extends Controller
 
         return response()->json(['message' => 'Test drive scheduled successfully', 'testDrive' => $testDrive], 201);
     }
+
+    public function index()
+    {
+        // Fetch test drive requests with related car details
+        $testDrives = TestDrive::with('car')->get();
+
+        return response()->json($testDrives);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Approve or reject test drive
+        $testDrive = TestDrive::findOrFail($id);
+        $testDrive->status = $request->status; // 'approved' or 'rejected'
+        $testDrive->save();
+
+        return response()->json(['message' => 'Test drive status updated successfully.']);
+    }
 }

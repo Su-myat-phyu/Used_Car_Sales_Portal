@@ -3,7 +3,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Footer from "../../Components/HeaderFooter/Footer";
 import Navbar from "./Components/Navbar";
 import Sidebar from "./Components/Sidebar";
-
+import UsersManagement from './Components/UsersManagement';
+import CarPostsApproval from './Components/CarPostsApproval';
+import AppointmentsApproval from "./Components/AppointmentsApproval";
+import Transactions from "./Components/Transactions";
 
 const AdminDashboard = ({ userName }) => {
     const [activeSection, setActiveSection] = useState('users');
@@ -37,10 +40,13 @@ const AdminDashboard = ({ userName }) => {
                 </div>
 
                 {/* Main Content Sections */}
-                <section className="flex-grow px-4 md:px-8 py-4 space-y-6">
+                <div className="flex font-roboto">
                     <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
                    {/*<main className="flex-1 p-6 bg-gray-100">{renderSection()}</main> */}
-                </section>
+                   <div className="flex-1">
+                        <div className="p-6">{renderSection()}</div>
+                    </div>
+                </div>
 
                 {/* Footer */}
                 <Footer />

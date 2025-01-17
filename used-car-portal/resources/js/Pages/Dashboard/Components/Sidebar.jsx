@@ -11,7 +11,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
     ];
 
     return (
-        <div className="w-1/5 bg-white-800 text-bold h-screen flex flex-col border-solid border-2 border-gray-300">
+        <div className="w-1/5 bg-white-800 text-bold h-screen flex flex-col border-r-2 border-gray-300">
             <div className="p-4 text-lg font-bold border-b border-gray-700">
                 Admin Dashboard
             </div>

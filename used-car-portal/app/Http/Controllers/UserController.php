@@ -34,4 +34,35 @@ class UserController extends Controller
         'auth.user' => $user->fresh(), // Ensure Inertia gets updated user data
     ]);
 }
+
+public function index()
+{
+    // Fetch all users with role 'user'
+    $users = User::where('role', 'user')->get();
+    return response()->json($users);
+}
+
+public function update(Request $request, $id)
+{
+    // Validate input
+    $request->validate([
+        'full_name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+    ]);
+
+    // Update user
+    $user = User::findOrFail($id);
+    $user->update($request->only('full_name', 'email', 'phone_number', 'address'));
+
+    return response()->json(['message' => 'User updated successfully']);
+}
+
+public function destroy($id)
+{
+    // Delete user
+    $user = User::findOrFail($id);
+    $user->delete();
+
+    return response()->json(['message' => 'User deactivated successfully']);
+}
 }

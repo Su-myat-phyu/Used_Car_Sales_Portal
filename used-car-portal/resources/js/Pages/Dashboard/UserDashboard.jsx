@@ -5,6 +5,7 @@ import Navbar from "./Components/Navbar";
 import MainDashboardSection from "./Components/MainDashboardSection";
 import BiddingStatusSection from "./Components/BiddingStatusSection";
 import UserActivityOverview from "./Components/UserActivityOverview";
+import TestDriveStatusSection from "./Components/TestDriveStatusSection";
 
 const UserDashboard = ({ userName }) => {
     return (
@@ -26,6 +27,7 @@ const UserDashboard = ({ userName }) => {
                     <MainDashboardSection />
                     <UserActivityOverview />
                     <BiddingStatusSection /> 
+                    <TestDriveStatusSection />
                 </section>
 
                 {/* Footer */}

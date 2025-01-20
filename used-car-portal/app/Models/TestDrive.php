@@ -10,12 +10,20 @@ class TestDrive extends Model
     use HasFactory;
 
     protected $fillable = [
-        'car_id', 'name', 'email', 'date',
+        'car_id', 'user_id','name', 'email', 'date', 'status'
     ];
+
+    public $timestamps = true;
 
     public function car()
     {
         return $this->belongsTo(Car::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class)->select(['id', 'full_name']);;
+    }
 }
+
 

@@ -257,9 +257,19 @@ Route::put('/users-management/{id}', [UserController::class, 'update']);
 Route::delete('/users-management/{id}', [UserController::class, 'destroy']);
 
 // Admin routes for managing test drive appointments
-Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/test-drives', [TestDriveController::class, 'index']);
-    Route::patch('/test-drives/{id}', [TestDriveController::class, 'update']);
+
+Route::post('/test-drives', [TestDriveController::class, 'store']);
+Route::get('/test-drives', [TestDriveController::class, 'index']);
+Route::patch('/test-drives/{id}', [TestDriveController::class, 'update'])->name('test-drives.update');
+
+//Test drive approval for user
+Route::middleware('auth')->group(function () {
+    Route::get('/user/test-drives', [TestDriveController::class, 'getUserTestDrives']);
 });
 
+Route::post('/schedule-test-drive', [TestDriveController::class, 'scheduleTestDrive']);
 
+Route::middleware(['auth'])->group(function () {
+    Route::post('/test-drives/{id}/approve', [TestDriveController::class, 'approveTestDrives']);
+    Route::post('/test-drives/{id}/reject', [TestDriveController::class, 'rejectTestDrives']);
+});

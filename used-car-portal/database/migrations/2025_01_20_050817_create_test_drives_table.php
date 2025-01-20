@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('test_drives', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('car_id')->constrained('cars')->onDelete('cascade');
+            $table->unsignedBigInteger('car_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('name');
             $table->string('email');
             $table->date('date');
+            $table->enum('status', ['pending', 'accepted', 'declined'])->default('pending');
             $table->timestamps();
+
+            $table->foreign('car_id')->references('id')->on('cars')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

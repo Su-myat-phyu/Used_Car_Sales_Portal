@@ -269,7 +269,8 @@ Route::middleware('auth')->group(function () {
 
 Route::post('/schedule-test-drive', [TestDriveController::class, 'scheduleTestDrive']);
 
+
 Route::middleware(['auth'])->group(function () {
-    Route::post('/test-drives/{id}/approve', [TestDriveController::class, 'approveTestDrives']);
-    Route::post('/test-drives/{id}/reject', [TestDriveController::class, 'rejectTestDrives']);
+    Route::post('/test-drives/{id}/approve', [TestDriveController::class, 'approveTestDrive']);
+    Route::post('/test-drives/{id}/reject', [TestDriveController::class, 'rejectTestDrive']);
 });

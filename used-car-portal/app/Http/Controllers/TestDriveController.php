@@ -93,7 +93,7 @@ class TestDriveController extends Controller
 
 
 
-    public function scheduleTestDrive(Request $request)
+    /*public function scheduleTestDrive(Request $request)
 {
     try {
         // Validate incoming data
@@ -129,40 +129,48 @@ class TestDriveController extends Controller
             'error' => $e->getMessage(),
         ], 500);
     }
+}*/
+
+// Approve a test drive
+public function approveTestDrive($id)
+{
+    try {
+        $testDrive = TestDrive::with('car')->findOrFail($id);
+
+        // Ensure only authorized users can approve
+        if (Auth::user()->role !== 'admin' && $testDrive->car->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized action.'], 403);
+        }
+
+        // Update status to approved
+        $testDrive->status = 'approved';
+        $testDrive->save();
+
+        return response()->json(['message' => 'Appointment approved successfully.']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to approve appointment: ' . $e->getMessage()], 500);
+    }
 }
 
-public function approveTestDrives($id)
+// Reject a test drive
+public function rejectTestDrive($id)
 {
-    $testDrive = TestDrive::findOrFail($id);
+    try {
+        $testDrive = TestDrive::with('car')->findOrFail($id);
 
-    // Ensure the user is authorized
-    if (Auth::user()->role !== 'admin' && $testDrive->car->user_id !== Auth::id()) {
-        return response()->json(['error' => 'Unauthorized action.'], 403);
+        // Ensure only authorized users can reject
+        if (Auth::user()->role !== 'admin' && $testDrive->car->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized action.'], 403);
+        }
+
+        // Update status to rejected
+        $testDrive->status = 'rejected';
+        $testDrive->save();
+
+        return response()->json(['message' => 'Appointment rejected successfully.']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to reject appointment: ' . $e->getMessage()], 500);
     }
-
-    // Update status and `updated_at` timestamp
-    $testDrive->update([
-        'status' => 'approved',
-        'updated_at' => now(), // Ensure valid timestamp
-    ]);
-
-    return response()->json(['message' => 'Appointment approved successfully.']);
-}
-
-
-public function rejectTestDrives($id)
-{
-    $testDrive = TestDrive::findOrFail($id);
-
-    // Check if the user is authorized to reject
-    if (Auth::user()->role !== 'admin' && $testDrive->car->user_id !== Auth::id()) {
-        return response()->json(['error' => 'Unauthorized action.'], 403);
-    }
-
-    // Update status to rejected
-    $testDrive->update(['status' => 'rejected']);
-
-    return response()->json(['message' => 'Appointment rejected successfully.']);
 }
 
 

@@ -21,6 +21,16 @@ class TestDriveController extends Controller
 
     $validated['user_id'] = Auth::id();
 
+    // Check if a test drive already exists for the same car, user, and date
+    $existingTestDrive = TestDrive::where('car_id', $validated['car_id'])
+        ->where('user_id', $validated['user_id'])
+        ->where('date', $validated['date'])
+        ->first();
+
+    if ($existingTestDrive) {
+        return response()->json(['error' => 'You have already scheduled a test drive for this car on the selected date.'], 400);
+    }
+
     $testDrive = TestDrive::create($validated);
 
     return response()->json(['message' => 'Test drive scheduled successfully', 'testDrive' => $testDrive], 201);

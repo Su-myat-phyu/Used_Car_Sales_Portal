@@ -46,6 +46,21 @@ public function getReceivedBids(Request $request)
 
     return response()->json($bids, 200);
 }
+/*public function acceptBid($bidId)
+{
+    $bid = Bid::with('car')->findOrFail($bidId);
+
+    // Ensure the car belongs to the logged-in user
+    if ($bid->car->user_id !== Auth::id()) {
+        return response()->json(['error' => 'Unauthorized action.'], 403);
+    }
+
+    // Mark the bid as accepted
+    $bid->update(['status' => 'accepted']);
+
+    return response()->json(['message' => 'Bid accepted successfully.']);
+}*/
+
 public function acceptBid($bidId)
 {
     $bid = Bid::with('car')->findOrFail($bidId);
@@ -57,6 +72,9 @@ public function acceptBid($bidId)
 
     // Mark the bid as accepted
     $bid->update(['status' => 'accepted']);
+
+    // Mark the car as sold
+    $bid->car->update(['sold_status' => 'sold']);
 
     return response()->json(['message' => 'Bid accepted successfully.']);
 }

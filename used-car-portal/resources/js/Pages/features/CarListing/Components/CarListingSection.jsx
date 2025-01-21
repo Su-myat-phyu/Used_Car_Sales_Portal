@@ -1,4 +1,4 @@
-import CarDetailModal from "./CarDetailModal";
+import AuthCarDetailModal from "./AuthCarDetailModal";
 import React, {useState } from "react";
 
 const CarListingSection = ({ cars }) => {
@@ -23,8 +23,11 @@ const CarListingSection = ({ cars }) => {
                         cars.map((car) => (
                             <div
                                 key={car.id}
-                                className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
+                                className={`relative bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition ${
+                                    car.sold_status === "sold" ? "opacity-50 pointer-events-none" : ""
+                                }`}
                             >
+                                {/* Car Image */}
                                 {car.images && car.images.length > 0 ? (
                                     <img
                                         src={car.images[0]} // Display the first image
@@ -36,24 +39,35 @@ const CarListingSection = ({ cars }) => {
                                         No Image Available
                                     </div>
                                 )}
+
+                                {/* Sold Out Overlay */}
+                                {car.sold_status === "sold" && (
+                                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                        <span className="text-white text-xl font-bold">Sold Out</span>
+                                    </div>
+                                )}
+
+                                {/* Car Details */}
                                 <div className="p-6">
                                     <h3 className="text-xl font-bold text-gray-800">
                                         {car.make} {car.model}
                                     </h3>
-                                    <p className="text-gray-600">
-                                        Year: {car.registration_year || car.year}
-                                    </p>
+                                    <p className="text-gray-600">Year: {car.year}</p>
                                     <p className="text-accent-500 font-semibold text-lg">
-                                        Price: ${Number(car.price).toLocaleString() || "N/A"}
+                                        Price: ${Number(car.price).toLocaleString()}
                                     </p>
 
                                     
-                                    <button
-                                        onClick={() => handleViewDetails(car)}
-                                        className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
-                                    >
-                                        View Details
-                                    </button>
+
+                                    {/* View Details Button */}
+                                    {car.sold_status !== "sold" && (
+                                        <button
+                                            onClick={() => handleViewDetails(car)}
+                                            className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
+                                        >
+                                            View Details
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))
@@ -67,7 +81,7 @@ const CarListingSection = ({ cars }) => {
 
             {/* Modal */}
             {selectedCar && (
-                <CarDetailModal car={selectedCar} onClose={closeModal} />
+                <AuthCarDetailModal car={selectedCar} onClose={closeModal} />
             )}
         </section>
     );

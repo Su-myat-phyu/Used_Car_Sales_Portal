@@ -24,9 +24,7 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                 bid_amount: bidAmount,
             });
             alert("Bid submitted successfully!");
-            console.log(response.data);
         } catch (err) {
-            console.error("Error submitting bid:", err.response || err.message);
             alert("Failed to submit bid. Please try again.");
         }
     };
@@ -50,17 +48,14 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                         cars.map((car) => (
                             <div
                                 key={car.id}
-                                className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition relative"
+                                className={`relative bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition ${
+                                    car.sold_status === "sold" ? "opacity-50 pointer-events-none" : ""
+                                }`}
                             >
-                                {car.status === "sold" && (
-                                    <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
-                                        <span className="text-white text-2xl font-bold">Sold Out</span>
-                                    </div>
-                                )}
-
+                                {/* Car Image */}
                                 {car.images && car.images.length > 0 ? (
                                     <img
-                                        src={car.images[0]}
+                                        src={car.images[0]} // Display the first image
                                         alt={`${car.make} ${car.model}`}
                                         className="w-full h-48 object-cover"
                                     />
@@ -70,44 +65,55 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                                     </div>
                                 )}
 
+                                {/* Sold Out Overlay */}
+                                {car.sold_status === "sold" && (
+                                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                        <span className="text-white text-xl font-bold">Sold Out</span>
+                                    </div>
+                                )}
+
+                                {/* Car Details */}
                                 <div className="p-6">
                                     <h3 className="text-xl font-bold text-gray-800">
                                         {car.make} {car.model}
                                     </h3>
-                                    <p className="text-gray-600">
-                                        Year: {car.registration_year || car.year}
-                                    </p>
+                                    <p className="text-gray-600">Year: {car.year}</p>
                                     <p className="text-accent-500 font-semibold text-lg">
-                                        Price: ${Number(car.price).toLocaleString() || "N/A"}
+                                        Price: ${Number(car.price).toLocaleString()}
                                     </p>
 
-                                    <div className="mt-4">
-                                        <input
-                                            type="number"
-                                            placeholder="Enter your bid"
-                                            className="border border-gray-300 py-2 px-4 rounded-lg w-full mb-2"
-                                            value={biddingAmounts[car.id] || ""}
-                                            onChange={(e) =>
-                                                handleInputChange(car.id, e.target.value)
-                                            }
-                                            disabled={car.status === "sold"}
-                                        />
-                                        <button
-                                            onClick={() => handleBidSubmit(car.id, biddingAmounts[car.id])}
-                                            className="bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
-                                            disabled={car.status === "sold"}
-                                        >
-                                            Submit Bid
-                                        </button>
-                                    </div>
+                                    {/* Bidding Form */}
+                                    {car.sold_status !== "sold" && (
+                                        <div className="mt-4">
+                                            <input
+                                                type="number"
+                                                placeholder="Enter your bid"
+                                                className="border border-gray-300 py-2 px-4 rounded-lg w-full mb-2"
+                                                value={biddingAmounts[car.id] || ""}
+                                                onChange={(e) =>
+                                                    handleInputChange(car.id, e.target.value)
+                                                }
+                                            />
+                                            <button
+                                                onClick={() =>
+                                                    handleBidSubmit(car.id, biddingAmounts[car.id])
+                                                }
+                                                className="bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
+                                            >
+                                                Submit Bid
+                                            </button>
+                                        </div>
+                                    )}
 
-                                    <button
-                                        onClick={() => handleViewDetails(car)}
-                                        className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
-                                        disabled={car.status === "sold"}
-                                    >
-                                        View Details
-                                    </button>
+                                    {/* View Details Button */}
+                                    {car.sold_status !== "sold" && (
+                                        <button
+                                            onClick={() => handleViewDetails(car)}
+                                            className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
+                                        >
+                                            View Details
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))
@@ -118,7 +124,11 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                     )}
                 </div>
             </div>
-            {selectedCar && <CarDetailModal car={selectedCar} onClose={closeModal} />}
+
+            {/* Modal */}
+            {selectedCar && (
+                <CarDetailModal car={selectedCar} onClose={closeModal} />
+            )}
         </section>
     );
 };

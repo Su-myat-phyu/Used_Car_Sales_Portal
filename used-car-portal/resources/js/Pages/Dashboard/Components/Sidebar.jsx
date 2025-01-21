@@ -4,10 +4,11 @@ import { Inertia } from '@inertiajs/inertia';
 
 const Sidebar = ({ activeSection, setActiveSection }) => {
     const links = [
+        { name: 'Overview', key: 'overview' },
         { name: 'Users Management', key: 'users' },
         { name: 'Car Posts Approval', key: 'carPosts' },
         { name: 'Appointments Approval', key: 'appointments' },
-        { name: 'Transactions', key: 'transactions' },
+
     ];
 
     return (

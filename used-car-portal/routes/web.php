@@ -282,3 +282,6 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/api/car-posts', [CarController::class, 'getAllCarPosts']);
 Route::post('/api/car-posts/{id}/approve', [CarController::class, 'approveCarPost']);
 Route::delete('/api/car-posts/{id}', [CarController::class, 'deactivateCarPost']);
+
+//Admin dashboard overview
+Route::get('/admin/dashboard/overview', [AdminDashboardController::class, 'overview']);

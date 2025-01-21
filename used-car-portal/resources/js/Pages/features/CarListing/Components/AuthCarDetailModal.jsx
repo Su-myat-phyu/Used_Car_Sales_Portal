@@ -1,37 +1,32 @@
-import React, { useState } from "react";
+import { React, useState } from "react";
 import axios from "axios";
 
 const CarDetailsModal = ({ car, onClose }) => {
     const [bidPrice, setBidPrice] = useState("");
     const [testDriveDetails, setTestDriveDetails] = useState({
-        name: "",
+        name: "", // Updated from "username" to "name"
         email: "",
         date: "",
     });
-    const [errorMessage, setErrorMessage] = useState("");
 
-    const handleSubmit = async (e) => {
+    /*const handleSubmit = (e) => {
         e.preventDefault();
 
-        try {
-            await axios.post("/test-drives", {
+        axios
+            .post("/test-drives", {
                 car_id: car.id,
                 ...testDriveDetails,
                 bid_price: bidPrice,
-            });
-            alert("Test drive appointment created successfully!");
-            setErrorMessage(""); // Clear any existing error message
-            onClose();
-        } catch (error) {
-            if (error.response && error.response.status === 400) {
-                // Handle double booking error
-                setErrorMessage(error.response.data.error);
-            } else {
+            })
+            .then(() => {
+                alert("Test drive appointment created successfully!");
+                window.location.href = "/login";
+                onClose();
+            })
+            .catch((error) => {
                 console.error("Failed to create appointment:", error.response?.data || error.message);
-                setErrorMessage("Failed to schedule test drive. Please try again.");
-            }
-        }
-    };
+            });
+    };*/
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -63,14 +58,11 @@ const CarDetailsModal = ({ car, onClose }) => {
 
                     {/* Test Drive Form */}
                     <h3 className="mt-8 text-lg font-bold">Schedule Test Drive</h3>
-                    {errorMessage && (
-                        <div className="text-red-500 mb-4">{errorMessage}</div>
-                    )}
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form className="space-y-4">
                         <input
                             type="text"
                             placeholder="Your Name"
-                            value={testDriveDetails.name}
+                            value={testDriveDetails.name} // Updated from "username" to "name"
                             onChange={(e) =>
                                 setTestDriveDetails({ ...testDriveDetails, name: e.target.value })
                             }
@@ -96,8 +88,8 @@ const CarDetailsModal = ({ car, onClose }) => {
                         <button
                             type="submit"
                             className="bg-green-500 text-white px-4 py-2 rounded-lg"
-                        >
-                            Submit
+                        ><a href="/login"> Submit</a>
+                           
                         </button>
                     </form>
                 </div>

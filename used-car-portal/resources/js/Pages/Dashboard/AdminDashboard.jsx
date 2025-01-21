@@ -6,21 +6,22 @@ import Sidebar from "./Components/Sidebar";
 import UsersManagement from './Components/UsersManagement';
 import CarPostsApproval from './Components/CarPostsApproval';
 import AppointmentsApproval from "./Components/AppointmentsApproval";
-import Transactions from "./Components/Transactions";
+import AdminOverview from "./Components/AdminOverview";
 
 const AdminDashboard = ({ userName }) => {
     const [activeSection, setActiveSection] = useState('users');
 
     const renderSection = () => {
         switch (activeSection) {
+            case "overview":
+                return <AdminOverview />;
             case 'users':
                 return <UsersManagement />;
             case 'carPosts':
                 return <CarPostsApproval />;
             case 'appointments':
                 return <AppointmentsApproval />;
-            case 'transactions':
-                return <Transactions />;
+            
             default:
                 return <div>Select a section</div>;
         }

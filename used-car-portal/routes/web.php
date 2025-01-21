@@ -255,6 +255,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/users-management', [UserController::class, 'index']);
 Route::put('/users-management/{id}', [UserController::class, 'update']);
 Route::delete('/users-management/{id}', [UserController::class, 'destroy']);
+Route::post('/users-management/{id}/toggle-admin', [UserController::class, 'toggleAdmin']);
+
 
 // Admin routes for managing test drive appointments
 
@@ -274,3 +276,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/test-drives/{id}/approve', [TestDriveController::class, 'approveTestDrive']);
     Route::post('/test-drives/{id}/reject', [TestDriveController::class, 'rejectTestDrive']);
 });
+
+//admin car approval
+
+Route::get('/api/car-posts', [CarController::class, 'getAllCarPosts']);
+Route::post('/api/car-posts/{id}/approve', [CarController::class, 'approveCarPost']);
+Route::delete('/api/car-posts/{id}', [CarController::class, 'deactivateCarPost']);

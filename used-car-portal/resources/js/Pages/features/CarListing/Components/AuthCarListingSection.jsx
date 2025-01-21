@@ -1,8 +1,9 @@
+import React, { useState } from "react";
 import CarDetailModal from "./CarDetailModal";
-import React, {useState } from "react";
 
 const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
-    const [biddingAmounts, setBiddingAmounts] = useState({}); // Store bid amounts per car
+    const [biddingAmounts, setBiddingAmounts] = useState({});
+    const [selectedCar, setSelectedCar] = useState(null);
 
     const handleInputChange = (carId, value) => {
         setBiddingAmounts({
@@ -11,25 +12,12 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
         });
     };
 
-    /*const handleBidSubmit = (carId) => {
-        const bidAmount = biddingAmounts[carId];
-        if (bidAmount) {
-            handleSubmitBid(carId, bidAmount); // Call the handler from props
-            alert(`Bid submitted: $${bidAmount} for Car ID: ${carId}`);
-            setBiddingAmounts({
-                ...biddingAmounts,
-                [carId]: "", // Reset the bid amount field for that car
-            });
-        } else {
-            alert("Please enter a bid amount before submitting.");
-        }
-    };*/
     const handleBidSubmit = async (carId, bidAmount) => {
         if (!bidAmount) {
             alert("Please enter a bid amount before submitting.");
             return;
         }
-    
+
         try {
             const response = await axios.post("/bids", {
                 car_id: carId,
@@ -42,15 +30,14 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
             alert("Failed to submit bid. Please try again.");
         }
     };
-    const [selectedCar, setSelectedCar] = useState(null);
-    
-        const handleViewDetails = (car) => {
-            setSelectedCar(car);
-        };
-    
-        const closeModal = () => {
-            setSelectedCar(null);
-        };
+
+    const handleViewDetails = (car) => {
+        setSelectedCar(car);
+    };
+
+    const closeModal = () => {
+        setSelectedCar(null);
+    };
 
     return (
         <section className="py-16 bg-gray-50">
@@ -63,12 +50,17 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                         cars.map((car) => (
                             <div
                                 key={car.id}
-                                className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
+                                className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition relative"
                             >
-                                {/* Car Image */}
+                                {car.status === "sold" && (
+                                    <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                                        <span className="text-white text-2xl font-bold">Sold Out</span>
+                                    </div>
+                                )}
+
                                 {car.images && car.images.length > 0 ? (
                                     <img
-                                        src={car.images[0]} // Display the first image
+                                        src={car.images[0]}
                                         alt={`${car.make} ${car.model}`}
                                         className="w-full h-48 object-cover"
                                     />
@@ -78,7 +70,6 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                                     </div>
                                 )}
 
-                                {/* Car Details */}
                                 <div className="p-6">
                                     <h3 className="text-xl font-bold text-gray-800">
                                         {car.make} {car.model}
@@ -89,9 +80,7 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                                     <p className="text-accent-500 font-semibold text-lg">
                                         Price: ${Number(car.price).toLocaleString() || "N/A"}
                                     </p>
-                                    
 
-                                    {/* Show Bidding Form for all cars */}
                                     <div className="mt-4">
                                         <input
                                             type="number"
@@ -101,20 +90,21 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                                             onChange={(e) =>
                                                 handleInputChange(car.id, e.target.value)
                                             }
+                                            disabled={car.status === "sold"}
                                         />
                                         <button
                                             onClick={() => handleBidSubmit(car.id, biddingAmounts[car.id])}
-
                                             className="bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
+                                            disabled={car.status === "sold"}
                                         >
                                             Submit Bid
                                         </button>
                                     </div>
 
-                                    {/* View Details */}
                                     <button
                                         onClick={() => handleViewDetails(car)}
                                         className="mt-4 bg-primary-700 text-white py-2 px-4 rounded-lg hover:bg-primary-600 transition"
+                                        disabled={car.status === "sold"}
                                     >
                                         View Details
                                     </button>
@@ -128,10 +118,7 @@ const AuthCarListingSection = ({ cars, handleSubmitBid }) => {
                     )}
                 </div>
             </div>
-            {/* Modal */}
-            {selectedCar && (
-                <CarDetailModal car={selectedCar} onClose={closeModal} />
-            )}
+            {selectedCar && <CarDetailModal car={selectedCar} onClose={closeModal} />}
         </section>
     );
 };

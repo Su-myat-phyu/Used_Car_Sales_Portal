@@ -100,5 +100,5 @@ public function getUserBids(Request $request)
     }
 }
 
-
 }
+

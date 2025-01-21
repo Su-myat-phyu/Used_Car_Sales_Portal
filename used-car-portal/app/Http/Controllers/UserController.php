@@ -65,4 +65,23 @@ public function destroy($id)
 
     return response()->json(['message' => 'User deactivated successfully']);
 }
+
+public function toggleAdmin($id, Request $request)
+{
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+
+    $newRole = $request->input('role');
+    if (!in_array($newRole, ['admin', 'user'])) {
+        return response()->json(['error' => 'Invalid role'], 400);
+    }
+
+    $user->role = $newRole;
+    $user->save();
+
+    return response()->json(['message' => 'User role updated successfully']);
+}
 }

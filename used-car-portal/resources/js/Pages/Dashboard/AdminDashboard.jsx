@@ -1,7 +1,7 @@
 import {React, useState} from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Footer from "../../Components/HeaderFooter/Footer";
-import Navbar from "./Components/Navbar";
+import AdminNavBar from "./Components/AdminNavBar";
 import Sidebar from "./Components/Sidebar";
 import UsersManagement from './Components/UsersManagement';
 import CarPostsApproval from './Components/CarPostsApproval';
@@ -28,7 +28,7 @@ const AdminDashboard = ({ userName }) => {
     return (
         <AuthenticatedLayout>
             {/* Navbar */}
-            <Navbar userName={userName} />
+            <AdminNavBar userName={userName} />
 
             {/* Main Content */}
             <main className="flex flex-col min-h-screen bg-gray-100">

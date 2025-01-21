@@ -40,6 +40,31 @@ const UsersManagement = () => {
         });
     };
 
+    // Toggle Admin Role
+    const toggleAdminRole = (user) => {
+        const newRole = user.role === "admin" ? "user" : "admin";
+        axios
+            .post(`/users-management/${user.id}/toggle-admin`, { role: newRole })
+            .then(() => {
+                // Update the user role in state
+                setUsers(
+                    users.map((u) =>
+                        u.id === user.id ? { ...u, role: newRole } : u
+                    )
+                );
+                alert(
+                    `Successfully changed role to ${
+                        newRole === "admin" ? "Admin" : "User"
+                    }`
+                );
+            })
+            .catch((error) => {
+                console.error("Error toggling admin role:", error);
+                alert("Failed to toggle admin role.");
+            });
+    };
+
+
     return (
         <div className="p-4 w-full">
             <h2 className="text-2xl font-bold mb-4">Users Management</h2>
@@ -73,6 +98,16 @@ const UsersManagement = () => {
                                         onClick={() => handleDeactivate(user.id)}
                                     >
                                         Deactivate
+                                    </button>
+                                    <button
+                                        className={`px-3 py-1 rounded ${
+                                            user.role === "admin"
+                                                ? "bg-red-500 text-white"
+                                                : "bg-green-500 text-white"
+                                        }`}
+                                        onClick={() => toggleAdminRole(user)}
+                                    >
+                                        {user.role === "admin" ? "Unassign Admin" : "Assign Admin"}
                                     </button>
                                 </td>
                             </tr>

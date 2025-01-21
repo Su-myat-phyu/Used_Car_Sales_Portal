@@ -97,7 +97,55 @@ class CarController extends Controller
     return response()->json($car);
 }
 
-    
+    // Fetch all car posts with user details
+    public function getAllCarPosts()
+    {
+        try {
+            $carPosts = Car::with('user')->get();
+
+            $carPosts = $carPosts->map(function ($car) {
+                return [
+                    'id' => $car->id,
+                    'make' => $car->make,
+                    'model' => $car->model,
+                    'price' => $car->price,
+                    'year' => $car->year,
+                    'user_name' => $car->user ? $car->user->name : 'Unknown', // Get user name
+                ];
+            });
+
+            return response()->json($carPosts);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    // Approve a car post
+    public function approveCarPost($id)
+    {
+        try {
+            $car = Car::findOrFail($id);
+            $car->status = 'approved'; // Assuming 'status' is a column in the 'cars' table
+            $car->save();
+
+            return response()->json(['message' => 'Car post approved successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    // Deactivate (delete) a car post
+    public function deactivateCarPost($id)
+    {
+        try {
+            $car = Car::findOrFail($id);
+            $car->delete();
+
+            return response()->json(['message' => 'Car post deactivated successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
 
     

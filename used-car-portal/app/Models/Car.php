@@ -18,11 +18,13 @@ class Car extends Model
         'description',
         'status',
         'sold_status',
+        'mileage', 'transmission', 'fuel_type', 'features',
         'user_id',
     ];
 
     protected $casts = [
         'images' => 'array', // Cast images column as an array
+        'features' => 'array', // Cast JSON 'features' to array
     ];
 
     public function bids()
@@ -35,4 +37,3 @@ public function user()
 }
 
 }
-

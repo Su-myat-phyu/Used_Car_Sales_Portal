@@ -61,6 +61,22 @@ const CarDetailsModal = ({ car, onClose }) => {
                         Price: ${Number(car.price).toLocaleString()}
                     </p>
 
+                    {/* New Details */}
+                    <p>Mileage: {car.mileage || 'N/A'}</p>
+                    <p>Transmission: {car.transmission || 'N/A'}</p>
+                    <p>Fuel Type: {car.fuel_type || 'N/A'}</p>
+
+                    <h3>Features:</h3>
+                    {car.features && car.features.length > 0 ? (
+                        <ul>
+                            {car.features.map((feature, index) => (
+                                <li key={index}>- {feature}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No features listed.</p>
+                    )}
+
                     {/* Test Drive Form */}
                     <h3 className="mt-8 text-lg font-bold">Schedule Test Drive</h3>
                     {errorMessage && (

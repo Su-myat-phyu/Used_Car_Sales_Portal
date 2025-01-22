@@ -34,6 +34,12 @@ class CarController extends Controller
             'model' => 'required|string|max:255',
             'year' => 'required|integer|min:1886|max:' . date('Y'),
             'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'mileage' => 'nullable|string',
+            'transmission' => 'nullable|in:Automatic,Manual,Automatic+Manual',
+            'fuel_type' => 'nullable|in:Petrol,Diesel,Electric,Hybrid',
+            'features' => 'nullable|array',
+            'features.*' => 'string',
             'images' => 'nullable|array',
             'images.*' => 'image|max:2048',
         ]);

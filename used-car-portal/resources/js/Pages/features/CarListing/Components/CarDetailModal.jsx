@@ -66,7 +66,7 @@ const CarDetailsModal = ({ car, onClose }) => {
                     <p>Transmission: {car.transmission || 'N/A'}</p>
                     <p>Fuel Type: {car.fuel_type || 'N/A'}</p>
 
-                    <h3>Features:</h3>
+                    {/*<h3>Features:</h3>
                     {car.features && car.features.length > 0 ? (
                         <ul>
                             {car.features.map((feature, index) => (
@@ -75,7 +75,49 @@ const CarDetailsModal = ({ car, onClose }) => {
                         </ul>
                     ) : (
                         <p>No features listed.</p>
-                    )}
+                    )} */}
+
+{/*<h3>Features:</h3>
+                    {Array.isArray(car.features) && car.features.length > 0 ? (
+                        <ul>
+                            {car.features.map((feature, index) => (
+                                <li key={index}>- {feature}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No features listed.</p>
+                    )} */}
+
+<h3>Features:</h3>
+{(() => {
+    // Ensure features is an array
+    const features = Array.isArray(car.features)
+        ? car.features
+        : car.features?.split(",") || [];
+
+    return features.length > 0 ? (
+        <ul>
+            {features.map((feature, index) => (
+                <li key={index}>- {feature.trim()}</li>
+            ))}
+        </ul>
+    ) : (
+        <p>No features listed.</p>
+    );
+})()}
+
+
+{/*<div>
+    <p>Mileage: {car.mileage ? `${car.mileage} km` : "N/A"}</p>
+    <p>Transmission: {car.transmission || "N/A"}</p>
+    <p>Fuel Type: {car.fuel_type || "N/A"}</p>
+    <p>Features: 
+        {car.features && car.features.length > 0 
+            ? car.features.join(", ") 
+            : "No features listed."}
+    </p>
+</div>*/}
+
 
                     {/* Test Drive Form */}
                     <h3 className="mt-8 text-lg font-bold">Schedule Test Drive</h3>

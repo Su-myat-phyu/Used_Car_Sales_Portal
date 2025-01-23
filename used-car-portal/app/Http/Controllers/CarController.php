@@ -60,6 +60,10 @@ class CarController extends Controller
             'year' => $validatedData['year'],
             'price' => $validatedData['price'],
             'description' => $request->input('description', 'No description provided'),
+            'mileage' => $request->input('mileage', null), // Add mileage
+            'transmission' => $request->input('transmission', null), // Add transmission
+            'fuel_type' => $request->input('fuel_type', null), // Add fuel type
+            'features' => json_encode($request->input('features', [])), // Add features
             'user_id' => Auth::id(),
         ]);
         $car->images = json_encode($imagePaths); // Save image paths as JSON

@@ -93,12 +93,12 @@ const CarDetailsModal = ({ car, onClose }) => {
     // Ensure features is an array
     const features = Array.isArray(car.features)
         ? car.features
-        : car.features?.split(",") || [];
+        : JSON.parse(car.features || '[]');
 
     return features.length > 0 ? (
         <ul>
             {features.map((feature, index) => (
-                <li key={index}>- {feature.trim()}</li>
+                <li key={index}>- {feature}</li>
             ))}
         </ul>
     ) : (

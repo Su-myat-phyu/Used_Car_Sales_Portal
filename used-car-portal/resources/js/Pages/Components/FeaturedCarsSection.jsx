@@ -1,6 +1,16 @@
-import React from "react";
-
+import React, {useState } from "react";
+import AuthCarDetailModal from "../features/CarListing/Components/AuthCarDetailModal";
 const FeaturedCars = () => {
+
+    const [selectedCar, setSelectedCar] = useState(null);
+    
+        const handleViewDetails = (car) => {
+            setSelectedCar(car);
+        };
+
+        const closeModal = () => {
+            setSelectedCar(null);
+        };
     // Dummy data for featured cars
     const cars = [
         {
@@ -65,7 +75,9 @@ const FeaturedCars = () => {
                                 </p>
 
                                 {/* View Details Button */}
-                                <button className="bg-accent-500 text-white py-2 px-4 rounded-lg w-full hover:bg-primary-400 transition">
+                                <button 
+                                 onClick={() => handleViewDetails(car)}
+                                 className="bg-accent-500 text-white py-2 px-4 rounded-lg w-full hover:bg-primary-400 transition">
                                     View Details
                                 </button>
                             </div>
@@ -73,6 +85,11 @@ const FeaturedCars = () => {
                     ))}
                 </div>
             </div>
+
+            {/* Modal */}
+            {selectedCar && (
+                <AuthCarDetailModal car={selectedCar} onClose={closeModal} />
+            )}
         </section>
     );
 };

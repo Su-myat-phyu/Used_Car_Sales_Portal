@@ -38,8 +38,9 @@ class CarController extends Controller
             'mileage' => 'nullable|string',
             'transmission' => 'nullable|in:Automatic,Manual,Automatic+Manual',
             'fuel_type' => 'nullable|in:Petrol,Diesel,Electric,Hybrid',
-            'features' => 'nullable|array',
-            'features.*' => 'string',
+            //'features' => 'nullable|array',
+            //'features.*' => 'string',
+            'features' => 'nullable|json', // Validate as JSON
             'images' => 'nullable|array',
             'images.*' => 'image|max:2048',
         ]);
@@ -63,7 +64,8 @@ class CarController extends Controller
             'mileage' => $request->input('mileage', null), // Add mileage
             'transmission' => $request->input('transmission', null), // Add transmission
             'fuel_type' => $request->input('fuel_type', null), // Add fuel type
-            'features' => json_encode($request->input('features', [])), // Add features
+            //'features' => json_encode($request->input('features', [])), // Add features
+            'features' => $request->input('features', '[]'), // Store as JSON
             'user_id' => Auth::id(),
         ]);
         $car->images = json_encode($imagePaths); // Save image paths as JSON

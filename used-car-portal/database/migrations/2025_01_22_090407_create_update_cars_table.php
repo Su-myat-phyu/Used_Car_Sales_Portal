@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integer('mileage')->nullable(); // Mileage in kilometers/miles
             $table->enum('transmission', ['Automatic', 'Manual', 'Automatic+Manual'])->default('Automatic');
             $table->enum('fuel_type', ['Petrol', 'Diesel', 'Electric', 'Hybrid'])->default('Petrol');
-            $table->json('features')->nullable(); // JSON array for car features
+            $table->json('features')->nullable()->change(); // JSON array for car features
         });
     }
 

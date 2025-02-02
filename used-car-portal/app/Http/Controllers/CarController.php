@@ -13,14 +13,30 @@ class CarController extends Controller
         try {
             $cars = Car::all();
             foreach ($cars as $car) {
+                //$car->features = json_decode($car->features, true) ?? [];
+                // Check if 'features' is valid JSON before decoding
+            if (!empty($car->features) && !is_array($car->features)) {
+                $decodedFeatures = json_decode($car->features, true);
+
+                // If decoding fails, log an error
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    //\Log::error("Invalid JSON in car ID: {$car->id}, Data: {$car->features}");
+                    $decodedFeatures = []; // Fallback to empty array
+                }
+
+                $car->features = $decodedFeatures;
+            }
                 if (!empty($car->images)) {
                     // Decode and map image paths for the frontend
                     $car->images = collect(json_decode($car->images))->map(function ($path) {
                         return asset('storage/' . $path); // Convert paths to full URLs
                     })->toArray();
                 }
+
             }
             return response()->json($cars); // Return cars with images
+
+            
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -65,7 +81,8 @@ class CarController extends Controller
             'transmission' => $request->input('transmission', null), // Add transmission
             'fuel_type' => $request->input('fuel_type', null), // Add fuel type
             //'features' => json_encode($request->input('features', [])), // Add features
-            'features' => $request->input('features', '[]'), // Store as JSON
+            //'features' => $request->input('features', '[]'), // Store as JSON
+            'features' => json_decode($request->input('features', '[]')), // Decode JSON
             'user_id' => Auth::id(),
         ]);
         $car->images = json_encode($imagePaths); // Save image paths as JSON

@@ -94,26 +94,7 @@ const CarHeroSection = ({ filters, onFilterChange, allCars }) => {
                     />
                 </form>
 
-                <select
-                    onChange={(e) => setFilters({ ...filters, transmission: e.target.value })}
-                    className="border p-2 rounded-lg"
-                >
-                    <option value="">Transmission</option>
-                    <option value="Automatic">Automatic</option>
-                    <option value="Manual">Manual</option>
-                    <option value="Automatic+Manual">Automatic+Manual</option>
-                </select>
-
-                <select
-                    onChange={(e) => setFilters({ ...filters, fuel_type: e.target.value })}
-                    className="border p-2 rounded-lg"
-                >
-                    <option value="">Fuel Type</option>
-                    <option value="Petrol">Petrol</option>
-                    <option value="Diesel">Diesel</option>
-                    <option value="Electric">Electric</option>
-                    <option value="Hybrid">Hybrid</option>
-                </select>
+                
 
                 <button
                     onClick={clearFilters}

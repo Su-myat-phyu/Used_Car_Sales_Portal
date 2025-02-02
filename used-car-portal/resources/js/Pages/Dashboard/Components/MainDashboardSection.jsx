@@ -79,7 +79,9 @@ const MainDashboardSection = () => {
             formData.append("transmission", carDetails.transmission);
             formData.append("fuel_type", carDetails.fuel_type);
             formData.append("description", carDetails.description);
-            formData.append("features", JSON.stringify(carDetails.features));
+            //formData.append("features", JSON.stringify(carDetails.features));
+            formData.append("features", JSON.stringify(carDetails.features || []));
+
 
             // Handle features as a comma-separated string or send as an array
             //formData.append("features", carDetails.features.join(","));

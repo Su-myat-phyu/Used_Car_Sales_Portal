@@ -73,7 +73,7 @@ const Header = () => {
                     </li>
                     <li>
                         <Link
-                            href="/contact"
+                            href="/jj"
                             className="block hover:text-secondary-600 transition"
                         >
                             Contact Us

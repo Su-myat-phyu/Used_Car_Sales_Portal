@@ -33,6 +33,31 @@ const CarDetailsModal = ({ car, onClose }) => {
         }
     };
 
+    const featureOptions = [
+        "Air conditioning",
+        "Cruise control",
+        "Heated front seats",
+        "Multifunctional steering wheel",
+        "Navigation system",
+        "Trailer coupling",
+        "LED headlights",
+        "Xenon headlights",
+    ];
+
+    const [carDetails, setCarDetails] = useState({
+            make: "",
+            model: "",
+            year: "",
+            price: "",
+            mileage: "",
+            transmission: "",
+            fuel_type: "",
+            description: "",
+            features: [], // Array to store selected features
+            images: [],
+        });
+        console.log("Car Features:", car.features); // Debugging feature data
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-white rounded-lg p-8 w-full max-w-2xl relative">
@@ -77,34 +102,37 @@ const CarDetailsModal = ({ car, onClose }) => {
                         <p>No features listed.</p>
                     )} */}
 
-{/*<h3>Features:</h3>
+<h3>Features:</h3>
+
                     {Array.isArray(car.features) && car.features.length > 0 ? (
                         <ul>
                             {car.features.map((feature, index) => (
                                 <li key={index}>- {feature}</li>
+                                
                             ))}
+                            
                         </ul>
                     ) : (
                         <p>No features listed.</p>
-                    )} */}
+                        
+                    )} 
+                    
 
-<h3>Features:</h3>
-{(() => {
-    // Ensure features is an array
-    const features = Array.isArray(car.features)
-        ? car.features
-        : JSON.parse(car.features || '[]');
-
-    return features.length > 0 ? (
-        <ul>
-            {features.map((feature, index) => (
-                <li key={index}>- {feature}</li>
-            ))}
-        </ul>
-    ) : (
-        <p>No features listed.</p>
-    );
-})()}
+{/*<h3>Features:</h3>
+<div className="grid grid-cols-2 gap-2">
+  {featureOptions.map((feature, index) => (
+    <label key={index} className="flex items-center space-x-2">
+      <input
+        type="checkbox"
+        value={feature}
+        checked={carDetails.features.includes(feature)}
+        onChange={(e) => handleFeatureChange(feature)}
+        className="form-checkbox h-4 w-4 text-blue-500"
+      />
+      <span>{feature}</span>
+    </label>
+  ))}
+</div>*/}
 
 
 {/*<div>
